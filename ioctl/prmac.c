@@ -4,6 +4,7 @@
 int
 main(int argc, char **argv)
 {
+#ifdef SIOCGARP
 	int					sockfd;
 	struct ifi_info			*ifi;
 	unsigned char		*ptr;
@@ -26,5 +27,8 @@ main(int argc, char **argv)
 		printf("%x:%x:%x:%x:%x:%x\n", *ptr, *(ptr+1),
 			   *(ptr+2), *(ptr+3), *(ptr+4), *(ptr+5));
 	}
+#else
+	err_ret("ioctl SIOCGARP not supported");
+#endif
 	exit(0);
 }

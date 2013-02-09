@@ -1,6 +1,7 @@
 include ../Make.defines
 
-all:	${LIBFREE_OBJS}
+all:	${LIBUNP_NAME}
+${LIBUNP_NAME}:	${LIBFREE_OBJS}
 		ar rv ${LIBUNP_NAME} $?
 		${RANLIB} ${LIBUNP_NAME}
 

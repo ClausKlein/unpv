@@ -49,13 +49,24 @@ pr_ipv4(char **listptr)
 
 	for ( ; *listptr != NULL; listptr++) {
 		inaddr = *((struct in_addr *) (*listptr));
-		printf("	IPv4 address: %s", Inet_ntoa(inaddr));
+		printf("	IPv4 address: %s", inet_ntoa(inaddr));
 
-		if ( (hptr = gethostbyaddr_r((char *) &inaddr, sizeof(struct in_addr),
+#ifdef	REENTRANT
+/**
+ *     int gethostbyaddr_r(const void *addr, socklen_t len, int type,
+ *             struct hostent *ret, char *buf, size_t buflen,
+ *             struct hostent **result, int *h_errnop);
+**/
+		if ( (gethostbyaddr_r((char *) &inaddr, sizeof(struct in_addr),
 									 AF_INET, &hent,
-									 buf, sizeof(buf), &h_errno)) == NULL)
+									 buf, sizeof(buf),
+                                                                         &hptr, &h_errno)) < 0)
+#else
+		if ( (gethostbyaddr((char *) &inaddr, sizeof(struct in_addr),
+								   AF_INET)) == NULL)
+#endif
 			printf("    (gethostbyaddr failed: %s)\n", hstrerror(h_errno));
-		else if (hptr->h_name != NULL)
+		else if (hptr && hptr->h_name != NULL)
 			printf("    name = %s\n", hptr->h_name);
 		else
 			printf("    (no hostname returned by gethostbyaddr)\n");

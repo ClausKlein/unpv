@@ -9,6 +9,7 @@ recv_all(int recvfd, socklen_t salen)
 	struct sockaddr		*safrom;
 
 	safrom = Malloc(salen);
+        puts("receiver:");
 
 	for ( ; ; ) {
 		len = salen;

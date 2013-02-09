@@ -1,7 +1,8 @@
 include ../Make.defines
 
-PROGS =	daytimetcpcli daytimetcpsrv2 mycat openfile \
-	tfcred01 unixbind unixstrcli01 unixstrserv01 unixstrserv02
+PROGS:=	daytimetcpcli daytimetcpsrv2 mycat openfile \
+	unixbind unixstrcli01 unixstrserv01 
+###FIXME PROGS+= tfcred01 unixstrserv02
 
 all:	${PROGS}
 

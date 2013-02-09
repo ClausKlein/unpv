@@ -1,6 +1,7 @@
 include ../Make.defines
 
-all:	${LIBROUTE_OBJS}
+all:	${LIBUNP_NAME}
+${LIBUNP_NAME}:	${LIBROUTE_OBJS}
 		ar rv ${LIBUNP_NAME} $?
 		${RANLIB} ${LIBUNP_NAME}
 

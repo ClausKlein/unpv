@@ -7,8 +7,8 @@
 #include	"unp.h"
 #include	<net/if.h>
 
-#define	IFI_NAME	16			/* same as IFNAMSIZ in <net/if.h> */
-#define	IFI_HADDR	 8			/* allow for 64-bit EUI-64 in future */
+#define	IFI_NAME	IFNAMSIZ		/* same as IFNAMSIZ in <net/if.h> */
+#define	IFI_HADDR	8			/* allow for 64-bit EUI-64 in future */
 
 struct ifi_info {
   char    ifi_name[IFI_NAME];	/* interface name, null-terminated */

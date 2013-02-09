@@ -11,6 +11,13 @@
 #include	<fcntl.h>
 #include	<sys/ioctl.h>
 
+static void
+sigio_func(int signo)
+{
+	fprintf(stderr, "SIGIO\n");
+				/* shouldn't printf from a signal handler ... */
+}
+
 void
 sockopts(int sockfd, int doall)
 {
@@ -328,8 +335,6 @@ sockopts(int sockfd, int doall)
 
     if (sigio) {
 #ifdef	FIOASYNC
-		static void sigio_func(int);
-
 		/*
 		 * Should be able to set this with fcntl(O_ASYNC) or fcntl(FASYNC),
 		 * but some systems (AIX?) only do it with ioctl().
@@ -353,9 +358,3 @@ sockopts(int sockfd, int doall)
     }
 }
 
-static void
-sigio_func(int signo)
-{
-	fprintf(stderr, "SIGIO\n");
-				/* shouldn't printf from a signal handler ... */
-}

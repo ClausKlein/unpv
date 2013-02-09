@@ -60,7 +60,7 @@ readline_r(Rline *rptr)
 /* end readline */
 
 ssize_t
-Readline(int fd, void *ptr, size_t maxlen)
+readline(int fd, void *ptr, size_t maxlen)
 {
 	ssize_t		n;
 
