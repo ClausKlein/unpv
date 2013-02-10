@@ -12,12 +12,12 @@ send_all(int sendfd, SA *sadest, socklen_t salen)
 	if (uname(&myname) < 0)
 		err_sys("uname error");;
 	snprintf(line, sizeof(line), "%s, %d\n", myname.nodename, getpid());
-        puts(line);
+	puts(line);
 
 	for ( ; ; ) {
 		Sendto(sendfd, line, strlen(line), 0, sadest, salen);
 
 		sleep(SENDRATE);
-        	puts(".");
+		puts(".");
 	}
 }

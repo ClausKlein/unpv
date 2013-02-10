@@ -3,6 +3,29 @@
 void	recv_all(int, socklen_t);
 void	send_all(int, SA *, socklen_t);
 
+
+static pid_t childpid = 0;
+
+static void
+sig_chld(int signo)
+{
+	pid_t	pid;
+	int		stat;
+
+	pid = wait(&stat);
+	childpid = 0;
+	printf("child %d terminated\n", pid);
+}
+
+static void
+kill_child(void)
+{
+	if (childpid) {
+		kill(childpid, SIGTERM);
+		puts("OnExit kill child ...");
+	}
+}
+
 int
 main(int argc, char **argv)
 {
@@ -31,7 +54,9 @@ main(int argc, char **argv)
 
 	Bind(recvfd, sarecv, salen);
 
-	//XXX if (mcast_leave(recvfd, sasend, salen) < 0) perror ("mcast_leave");
+	//XXX mcast_leave: Can't assign requested address
+	//FIXME if (mcast_leave(recvfd, sasend, salen) < 0) perror ("mcast_leave");
+
 	Mcast_join(recvfd, sasend, salen, NULL, 0);
 
 	//FIXME we can't receive our multicast mesages send under apple, linux and cygwin
@@ -39,9 +64,12 @@ main(int argc, char **argv)
 	//     and: mcast/sendrecv FF02::FB 5353
 	Mcast_set_loop(sendfd, on);
 
-	if (Fork() == 0)
+	Signal(SIGCHLD, sig_chld);	/* must call wait() */
+
+	if ((childpid = Fork()) == 0)
 		recv_all(recvfd, salen);		/* child -> receives */
 
+	atexit(kill_child);
 	send_all(sendfd, sasend, salen);	/* parent -> sends */
 
 	return 0;

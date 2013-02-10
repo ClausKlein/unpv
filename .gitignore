@@ -160,6 +160,7 @@ test/accept_eintr
 test/test1
 test/treadline1
 test/treadline2
+test/treadline3
 test/tshutdown
 test/tsnprintf
 threads/example01
