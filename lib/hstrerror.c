@@ -6,25 +6,29 @@
  * versions of BIND supply this function.
  */
 
-#include	"unp.h"
+#include    "unp.h"
 
 const char *
-hstrerror(int err)
-{
-	if (err == 0)
-		return("no error");
+hstrerror(int err) {
+    if (err == 0) {
+        return("no error");
+    }
 
-	if (err == HOST_NOT_FOUND)
-		return("Unknown host");
+    if (err == HOST_NOT_FOUND) {
+        return("Unknown host");
+    }
 
-	if (err == TRY_AGAIN)
-		return("Hostname lookup failure");
+    if (err == TRY_AGAIN) {
+        return("Hostname lookup failure");
+    }
 
-	if (err == NO_RECOVERY)
-		return("Unknown server error");
+    if (err == NO_RECOVERY) {
+        return("Unknown server error");
+    }
 
-	if (err == NO_DATA)
+    if (err == NO_DATA) {
         return("No address associated with name");
+    }
 
-	return("unknown error");
+    return("unknown error");
 }

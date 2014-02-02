@@ -1,4 +1,4 @@
-#include	"gai_hdr.h"
+#include    "gai_hdr.h"
 
 /*
  * Go through all the addrinfo structures, checking for a match of the
@@ -10,10 +10,10 @@
  * the "host" search there are two addrinfo structures, one per IP address.
  * Assuming a service supported by both TCP and UDP (say the daytime
  * service) we need to return *four* addrinfo structures:
- *		IP#1, SOCK_STREAM, TCP port,
- *		IP#1, SOCK_DGRAM, UDP port,
- *		IP#2, SOCK_STREAM, TCP port,
- *		IP#2, SOCK_DGRAM, UDP port.
+ *      IP#1, SOCK_STREAM, TCP port,
+ *      IP#1, SOCK_DGRAM, UDP port,
+ *      IP#2, SOCK_STREAM, TCP port,
+ *      IP#2, SOCK_DGRAM, UDP port.
  * To do this, when the "host" loop creates an addrinfo structure, if the
  * caller has not specified a socket type (hintsp->ai_socktype == 0), the
  * AI_CLONE flag is set.  When the following function finds an entry like
@@ -29,38 +29,40 @@
 /* include ga_port */
 int
 ga_port(struct addrinfo *aihead, int port, int socktype)
-		/* port must be in network byte order */
+/* port must be in network byte order */
 {
-	int				nfound = 0;
-	struct addrinfo	*ai;
+    int             nfound = 0;
+    struct addrinfo *ai;
 
-	for (ai = aihead; ai != NULL; ai = ai->ai_next) {
-		if (ai->ai_flags & AI_CLONE) {
-			if (ai->ai_socktype != 0) {
-				if ( (ai = ga_clone(ai)) == NULL)
-					return(-1);		/* memory allocation error */
-				/* ai points to newly cloned entry, which is what we want */
-			}
-		} else if (ai->ai_socktype != socktype)
-			continue;		/* ignore if mismatch on socket type */
+    for (ai = aihead; ai != NULL; ai = ai->ai_next) {
+        if (ai->ai_flags & AI_CLONE) {
+            if (ai->ai_socktype != 0) {
+                if ((ai = ga_clone(ai)) == NULL) {
+                    return(-1);    /* memory allocation error */
+                }
+                /* ai points to newly cloned entry, which is what we want */
+            }
+        } else if (ai->ai_socktype != socktype) {
+            continue;    /* ignore if mismatch on socket type */
+        }
 
-		ai->ai_socktype = socktype;
+        ai->ai_socktype = socktype;
 
-		switch (ai->ai_family) {
-#ifdef	IPv4
-			case AF_INET:
-				((struct sockaddr_in *) ai->ai_addr)->sin_port = port;
-				nfound++;
-				break;
+        switch (ai->ai_family) {
+#ifdef  IPv4
+        case AF_INET:
+            ((struct sockaddr_in *) ai->ai_addr)->sin_port = port;
+            nfound++;
+            break;
 #endif
-#ifdef	IPv6
-			case AF_INET6:
-				((struct sockaddr_in6 *) ai->ai_addr)->sin6_port = port;
-				nfound++;
-				break;
+#ifdef  IPv6
+        case AF_INET6:
+            ((struct sockaddr_in6 *) ai->ai_addr)->sin6_port = port;
+            nfound++;
+            break;
 #endif
-		}
-	}
-	return(nfound);
+        }
+    }
+    return(nfound);
 }
 /* end ga_port */
