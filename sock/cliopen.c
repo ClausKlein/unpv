@@ -125,8 +125,8 @@ cliopen(char *host, char *port) {
         /* Call getsockname() to find local address bound to socket:
            TCP ephemeral port was assigned by connect() or bind();
            UDP ephemeral port was assigned by bind(). */
-        i = sizeof(cliaddr);
-        if (getsockname(fd, (struct sockaddr *) &cliaddr, &i) < 0) {
+        socklen_t len = sizeof(cliaddr);
+        if (getsockname(fd, (struct sockaddr *) &cliaddr, &len) < 0) {
             err_sys("getsockname() error");
         }
 

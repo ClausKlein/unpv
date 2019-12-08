@@ -29,7 +29,7 @@ main(int argc, char **argv) {
         printf("AF_INET6, 0.0.0.0 returned: %d\n", i);
     }
 
-    if ((i = inet_pton(AF_INET6, "0::0", buff)) != 1) {      /* should be OK */
+    if ((i = inet_pton(AF_INET6, "0::0", buff)) != 1) { /* should be OK */
         printf("AF_INET6, 0::0 returned: %d\n", i);
     }
     if ((i = inet_pton(AF_INET, "0::0", buff)) != 0) {

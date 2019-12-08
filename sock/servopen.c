@@ -112,7 +112,7 @@ servopen(char *host, char *port) {
     }
 
     for (; ;) {
-        i = sizeof(cliaddr);
+        socklen_t i = sizeof(cliaddr);
         if ((newfd = accept(fd, (struct sockaddr *) &cliaddr, &i)) < 0) {
             err_sys("accept() error");
         }

@@ -91,7 +91,7 @@ struct sock_opts {
 /* include checkopts2 */
 int
 main(int argc, char **argv) {
-    int                 fd;
+    int                 fd = -1;
     socklen_t           len;
     struct sock_opts    *ptr;
 
@@ -121,8 +121,7 @@ main(int argc, char **argv) {
             }
 
             len = sizeof(val);
-            if (getsockopt(fd, ptr->opt_level, ptr->opt_name,
-                           &val, &len) == -1) {
+            if (getsockopt(fd, ptr->opt_level, ptr->opt_name, &val, &len) == -1) {
                 err_ret("getsockopt error");
             } else {
                 printf("default = %s\n", (*ptr->opt_val_str)(&val, len));
@@ -181,7 +180,7 @@ sock_str_timeval(union val *ptr, int len) {
         snprintf(strres, sizeof(strres),
                  "size (%d) not sizeof(struct timeval)", len);
     else
-        snprintf(strres, sizeof(strres), "%d sec, %d usec",
+        snprintf(strres, sizeof(strres), "%ld sec, %d usec",
                  tvptr->tv_sec, tvptr->tv_usec);
     return(strres);
 }

@@ -15,7 +15,7 @@
 void
 loop_udp(int sockfd) {
     int                     maxfdp1, nread, ntowrite, stdineof,
-                            clilen, servlen, flags;
+                            clilen, flags;
     fd_set                  rset;
     struct sockaddr_in      cliaddr;        /* for UDP server */
     struct sockaddr_in      servaddr;       /* for UDP client */
@@ -183,7 +183,7 @@ oncemore:
 
             } else {
                 /* Must use recvfrom() for unconnected UDP client */
-                servlen = sizeof(servaddr);
+                socklen_t servlen = sizeof(servaddr);
                 nread = recvfrom(sockfd, rbuf, readlen, 0,
                                  (struct sockaddr *) &servaddr, &servlen);
                 if (nread < 0) {

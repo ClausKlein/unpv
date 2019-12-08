@@ -30,6 +30,7 @@ main(int argc, char **argv) {
     for (; ;) {
         clilen = sizeof(cliaddr);
         connfd = Accept(listenfd, (SA *) &cliaddr, &clilen);
+        (void)connfd;
         /* error from Accept() if not restarted */
     }
 }

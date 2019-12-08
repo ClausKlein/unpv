@@ -19,7 +19,7 @@ sigio_func(int signo) {
 
 void
 sockopts(int sockfd, int doall) {
-    int             option, optlen;
+    int             option;
     struct linger   ling;
     struct timeval  timer;
 
@@ -35,7 +35,7 @@ sockopts(int sockfd, int doall) {
         }
 
         option = 0;
-        optlen = sizeof(option);
+        socklen_t optlen = sizeof(option);
         if (getsockopt(sockfd, SOL_SOCKET, SO_DEBUG,
                        &option, &optlen) < 0) {
             err_sys("SO_DEBUG getsockopt error");
@@ -57,7 +57,7 @@ sockopts(int sockfd, int doall) {
         }
 
         option = 0;
-        optlen = sizeof(option);
+        socklen_t optlen = sizeof(option);
         if (getsockopt(sockfd, SOL_SOCKET, SO_DONTROUTE,
                        &option, &optlen) < 0) {
             err_sys("SO_DONTROUTE getsockopt error");
@@ -79,7 +79,7 @@ sockopts(int sockfd, int doall) {
         }
 
         option = 0;
-        optlen = sizeof(option);
+        socklen_t optlen = sizeof(option);
         if (getsockopt(sockfd, IPPROTO_IP, IP_TOS,
                        &option, &optlen) < 0) {
             err_sys("IP_TOS getsockopt error");
@@ -102,7 +102,7 @@ sockopts(int sockfd, int doall) {
         }
 
         option = 0;
-        optlen = sizeof(option);
+        socklen_t optlen = sizeof(option);
         if (getsockopt(sockfd, IPPROTO_IP, IP_TTL,
                        &option, &optlen) < 0) {
             err_sys("IP_TTL getsockopt error");
@@ -127,7 +127,7 @@ sockopts(int sockfd, int doall) {
         }
 
         option = 0;
-        optlen = sizeof(option);
+        socklen_t optlen = sizeof(option);
         if (getsockopt(sockfd, IPPROTO_TCP, TCP_MAXSEG,
                        &option, &optlen) < 0) {
             err_sys("TCP_MAXSEG getsockopt error");
@@ -150,7 +150,7 @@ sockopts(int sockfd, int doall) {
         }
 
         option = 0;
-        optlen = sizeof(option);
+        socklen_t optlen = sizeof(option);
         if (getsockopt(sockfd, SOL_SOCKET, SO_BROADCAST,
                        &option, &optlen) < 0) {
             err_sys("SO_BROADCAST getsockopt error");
@@ -172,7 +172,7 @@ sockopts(int sockfd, int doall) {
             }
 
             option = 0;
-            optlen = sizeof(option);
+            socklen_t optlen = sizeof(option);
             if (getsockopt(sockfd, IPPROTO_IP, IP_ONESBCAST,
                            &option, &optlen) < 0) {
                 err_sys("IP_ONESBCAST getsockopt error");
@@ -216,7 +216,7 @@ sockopts(int sockfd, int doall) {
             err_sys("IP_MULTICAST_TTL setsockopt error");
         }
 
-        optlen = sizeof(ttl);
+        socklen_t optlen = sizeof(ttl);
         if (getsockopt(sockfd, IPPROTO_IP, IP_MULTICAST_TTL,
                        &ttl, &optlen) < 0) {
             err_sys("IP_MULTICAST_TTL getsockopt error");
@@ -239,7 +239,7 @@ sockopts(int sockfd, int doall) {
         }
 
         option = 0;
-        optlen = sizeof(option);
+        socklen_t optlen = sizeof(option);
         if (getsockopt(sockfd, SOL_SOCKET, SO_KEEPALIVE,
                        &option, &optlen) < 0) {
             err_sys("SO_KEEPALIVE getsockopt error");
@@ -261,7 +261,7 @@ sockopts(int sockfd, int doall) {
         }
 
         option = 0;
-        optlen = sizeof(option);
+        socklen_t optlen = sizeof(option);
         if (getsockopt(sockfd, IPPROTO_TCP, TCP_NODELAY,
                        &option, &optlen) < 0) {
             err_sys("TCP_NODELAY getsockopt error");
@@ -277,7 +277,7 @@ sockopts(int sockfd, int doall) {
 
     if (doall && verbose && udp == 0) { /* just print MSS if verbose */
         option = 0;
-        optlen = sizeof(option);
+        socklen_t optlen = sizeof(option);
         if (getsockopt(sockfd, IPPROTO_TCP, TCP_MAXSEG,
                        &option, &optlen) < 0) {
             err_sys("TCP_MAXSEG getsockopt error");
@@ -296,7 +296,7 @@ sockopts(int sockfd, int doall) {
 
         ling.l_onoff = 0;
         ling.l_linger = -1;
-        optlen = sizeof(struct linger);
+        socklen_t optlen = sizeof(struct linger);
         if (getsockopt(sockfd, SOL_SOCKET, SO_LINGER,
                        &ling, &optlen) < 0) {
             err_sys("SO_LINGER getsockopt error");
@@ -321,14 +321,14 @@ sockopts(int sockfd, int doall) {
         }
 
         timer.tv_sec = timer.tv_usec = 0;
-        optlen = sizeof(timer);
+        socklen_t optlen = sizeof(timer);
         if (getsockopt(sockfd, SOL_SOCKET, SO_RCVTIMEO,
                        &timer, &optlen) < 0) {
             err_sys("SO_RCVTIMEO getsockopt error");
         }
 
         if (verbose)
-            fprintf(stderr, "SO_RCVTIMEO: %ld.%06ld\n",
+            fprintf(stderr, "SO_RCVTIMEO: %ld.%06d\n",
                     timer.tv_sec, timer.tv_usec);
 #else
         fprintf(stderr, "warning: SO_RCVTIMEO not supported by host\n");
@@ -346,14 +346,14 @@ sockopts(int sockfd, int doall) {
         }
 
         timer.tv_sec = timer.tv_usec = 0;
-        optlen = sizeof(timer);
+        socklen_t optlen = sizeof(timer);
         if (getsockopt(sockfd, SOL_SOCKET, SO_SNDTIMEO,
                        &timer, &optlen) < 0) {
             err_sys("SO_SNDTIMEO getsockopt error");
         }
 
         if (verbose)
-            fprintf(stderr, "SO_SNDTIMEO: %ld.%06ld\n",
+            fprintf(stderr, "SO_SNDTIMEO: %ld.%06d\n",
                     timer.tv_sec, timer.tv_usec);
 #else
         fprintf(stderr, "warning: SO_SNDTIMEO not supported by host\n");
@@ -369,7 +369,7 @@ sockopts(int sockfd, int doall) {
         }
 
         option = 0;
-        optlen = sizeof(option);
+        socklen_t optlen = sizeof(option);
         if (getsockopt(sockfd, IPPROTO_IP, IP_RECVDSTADDR,
                        &option, &optlen) < 0) {
             err_sys("IP_RECVDSTADDR getsockopt error");

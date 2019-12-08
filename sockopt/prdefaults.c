@@ -1,17 +1,17 @@
 #include    "unp.h"
 
-static doit(int, const char *);
+static void doit(int, const char *);
 
-void
+int
 main() {
     int     tcpsock, udpsock;
-    struct sockaddr_in  servaddr;
 
     if ((tcpsock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         err_sys("TCP socket error");
     }
 
 #ifdef notdef
+    struct sockaddr_in  servaddr;
     bzero(&servaddr, sizeof(servaddr));
     servaddr.sin_family      = AF_INET;
     servaddr.sin_port        = htons(9);
@@ -34,7 +34,7 @@ main() {
     exit(0);
 }
 
-static
+static void
 doit(int fd, const char *name) {
     int         val;
     socklen_t   optlen;

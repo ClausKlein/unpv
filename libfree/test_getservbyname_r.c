@@ -1,6 +1,13 @@
-#include    <netdb.h>
+#include <netdb.h>
 
-main() {
+#ifdef  REENTRANT
+int getservbyname_r(const char *name, const char *proto,
+                       struct servent *result_buf, char *buf,
+                       size_t buflen, struct servent **result);
+#endif
+
+int main() {
+
     char        buf[8192];
     struct servent  sent, *sptr;
 
