@@ -1,6 +1,6 @@
 include ../Make.defines
 
-PROGS =	lsif01 lsif02 prifinfo prmac
+PROGS =	lsif01 lsif02 prifinfo prmac getifaddrs ifconfig
 
 all:	${PROGS}
 
