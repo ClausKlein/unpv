@@ -55,7 +55,7 @@ sroute_doopt(int strict, char *argptr) {
     }
 
     if (inet_aton(argptr, &inaddr) == 1) {
-        memcpy(optr, &inaddr, sizeof(u_long));  /* dotted decimal */
+        memcpy(optr, &inaddr, sizeof(inaddr));  /* dotted decimal */
         if (verbose) {
             fprintf(stderr, "source route to %s\n", inet_ntoa(inaddr));
         }

@@ -47,7 +47,7 @@ main(int argc, char **argv) {
         service = argv[2];
     }
 
-    sockfd = Udp_client(argv[1], service, (struct sockaddr **) &mcastsa, &salen);
+    sockfd = Udp_client(argv[1], service, (void **) &mcastsa, &salen);
 
     Setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on));
 

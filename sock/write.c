@@ -39,7 +39,7 @@ dowrite(int fd, const void *vptr, size_t nbytes) {
     ptr = vptr;
     nleft = nbytes;
     for (i = 0; i < UIO_MAXIOV; i++) {
-        iov[i].iov_base = ptr;
+        iov[i].iov_base = (void *)ptr;
         n = (nleft >= chunksize) ? chunksize : nleft;
         iov[i].iov_len = n;
         if (verbose)

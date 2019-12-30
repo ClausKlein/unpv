@@ -10,7 +10,7 @@ main(int argc, char **argv) {
         err_quit("usage: udpcli02 <hostname> <service>");
     }
 
-    sockfd = Udp_client(argv[1], argv[2], &sa, &salen);
+    sockfd = Udp_client(argv[1], argv[2], (void **) &sa, &salen);
 
     dg_cli(stdin, sockfd, sa, salen);
 

@@ -35,7 +35,7 @@ main(int argc, char **argv) {
         err_quit("usage: sendrecv <IP-multicast-address> <port#>");
     }
 
-    sendfd = Udp_client(argv[1], argv[2], (struct sockaddr **) &sasend, &salen);
+    sendfd = Udp_client(argv[1], argv[2], (void **) &sasend, &salen);
 
     recvfd = Socket(sasend->sa_family, SOCK_DGRAM, 0);
 

@@ -74,7 +74,7 @@ loop_udp(int sockfd) {
             if (crlf) {
                 ntowrite = crlf_add(wbuf, writelen, rbuf, nread);
                 if (connectudp) {
-                    if (write(sockfd, wbuf, ntowrite) != ntowrite) {
+                    if (dowrite(sockfd, wbuf, ntowrite) != ntowrite) {
                         err_sys("write error");
                     }
                 } else {
@@ -86,7 +86,7 @@ loop_udp(int sockfd) {
                 }
             } else {
                 if (connectudp) {
-                    if (write(sockfd, rbuf, nread) != nread) {
+                    if (dowrite(sockfd, rbuf, nread) != nread) {
                         err_sys("write error");
                     }
                 } else {

@@ -3,7 +3,7 @@
 const char *
 sock_masktop(SA *sa, socklen_t salen) {
     static char     str[INET6_ADDRSTRLEN];
-    unsigned char   *ptr = &sa->sa_data[2];
+    char            *ptr = &sa->sa_data[2];
 
     if (sa->sa_len == 0) {
         return("0.0.0.0");
