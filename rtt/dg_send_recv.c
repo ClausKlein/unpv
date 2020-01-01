@@ -1,77 +1,78 @@
-/* include dgsendrecv1 */
-#include    "unprtt.h"
-#include    <setjmp.h>
+#include "unprtt.h"
+
+#include <arpa/inet.h>
+#include <setjmp.h>
 
 #define RTT_DEBUG
 
-static struct rtt_info   rttinfo;
-static int  rttinit = 0;
-static struct msghdr    msgsend, msgrecv;   /* assumed init to 0 */
+static struct rtt_info rttinfo;
+static int             rttinit = 0;
+static struct msghdr   msgsend, msgrecv; /* assumed init to 0 */
 static struct hdr {
-    uint32_t  seq;    /* sequence # */
-    uint32_t  ts;     /* timestamp when sent */
+    uint32_t seq; /* sequence # */
+    uint32_t ts;  /* timestamp when sent */
 } sendhdr, recvhdr;
 
-static void sig_alrm(int signo);
-static sigjmp_buf   jmpbuf;
+static void
+                  sig_alarm(int signo);
+static sigjmp_buf jmpbuf;
 
 ssize_t
-dg_send_recv(int fd, const void *outbuff, size_t outbytes,
-             void *inbuff, size_t inbytes,
-             const SA *destaddr, socklen_t destlen) {
-    ssize_t         n;
-    struct iovec    iovsend[2], iovrecv[2];
+dg_send_recv(int fd, const void *outbuff, size_t outbytes, void *inbuff,
+             size_t inbytes, const SA *destaddr, socklen_t destlen) {
+    ssize_t      n;
+    ssize_t      headlen = sizeof(struct hdr);
+    struct iovec iovsend[2], iovrecv[2];
+    uint32_t     seq = ntohl(sendhdr.seq) + 1;
+    sendhdr.seq      = htonl(seq);
 
     if (rttinit == 0) {
-        rtt_init(&rttinfo);     /* first time we're called */
-        rttinit = 1;
+        rtt_init(&rttinfo); /* first time we're called */
+        rttinit    = 1;
         rtt_d_flag = 1;
     }
 
-    sendhdr.seq++;
-    msgsend.msg_name = destaddr;
+    msgsend.msg_name    = (SA *)destaddr;
     msgsend.msg_namelen = destlen;
-    msgsend.msg_iov = iovsend;
-    msgsend.msg_iovlen = 2;
+    msgsend.msg_iov     = iovsend;
+    msgsend.msg_iovlen  = 2;
     iovsend[0].iov_base = &sendhdr;
-    iovsend[0].iov_len = sizeof(struct hdr);
-    iovsend[1].iov_base = outbuff;
-    iovsend[1].iov_len = outbytes;
+    iovsend[0].iov_len  = sizeof(struct hdr);
+    iovsend[1].iov_base = (void *)outbuff;
+    iovsend[1].iov_len  = outbytes;
 
-    msgrecv.msg_name = NULL;
+    msgrecv.msg_name    = NULL;
     msgrecv.msg_namelen = 0;
-    msgrecv.msg_iov = iovrecv;
-    msgrecv.msg_iovlen = 2;
+    msgrecv.msg_iov     = iovrecv;
+    msgrecv.msg_iovlen  = 2;
     iovrecv[0].iov_base = &recvhdr;
-    iovrecv[0].iov_len = sizeof(struct hdr);
+    iovrecv[0].iov_len  = sizeof(struct hdr);
     iovrecv[1].iov_base = inbuff;
-    iovrecv[1].iov_len = inbytes;
-    /* end dgsendrecv1 */
+    iovrecv[1].iov_len  = inbytes;
 
-    /* include dgsendrecv2 */
-    Signal(SIGALRM, sig_alrm);
-    rtt_newpack(&rttinfo);      /* initialize for this packet */
+    Signal(SIGALRM, sig_alarm);
+    rtt_newpack(&rttinfo); /* initialize for this packet */
 
 sendagain:
-#ifdef  RTT_DEBUG
-    fprintf(stderr, "send %4d: ", sendhdr.seq);
+#ifdef RTT_DEBUG
+    fprintf(stderr, "send %4d: ", ntohl(sendhdr.seq));
 #endif
     sendhdr.ts = rtt_ts(&rttinfo);
     Sendmsg(fd, &msgsend, 0);
 
     alarm(rtt_start(&rttinfo)); /* calc timeout value & start timer */
-#ifdef  RTT_DEBUG
+#ifdef RTT_DEBUG
     rtt_debug(&rttinfo);
 #endif
 
     if (sigsetjmp(jmpbuf, 1) != 0) {
         if (rtt_timeout(&rttinfo) < 0) {
             err_msg("dg_send_recv: no response from server, giving up");
-            rttinit = 0;    /* reinit in case we're called again */
-            errno = ETIMEDOUT;
-            return(-1);
+            rttinit = 0; /* reinit in case we're called again */
+            errno   = ETIMEDOUT;
+            return (-1);
         }
-#ifdef  RTT_DEBUG
+#ifdef RTT_DEBUG
         err_msg("dg_send_recv: timeout, retransmitting");
 #endif
         goto sendagain;
@@ -79,35 +80,31 @@ sendagain:
 
     do {
         n = Recvmsg(fd, &msgrecv, 0);
-#ifdef  RTT_DEBUG
-        fprintf(stderr, "recv %4d\n", recvhdr.seq);
+#ifdef RTT_DEBUG
+        fprintf(stderr, "recv %4d\n", ntohl(recvhdr.seq));
 #endif
-    } while (n < sizeof(struct hdr) || recvhdr.seq != sendhdr.seq);
+    } while (n < headlen || recvhdr.seq != sendhdr.seq);
 
-    alarm(0);           /* stop SIGALRM timer */
+    alarm(0); /* stop SIGALRM timer */
     /* 4calculate & store new RTT estimator values */
     rtt_stop(&rttinfo, rtt_ts(&rttinfo) - recvhdr.ts);
 
-    return(n - sizeof(struct hdr)); /* return size of received datagram */
+    return (n - headlen); /* return size of received datagram */
 }
 
 static void
-sig_alrm(int signo) {
+sig_alarm(int signo) {
     siglongjmp(jmpbuf, 1);
 }
-/* end dgsendrecv2 */
 
 ssize_t
-Dg_send_recv(int fd, const void *outbuff, size_t outbytes,
-             void *inbuff, size_t inbytes,
-             const SA *destaddr, socklen_t destlen) {
-    ssize_t n;
-
-    n = dg_send_recv(fd, outbuff, outbytes, inbuff, inbytes,
-                     destaddr, destlen);
+Dg_send_recv(int fd, const void *outbuff, size_t outbytes, void *inbuff,
+             size_t inbytes, const SA *destaddr, socklen_t destlen) {
+    ssize_t n =
+        dg_send_recv(fd, outbuff, outbytes, inbuff, inbytes, destaddr, destlen);
     if (n < 0) {
         err_quit("dg_send_recv error");
     }
 
-    return(n);
+    return (n);
 }

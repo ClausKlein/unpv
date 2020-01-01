@@ -1,5 +1,4 @@
-/* include udpservselect01 */
-#include    "unp.h"
+#include "unp.h"
 
 int
 main(int argc, char **argv) {
@@ -35,9 +34,7 @@ main(int argc, char **argv) {
     servaddr.sin_port        = htons(SERV_PORT);
 
     Bind(udpfd, (SA *) &servaddr, sizeof(servaddr));
-    /* end udpservselect01 */
 
-    /* include udpservselect02 */
     Signal(SIGCHLD, sig_chld);  /* must call waitpid() */
 
     FD_ZERO(&rset);
@@ -73,4 +70,3 @@ main(int argc, char **argv) {
         }
     }
 }
-/* end udpservselect02 */

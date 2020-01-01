@@ -249,8 +249,8 @@ Sendto(int fd, const void *ptr, size_t nbytes, int flags,
 
 void
 Sendmsg(int fd, const struct msghdr *msg, int flags) {
-    unsigned int    i;
-    ssize_t         nbytes;
+    int     i;
+    ssize_t nbytes;
 
     nbytes = 0; /* must first figure out what return value should be */
     for (i = 0; i < msg->msg_iovlen; i++) {

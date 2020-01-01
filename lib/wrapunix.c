@@ -259,7 +259,8 @@ Waitpid(pid_t pid, int *iptr, int options) {
 
 void
 Write(int fd, void *ptr, size_t nbytes) {
-    if (write(fd, ptr, nbytes) != nbytes) {
+    ssize_t toWrite = nbytes;
+    if (write(fd, ptr, nbytes) != toWrite) {
         err_sys("write error");
     }
 }

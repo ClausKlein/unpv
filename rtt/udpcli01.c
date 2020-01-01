@@ -1,9 +1,15 @@
-#include    "unp.h"
+// to start an udp echo server:
+//
+// sudo nc -u -vvlp 7 -e /bin/cat
+// or use
+// cat udpcli01.c | ./udpcli01 195.34.89.241
+//
+#include "unp.h"
 
 int
 main(int argc, char **argv) {
-    int                 sockfd;
-    struct sockaddr_in  servaddr;
+    int                sockfd;
+    struct sockaddr_in servaddr;
 
     if (argc != 2) {
         err_quit("usage: udpcli <IPaddress>");
@@ -11,12 +17,12 @@ main(int argc, char **argv) {
 
     bzero(&servaddr, sizeof(servaddr));
     servaddr.sin_family = AF_INET;
-    servaddr.sin_port = htons(7);
+    servaddr.sin_port   = htons(7); // echo server(7)
     Inet_pton(AF_INET, argv[1], &servaddr.sin_addr);
 
     sockfd = Socket(AF_INET, SOCK_DGRAM, 0);
 
-    dg_cli(stdin, sockfd, (SA *) &servaddr, sizeof(servaddr));
+    dg_cli(stdin, sockfd, (SA *)&servaddr, sizeof(servaddr));
 
-    exit(0);
+    exit(EXIT_SUCCESS);
 }

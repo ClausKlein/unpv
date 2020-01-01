@@ -27,7 +27,8 @@ writen(int fd, const void *vptr, size_t n) {
 
 void
 Writen(int fd, void *ptr, size_t nbytes) {
-    if (writen(fd, ptr, nbytes) != nbytes) {
+    ssize_t toWrite = nbytes;
+    if (writen(fd, ptr, nbytes) != toWrite) {
         err_sys("writen error");
     }
 }

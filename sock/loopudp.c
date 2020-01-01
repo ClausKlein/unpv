@@ -75,7 +75,7 @@ loop_udp(int sockfd) {
                 ntowrite = crlf_add(wbuf, writelen, rbuf, nread);
                 if (connectudp) {
                     if (dowrite(sockfd, wbuf, ntowrite) != ntowrite) {
-                        err_sys("write error");
+                        err_sys("dowrite error");
                     }
                 } else {
                     if (sendto(sockfd, wbuf, ntowrite, 0,
@@ -87,7 +87,7 @@ loop_udp(int sockfd) {
             } else {
                 if (connectudp) {
                     if (dowrite(sockfd, rbuf, nread) != nread) {
-                        err_sys("write error");
+                        err_sys("dowrite error");
                     }
                 } else {
                     if (sendto(sockfd, rbuf, nread, 0,
@@ -102,13 +102,13 @@ loop_udp(int sockfd) {
         if (FD_ISSET(sockfd, &rset)) {  /* data to read from socket */
             if (server) {
                 clilen = sizeof(cliaddr);
+
 #ifndef HAVE_MSGHDR_MSG_CONTROL /* vanilla BSD sockets */
                 nread = recvfrom(sockfd, rbuf, readlen, 0,
                                  (struct sockaddr *) &cliaddr, &clilen);
 
-#else   /* 4.3BSD Reno and later; use recvmsg() to get at MSG_TRUNC flag */
-                /* Also lets us get at control information (destination address) */
-
+#else   /* 4.3BSD Reno and later; use recvmsg() to get at MSG_TRUNC flag
+         * Also lets us get at control information (destination address) */
 
                 iov[0].iov_base = rbuf;
                 iov[0].iov_len  = readlen;
@@ -132,12 +132,14 @@ loop_udp(int sockfd) {
 
                 nread = recvmsg(sockfd, &msg, 0);
 #endif  /* HAVE_MSGHDR_MSG_CONTROL */
+
                 if (nread < 0) {
-                    err_sys("datagram receive error");
+                    err_sys("datagram recvmsg() error");
                 }
 
                 if (verbose) {
-                    printf("from %s", INET_NTOA(cliaddr.sin_addr));
+                    printf("recvmsg from %s", INET_NTOA(cliaddr.sin_addr));
+
 #ifdef  HAVE_MSGHDR_MSG_CONTROL
 #ifdef  IP_RECVDSTADDR
                     if (recvdstaddr) {
@@ -158,29 +160,32 @@ loop_udp(int sockfd) {
                     }
 #endif  /* IP_RECVDSTADDR */
 #endif  /* HAVE_MSGHDR_MSG_CONTROL */
-                    printf(": ");
+
+                    puts(":");
                     fflush(stdout);
                 }
 
 #ifdef  MSG_TRUNC
                 if (msg.msg_flags & MSG_TRUNC) {
-                    printf("(datagram truncated)\n");
+                    puts("(datagram truncated)");
                 }
 #endif
 
-            } else if (connectudp) {
+            } else if (connectudp) {    /* connected UDP client */
                 /* msgpeek = 0 or MSG_PEEK */
                 flags = msgpeek;
+                if ((flags != 0) && verbose) {
+                    fprintf(stderr, "recv(flags=MSG_PEEK):\n");
+                }
 oncemore:
                 if ((nread = recv(sockfd, rbuf, readlen, flags)) < 0) {
-                    err_sys("recv error");
+                    err_sys("datagram recv() error");
                 } else if (nread == 0) {
                     if (verbose) {
                         fprintf(stderr, "connection closed by peer\n");
                     }
                     break;      /* EOF, terminate */
                 }
-
             } else {
                 /* Must use recvfrom() for unconnected UDP client */
                 socklen_t servlen = sizeof(servaddr);
@@ -191,10 +196,15 @@ oncemore:
                 }
 
                 if (verbose) {
-                    printf("from %s", INET_NTOA(servaddr.sin_addr));
-                    printf(": ");
+                    printf("recvfrom %s", INET_NTOA(servaddr.sin_addr));
+                    puts(":");
                     fflush(stdout);
                 }
+            }
+
+            if (flags != 0) {
+                flags = 0;      /* no infinite loop */
+                goto oncemore;  /* read the message again */
             }
 
             if (crlf) {
@@ -206,11 +216,6 @@ oncemore:
                 if (writen(STDOUT_FILENO, rbuf, nread) != nread) {
                     err_sys("writen error to stdout");
                 }
-            }
-
-            if (flags != 0) {
-                flags = 0;      /* no infinite loop */
-                goto oncemore;  /* read the message again */
             }
         }
     }
