@@ -18,7 +18,7 @@ readable_v6(void) {
     char                srcstr[INET6_ADDRSTRLEN], dststr[INET6_ADDRSTRLEN];
     ssize_t             n;
     socklen_t           len;
-    struct ip6_hdr      *ip6, *hip6;
+    struct ip6_hdr      *hip6;
     struct icmp6_hdr    *icmp6;
     struct udphdr       *udp;
     struct sockaddr_in6 from, dest;

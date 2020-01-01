@@ -4,12 +4,12 @@ void    mydg_echo(int, SA *, socklen_t);
 
 int
 main(int argc, char **argv) {
-    int                 sockfd, family, port;
+    int                 sockfd = -1, family, port;
     const int           on = 1;
     pid_t               pid;
     socklen_t           salen;
     struct sockaddr     *sa, *wild;
-    struct ifi_info     *ifi, *ifihead;
+    struct ifi_info     *ifi;
 
     if (argc == 2) {
         sockfd = Udp_client(NULL, argv[1], (void **) &sa, &salen);
@@ -22,8 +22,8 @@ main(int argc, char **argv) {
     port = sock_get_port(sa, salen);
     Close(sockfd);      /* we just want family, port, salen */
 
-    for (ifihead = ifi = Get_ifi_info(family, 1);
-            ifi != NULL; ifi = ifi->ifi_next) {
+    for (ifi = Get_ifi_info(family, 1);
+         ifi != NULL; ifi = ifi->ifi_next) {
 
         /*4bind unicast address */
         sockfd = Socket(family, SOCK_DGRAM, 0);

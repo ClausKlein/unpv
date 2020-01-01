@@ -23,6 +23,8 @@ child_make(int i, int listenfd, int addrlen) {
     Close(sockfd[1]);
     Close(listenfd);                    /* child does not need this open */
     child_main(i, listenfd, addrlen);   /* never returns */
+
+    return 0;
 }
 /* end child_make */
 

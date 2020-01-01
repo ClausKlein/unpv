@@ -56,8 +56,8 @@ main(int argc, char **argv) {
             fd = file[i].f_fd;
             if (flags & F_CONNECTING &&
                     (FD_ISSET(fd, &rs) || FD_ISSET(fd, &ws))) {
-                n = sizeof(error);
-                if (getsockopt(fd, SOL_SOCKET, SO_ERROR, &error, &n) < 0 ||
+                socklen_t len = sizeof(error);
+                if (getsockopt(fd, SOL_SOCKET, SO_ERROR, &error, &len) < 0 ||
                         error != 0) {
                     err_ret("nonblocking connect failed for %s",
                             file[i].f_name);

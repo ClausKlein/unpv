@@ -11,6 +11,8 @@ child_make(int i, int listenfd, int addrlen) {
     }
 
     child_main(i, listenfd, addrlen);   /* never returns */
+
+    return 0;
 }
 /* end child_make */
 

@@ -3,7 +3,10 @@
 void
 init_v6() {
 #ifdef IPV6
+
+#if defined(IPV6_RECVHOPLIMIT) || defined(IPV6_HOPLIMIT)
     int on = 1;
+#endif
 
     if (verbose == 0) {
         /* install a filter that only passes ICMP6_ECHO_REPLY unless verbose */

@@ -3,7 +3,8 @@
 
 int
 main(int argc, char **argv) {
-    int             i, connfd, listenfd = -1;
+    size_t          i;
+    int             connfd, listenfd = -1;
     socklen_t       addrlen, len;
     struct sockaddr *cliaddr;
     char            buff[MAXLINE];

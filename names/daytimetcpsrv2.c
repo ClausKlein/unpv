@@ -3,7 +3,7 @@
 
 int
 main(int argc, char **argv) {
-    int             listenfd, connfd;
+    int             listenfd = -1, connfd;
     socklen_t       len, addrlen;
     char            buff[MAXLINE];
     time_t          ticks;

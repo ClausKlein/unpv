@@ -8,11 +8,12 @@ extern int gotalarm;
  *         -1 on ICMP port unreachable (caller is done)
  *       >= 0 return value is some other ICMP unreachable code
  */
-
 int
 recv_v6(int seq, struct timeval *tv) {
+    int                 ret = 0;
+
 #ifdef  IPV6
-    int                 hlen2, icmp6len, ret;
+    size_t              hlen2, icmp6len;
     ssize_t             n;
     socklen_t           len;
     struct ip6_hdr      *hip6;
@@ -83,6 +84,7 @@ recv_v6(int seq, struct timeval *tv) {
     }
     alarm(0);                   /* don't leave alarm running */
     Gettimeofday(tv, NULL);     /* get time of packet arrival */
-    return(ret);
 #endif
+
+    return(ret);
 }

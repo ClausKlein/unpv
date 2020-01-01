@@ -3,7 +3,7 @@
 
 int
 main(int argc, char **argv) {
-    int             listenfd, connfd;
+    int             listenfd = -1, connfd;
     void            sig_int(int);
     void            *doit(void *);
     pthread_t       tid;

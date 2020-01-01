@@ -3,7 +3,7 @@
 
 int
 main(int argc, char **argv) {
-    int             listenfd, connfd;
+    int             listenfd = -1, connfd;
     socklen_t       addrlen, len;
     struct sockaddr *cliaddr;
     struct linger   ling;

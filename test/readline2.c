@@ -23,7 +23,8 @@ my_read(int fd, char *ptr) {
 
 ssize_t
 readline(int fd, void *vptr, size_t maxlen) {
-    int     n, rc;
+    int     rc;
+    size_t  n;
     char    c, *ptr;
 
     ptr = vptr;

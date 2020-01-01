@@ -7,7 +7,7 @@ void    loop(int, socklen_t);
 
 int
 main(int argc, char **argv) {
-    int                 sockfd;
+    int                 sockfd = -1;
     const int           on = 1;
     socklen_t           salen;
     struct sockaddr     *sa;

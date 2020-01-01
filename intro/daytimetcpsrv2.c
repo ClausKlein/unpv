@@ -3,7 +3,8 @@
 
 int
 main(int argc, char **argv) {
-    int                 listenfd, connfd, i;
+    int                 listenfd, connfd;
+    size_t              i;
     struct sockaddr_in  servaddr;
     char                buff[MAXLINE];
     time_t              ticks;

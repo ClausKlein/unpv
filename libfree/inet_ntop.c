@@ -202,7 +202,7 @@ size_t size;
     /*
      * Check for overflow, copy, and we're done.
      */
-    if ((tp - tmp) > size) {
+    if ((size_t)(tp - tmp) > size) {
         errno = ENOSPC;
         return (NULL);
     }

@@ -7,7 +7,7 @@
 #include "unp.h"
 
 int
-main(int argc, char **argv) {
+main(int argc, char** argv) {
     int                sockfd;
     struct sockaddr_in servaddr;
 
@@ -22,7 +22,7 @@ main(int argc, char **argv) {
 
     sockfd = Socket(AF_INET, SOCK_DGRAM, 0);
 
-    dg_cli(stdin, sockfd, (SA *)&servaddr, sizeof(servaddr));
+    dg_cli(stdin, sockfd, (SA*)&servaddr, sizeof(servaddr));
 
     exit(EXIT_SUCCESS);
 }

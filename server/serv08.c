@@ -8,7 +8,7 @@ pthread_cond_t      clifd_cond = PTHREAD_COND_INITIALIZER;
 
 int
 main(int argc, char **argv) {
-    int         i, listenfd, connfd;
+    int         i, listenfd = -1, connfd;
     void        sig_int(int), thread_make(int);
     socklen_t   addrlen, clilen;
     struct sockaddr *cliaddr;

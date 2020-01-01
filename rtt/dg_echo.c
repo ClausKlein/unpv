@@ -1,7 +1,7 @@
 #include "unp.h"
 
 void
-dg_echo(int sockfd, SA *pcliaddr, socklen_t clilen) {
+dg_echo(int sockfd, SA* pcliaddr, socklen_t clilen) {
     int       n;
     socklen_t len;
     char      mesg[MAXLINE];

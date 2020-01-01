@@ -2,10 +2,10 @@
 
 int
 main(int argc, char **argv) {
-    int                 sockfd, n;
+    int                 sockfd = -1, n;
     char                recvline[MAXLINE + 1];
     struct sockaddr_in  servaddr;
-    struct in_addr      **pptr;
+    struct in_addr      **pptr = NULL;
     struct in_addr      *inetaddrp[2];
     struct in_addr      inetaddr;
     struct hostent      *hp;

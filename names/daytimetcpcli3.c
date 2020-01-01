@@ -2,13 +2,13 @@
 
 int
 main(int argc, char **argv) {
-    int                 sockfd, n;
+    int                 sockfd = -1, n;
     char                recvline[MAXLINE + 1];
     struct sockaddr_in  servaddr;
     struct sockaddr_in6 servaddr6;
-    struct sockaddr     *sa;
-    socklen_t           salen;
-    struct in_addr      **pptr;
+    struct sockaddr     *sa = NULL;
+    socklen_t           salen = 0;
+    struct in_addr      **pptr = NULL;
     struct hostent      *hp;
     struct servent      *sp;
 

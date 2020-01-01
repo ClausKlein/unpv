@@ -1,5 +1,5 @@
 /* include my_lock_init */
-#include    "unp.h"
+#include    "unpthread.h"
 
 static struct flock lock_it, unlock_it;
 static int          lock_fd = -1;
@@ -9,8 +9,8 @@ void
 my_lock_init(char *pathname) {
     char    lock_file[1024];
 
-    /* 4must copy caller's string, in case it's a constant */
-    strncpy(lock_file, pathname, sizeof(lock_file));
+    /* must copy caller's string, in case it's a constant */
+    strncpy(lock_file, pathname, sizeof(lock_file) - 1);
     lock_fd = Mkstemp(lock_file);
 
     Unlink(lock_file);          /* but lock_fd remains open */

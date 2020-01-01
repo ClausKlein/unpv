@@ -23,6 +23,7 @@ AlwaysBreakAfterReturnType: None
 #
 AlignConsecutiveAssignments: true
 AlignConsecutiveDeclarations: true
+AlignConsecutiveMacros: true
 #
 # Control of individual brace wrapping cases.
 BreakBeforeBraces: Custom
@@ -34,7 +35,7 @@ BraceWrapping:
 #
 ### Force pointers NOT to the type for C++.
 DerivePointerAlignment: false
-PointerAlignment: Right
+#TBD PointerAlignment: Right
 #NO! SpaceBeforeCpp11BracedList: true
 Cpp11BracedListStyle: true
 FixNamespaceComments: true
@@ -60,7 +61,7 @@ IncludeCategories:
     Priority:        2
   - Regex: '^<(Poco|gsl|asio|doctest|zmqpp|boost|gtest|gmock|fmt|json|openssl)/'
     Priority:        3
-  - Regex:           '<[[:alnum:]./]+>'
+  - Regex:           '<[_[:alnum:]./]+>'
     Priority:        4
 # all other headers first!
   - Regex:           '.*'

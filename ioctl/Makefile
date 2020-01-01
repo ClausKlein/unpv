@@ -16,6 +16,12 @@ prifinfo:	prifinfo.o
 prmac:	prmac.o
 		${CC} ${CFLAGS} -o $@ prmac.o ${LIBS}
 
+getifaddrs:	getifaddrs.o
+		${CC} ${CFLAGS} -o $@ getifaddrs.o ${LIBS}
+
+ifconfig:	ifconfig.o
+		${CC} ${CFLAGS} -o $@ ifconfig.o ${LIBS}
+
 test1:	test1.o
 		${CC} ${CFLAGS} -o $@ test1.o ${LIBS}
 

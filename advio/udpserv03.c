@@ -8,11 +8,11 @@ main(int argc, char **argv) {
     int                 sockfd;
     const int           on = 1;
     pid_t               pid;
-    struct ifi_info     *ifi, *ifihead;
-    struct sockaddr_in  *sa, cliaddr, wildaddr;
+    struct ifi_info     *ifi;
+    struct sockaddr_in  *sa = NULL, cliaddr, wildaddr;
 
-    for (ifihead = ifi = Get_ifi_info(AF_INET, 1);
-            ifi != NULL; ifi = ifi->ifi_next) {
+    for (ifi = Get_ifi_info(AF_INET, 1);
+         ifi != NULL; ifi = ifi->ifi_next) {
 
         /*4bind unicast address */
         sockfd = Socket(AF_INET, SOCK_DGRAM, 0);

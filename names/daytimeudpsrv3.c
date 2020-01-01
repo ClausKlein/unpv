@@ -3,8 +3,7 @@
 
 int
 main(int argc, char **argv) {
-    int             sockfd;
-    ssize_t         n;
+    int             sockfd = -1;
     char            buff[MAXLINE];
     time_t          ticks;
     socklen_t       len;
@@ -20,7 +19,7 @@ main(int argc, char **argv) {
 
     for (; ;) {
         len = sizeof(cliaddr);
-        n = Recvfrom(sockfd, buff, MAXLINE, 0, (SA *)&cliaddr, &len);
+        Recvfrom(sockfd, buff, MAXLINE, 0, (SA *)&cliaddr, &len);
         printf("datagram from %s\n", Sock_ntop((SA *)&cliaddr, len));
 
         ticks = time(NULL);

@@ -60,7 +60,7 @@ dowrite(int fd, const void *vptr, size_t nbytes) {
         ntotal = 0;
         for (n = 0; n <= i; n++) {
             nwritten = write(fd, iov[n].iov_base, iov[n].iov_len);
-            if (nwritten != iov[n].iov_len) {
+            if ((size_t)nwritten != iov[n].iov_len) {
                 return(-1);
             }
             ntotal += nwritten;

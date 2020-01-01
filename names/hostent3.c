@@ -42,9 +42,13 @@ main(int argc, char **argv) {
 void
 pr_ipv4(char **listptr) {
     struct in_addr  inaddr;
-    struct hostent  *hptr, hent;
+    struct hostent  *hptr = NULL;
+    int             h_errno = 0;
+
+#ifdef  REENTRANT
+    struct hostent  hent;
     char            buf[8192];
-    int             h_errno;
+#endif
 
     for (; *listptr != NULL; listptr++) {
         inaddr = *((struct in_addr *)(*listptr));
@@ -64,8 +68,10 @@ pr_ipv4(char **listptr) {
         if ((gethostbyaddr((char *) &inaddr, sizeof(struct in_addr),
                            AF_INET)) == NULL)
 #endif
+
+        {
             printf("    (gethostbyaddr failed: %s)\n", hstrerror(h_errno));
-        else if (hptr && hptr->h_name != NULL) {
+        } else if (hptr && hptr->h_name != NULL) {
             printf("    name = %s\n", hptr->h_name);
         } else {
             printf("    (no hostname returned by gethostbyaddr)\n");

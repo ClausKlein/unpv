@@ -8,10 +8,10 @@ extern int gotalarm;
  *         -1 on ICMP port unreachable (caller is done)
  *       >= 0 return value is some other ICMP unreachable code
  */
-
 int
 recv_v4(int seq, struct timeval *tv) {
-    int             hlen1, hlen2, icmplen, ret;
+    int             ret = 0;
+    size_t          hlen1, hlen2, icmplen;
     socklen_t       len;
     ssize_t         n;
     struct ip       *ip, *hip;

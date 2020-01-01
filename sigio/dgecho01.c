@@ -28,7 +28,7 @@ static void sig_hup(int);
 void
 dg_echo(int sockfd_arg, SA *pcliaddr, socklen_t clilen_arg) {
     int         i;
-    const int   on = 1;
+    int         on = 1;
     sigset_t    zeromask, newmask, oldmask;
 
     sockfd = sockfd_arg;

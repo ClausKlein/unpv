@@ -13,13 +13,12 @@ static struct hdr {
     uint32_t ts;  /* timestamp when sent */
 } sendhdr, recvhdr;
 
-static void
-                  sig_alarm(int signo);
+static void       sig_alarm(int signo);
 static sigjmp_buf jmpbuf;
 
 ssize_t
-dg_send_recv(int fd, const void *outbuff, size_t outbytes, void *inbuff,
-             size_t inbytes, const SA *destaddr, socklen_t destlen) {
+dg_send_recv(int fd, const void* outbuff, size_t outbytes, void* inbuff,
+             size_t inbytes, const SA* destaddr, socklen_t destlen) {
     ssize_t      n;
     ssize_t      headlen = sizeof(struct hdr);
     struct iovec iovsend[2], iovrecv[2];
@@ -32,13 +31,13 @@ dg_send_recv(int fd, const void *outbuff, size_t outbytes, void *inbuff,
         rtt_d_flag = 1;
     }
 
-    msgsend.msg_name    = (SA *)destaddr;
+    msgsend.msg_name    = (SA*)destaddr;
     msgsend.msg_namelen = destlen;
     msgsend.msg_iov     = iovsend;
     msgsend.msg_iovlen  = 2;
     iovsend[0].iov_base = &sendhdr;
     iovsend[0].iov_len  = sizeof(struct hdr);
-    iovsend[1].iov_base = (void *)outbuff;
+    iovsend[1].iov_base = (void*)outbuff;
     iovsend[1].iov_len  = outbytes;
 
     msgrecv.msg_name    = NULL;
@@ -98,8 +97,8 @@ sig_alarm(int signo) {
 }
 
 ssize_t
-Dg_send_recv(int fd, const void *outbuff, size_t outbytes, void *inbuff,
-             size_t inbytes, const SA *destaddr, socklen_t destlen) {
+Dg_send_recv(int fd, const void* outbuff, size_t outbytes, void* inbuff,
+             size_t inbytes, const SA* destaddr, socklen_t destlen) {
     ssize_t n =
         dg_send_recv(fd, outbuff, outbytes, inbuff, inbytes, destaddr, destlen);
     if (n < 0) {

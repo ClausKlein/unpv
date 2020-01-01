@@ -1,4 +1,4 @@
-#include    "unp.h"
+#include    "unpthread.h"
 
 pid_t
 child_make(int i, int listenfd, int addrlen) {
@@ -10,6 +10,8 @@ child_make(int i, int listenfd, int addrlen) {
     }
 
     child_main(i, listenfd, addrlen);   /* never returns */
+
+    return 0;
 }
 
 void

@@ -36,7 +36,8 @@ readline_rinit(int fd, void *ptr, size_t maxlen, Rline *rptr) {
 
 ssize_t
 readline_r(Rline *rptr) {
-    int     n, rc;
+    int     rc;
+    size_t  n;
     char    c, *ptr;
 
     ptr = rptr->read_ptr;

@@ -15,7 +15,7 @@ mcast_set_if(int sockfd, const char *ifname, u_int ifindex) {
             }
             goto doioctl;
         } else if (ifname != NULL) {
-            strncpy(ifreq.ifr_name, ifname, IFNAMSIZ);
+            strncpy(ifreq.ifr_name, ifname, IFNAMSIZ - 1);
 doioctl:
             if (ioctl(sockfd, SIOCGIFADDR, &ifreq) < 0) {
                 return(-1);
