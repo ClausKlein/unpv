@@ -6,7 +6,7 @@
 # The "../" in the pathnames actually refer to this directory, since
 # "make" is executed in all the subdirectories of this directory.
 #
-# System = i386-apple-darwin9.8.0
+# System = i386-apple-darwin15.6.0
 
 #
 # Standard stuff
@@ -20,7 +20,7 @@
 MAKEFLAGS+= --no-builtin-rules
 
 CC = ccache gcc
-CPPFLAGS = -D_REENTRANT -MMD -MP -I../lib
+CPPFLAGS = -MMD -MP -I../lib
 CFLAGS = -g -O2 -Wall -Wextra -Wno-unused-parameter -std=c11
 LIBS = ../libunp.a -lresolv -lpthread
 LIBS_XTI = ../libunpxti.a ../libunp.a -lresolv -lpthread

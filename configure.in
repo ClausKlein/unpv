@@ -677,7 +677,7 @@ dnl If the compiler is gcc, enable all warnings.  Main purpose is to
 dnl catch any function call where the function has not been prototyped.
 dnl
 if test "$ac_cv_prog_gcc" = yes; then
-   CFLAGS="$CFLAGS -Wall"
+   CFLAGS="$CFLAGS -Wall -Wextra -Wno-unused-parameter -std=c11"
    dnl
    dnl These warnings are useful during development, but not to deploy.
    dnl CFLAGS="$CFLAGS -W -Wall -Wstrict-prototypes -Wmissing-prototypes -Wpointer-arith -Wreturn-type -Wcast-qual -Wwrite-strings -Wswitch -Wshadow -Wno-format-extra-args"

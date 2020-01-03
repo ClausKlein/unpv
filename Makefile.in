@@ -13,15 +13,17 @@ SUBDIRS+= ./icmpd ./key ./test ./libroute ./traceroute
 ## ./test ./threads ./libgai ./libroute ./traceroute ./udpcksum
 
 ###FIXME build errors on Cygwin: libfree
-# SUBDIRS:= lib intro mysdr mcast ssntp
+# SUBDIRS+= lib intro mysdr mcast ssntp
 
 all: $(SUBDIRS)
 
-clean:  $(SUBDIRS)
+clean: $(SUBDIRS)
 	rm -f $(CLEANFILES)
 
 distclean:
 	rm -f $(CLEANFILES) config.cache config.log config.status config.h Make.defines Makefile
+	find . -type d -name '*.dSYM' | xargs rm -rf
+	find . \( -name '*.d' -o -name '*.o' -o -name '*~' \) -delete
 
 .PHONY: $(SUBDIRS) all clean distclean
 $(SUBDIRS):

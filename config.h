@@ -2,7 +2,7 @@
 /* config.h.in.  Generated from configure.in by autoheader.  */
 
 /* CPU, vendor, and operating system */
-#define CPU_VENDOR_OS "i386-apple-darwin9.8.0"
+#define CPU_VENDOR_OS "i386-apple-darwin15.6.0"
 
 /* Define to 1 if <netdb.h> defines struct addrinfo */
 #define HAVE_ADDRINFO_STRUCT 1
@@ -71,7 +71,7 @@
 #define HAVE_IF_NAMETOINDEX_PROTO 1
 
 /* Define to 1 if you have the `inet6_rth_init' function. */
-/* #undef HAVE_INET6_RTH_INIT */
+#define HAVE_INET6_RTH_INIT 1
 
 /* Define to 1 if you have the `inet_aton' function. */
 #define HAVE_INET_ATON 1

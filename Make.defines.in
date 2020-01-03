@@ -8,8 +8,20 @@
 #
 # System = @host@
 
-CC = @CC@
-CFLAGS = -I../lib @CFLAGS@
+#
+# Standard stuff
+#
+.SUFFIXES:  .c .o
+
+.c.o:
+	$(COMPILE.c) $(OUTPUT_OPTION) $(CURDIR)/$<
+
+# Disable the built-in implicit rules.
+MAKEFLAGS+= --no-builtin-rules
+
+CC = ccache @CC@
+CPPFLAGS = -MMD -MP -I../lib
+CFLAGS = @CFLAGS@
 LIBS = @LIBUNP@ @LIBS@
 LIBS_XTI = @LIBUNPXTI@ @LIBUNP@ @LIBS_XTI@
 RANLIB = @RANLIB@
@@ -37,12 +49,14 @@ LIBROUTE_OBJS = @LIBROUTE_OBJS@
 # Following are all the object files to create in the libxti/ directory.
 LIBXTI_OBJS = @LIBXTI_OBJS@
 
-CLEANFILES = core core.* *.core *.o temp.* *.out typescript* \
-		*.lc *.lh *.bsdi *.sparc *.uw *.a *~
+CLEANFILES = tags core core.* *.core *.o temp.* *.out typescript* \
+			*.lc *.lh *.bsdi *.sparc *.uw *.a *.d *~
 
 # common targes
 .PHONY: all clean distclean
 all:
 clean:
 distclean:
+
+-include *.d
 
