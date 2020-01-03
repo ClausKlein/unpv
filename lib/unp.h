@@ -196,6 +196,7 @@ struct unp_in_pktinfo {
 
 /* Miscellaneous constants */
 #define MAXLINE  4096 /* max text line length */
+#define MAXSOCKADDR 128  /* max socket address structure size */
 #define BUFFSIZE 8192 /* buffer size for reads and writes */
 
 /* Define some port number that can be used for our examples */
@@ -205,6 +206,7 @@ struct unp_in_pktinfo {
 #define UNIXDG_PATH   "/tmp/unix.dg"  /* Unix domain datagram */
 /* $$.ix [LISTENQ]~constant,~definition~of$$ */
 /* $$.ix [MAXLINE]~constant,~definition~of$$ */
+/* $$.ix [MAXSOCKADDR]~constant,~definition~of$$ */
 /* $$.ix [BUFFSIZE]~constant,~definition~of$$ */
 /* $$.ix [SERV_PORT]~constant,~definition~of$$ */
 /* $$.ix [UNIXSTR_PATH]~constant,~definition~of$$ */

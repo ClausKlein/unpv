@@ -40,5 +40,3 @@ daytimetcpsrvv6:	daytimetcpsrvv6.o
 byteorder:	byteorder.o
 		${CC} ${CFLAGS} -o $@ byteorder.o ${LIBS}
 
-clean:
-		rm -f ${PROGS} ${CLEANFILES}

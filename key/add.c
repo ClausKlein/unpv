@@ -1,4 +1,5 @@
 #include "unp.h"
+
 #include <net/pfkeyv2.h>
 
 int
@@ -44,7 +45,7 @@ sadb_add(struct sockaddr *src, struct sockaddr *dst, int type, int alg,
     struct sadb_address *addrext;
     struct sadb_key *keyext;
     int len;
-    int mypid;
+    pid_t mypid;
 
     s = Socket(PF_KEY, SOCK_RAW, PF_KEY_V2);
 
@@ -105,14 +106,15 @@ sadb_add(struct sockaddr *src, struct sockaddr *dst, int type, int alg,
 
     msg->sadb_msg_len = len / 8;
     printf("Sending add message:\n");
-    print_sadb_msg(buf, len);
+    struct sadb_msg *msgp;
+    msgp = (struct sadb_msg *)&buf;
+    print_sadb_msg(msgp, len);
     Write(s, buf, len);
 
     printf("\nReply returned:\n");
     /* Read and print SADB_ADD reply, discarding any others */
     for (;;) {
         int msglen;
-        struct sadb_msg *msgp;
 
         msglen = Read(s, &buf, sizeof(buf));
         msgp = (struct sadb_msg *)&buf;
@@ -129,7 +131,8 @@ sadb_add(struct sockaddr *src, struct sockaddr *dst, int type, int alg,
 int
 main(int argc, char **argv) {
     struct addrinfo hints, *src, *dst;
-    unsigned char *p, *keydata, *kp;
+    const char *p;
+    unsigned char *keydata, *kp;
     char *ep;
     int ret, len, i;
     int satype, alg, keybits;

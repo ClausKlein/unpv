@@ -13,24 +13,22 @@ LIBS+= -L/usr/local/v6/lib -lm -lsctp
 CFLAGS+= -g
 all:	${PROGS}
 
-sctpserv01:	sctpserv01.o 
+sctpserv01:	sctpserv01.o
 		${CC} ${CFLAGS} -o $@ sctpserv01.o ${LIBS}
-
 
 sctpclient01:   sctpclient01.o sctp_strcli.o sctp_strcliecho.o
 		${CC} ${CFLAGS} -o $@ sctpclient01.o sctp_strcli.o sctp_strcliecho.o ${LIBS}
 
-
-sctpserv02:	sctpserv02.o 
+sctpserv02:	sctpserv02.o
 		${CC} ${CFLAGS} -o $@ sctpserv02.o ${LIBS}
 
-sctpserv03:	sctpserv03.o 
+sctpserv03:	sctpserv03.o
 		${CC} ${CFLAGS} -o $@ sctpserv03.o ${LIBS}
 
-sctpserv04:	sctpserv04.o 
+sctpserv04:	sctpserv04.o
 		${CC} ${CFLAGS} -o $@ sctpserv04.o ${LIBS}
 
-sctpserv05:	sctpserv05.o sctp_pdapircv.o 
+sctpserv05:	sctpserv05.o sctp_pdapircv.o
 		${CC} ${CFLAGS} -o $@ sctpserv05.o sctp_pdapircv.o  ${LIBS}
 
 sctpserv06:	sctpserv06.o sctp_displayevents.o
@@ -42,7 +40,7 @@ sctpclient02:	sctpclient02.o sctp_strcli.o sctp_strcliecho.o
 sctpclient03:  sctpclient01.o sctp_strcli_un.o sctp_strcliecho.o
 		${CC} ${CFLAGS} -o $@ sctpclient01.o sctp_strcli_un.o sctp_strcliecho.o ${LIBS}
 
-sctpserv07:	sctpserv07.o sctp_displayevents.o sctp_bindargs.o 
+sctpserv07:	sctpserv07.o sctp_displayevents.o sctp_bindargs.o
 		${CC} ${CFLAGS} -o $@ sctpserv07.o sctp_displayevents.o  sctp_bindargs.o ${LIBS}
 
 
@@ -52,5 +50,3 @@ sctpclient04:	sctpclient04.o sctp_strcli1.o sctp_check_notify.o sctp_print_addrs
 sctpserv_fork:  sctpserv_fork.o sctp_addr_to_associd.o
 		${CC} ${CFLAGS} -o $@ sctpserv_fork.o sctp_addr_to_associd.o ${LIBS}
 
-clean:
-		rm -f ${PROGS} ${CLEANFILES}

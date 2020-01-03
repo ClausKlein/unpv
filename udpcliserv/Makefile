@@ -45,5 +45,3 @@ udpcli10:	udpcli10.o dgclibig.o
 udpservselect01:	udpservselect01.o sigchldwaitpid.o
 		${CC} ${CFLAGS} -o $@ udpservselect01.o sigchldwaitpid.o ${LIBS}
 
-clean:
-		rm -f ${PROGS} ${CLEANFILES}

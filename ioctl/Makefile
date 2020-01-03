@@ -25,5 +25,3 @@ ifconfig:	ifconfig.o
 test1:	test1.o
 		${CC} ${CFLAGS} -o $@ test1.o ${LIBS}
 
-clean:
-		rm -f ${PROGS} ${CLEANFILES}

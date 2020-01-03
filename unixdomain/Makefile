@@ -40,5 +40,3 @@ unixstrserv02:	unixstrserv02.o strecho.o sigchldwaitpid.o readcred.o
 		${CC} ${CFLAGS} -o $@ unixstrserv02.o strecho.o sigchldwaitpid.o \
 				readcred.o ${LIBS}
 
-clean:
-		rm -f ${PROGS} ${CLEANFILES}

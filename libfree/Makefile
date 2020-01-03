@@ -13,5 +13,3 @@ test_inet_pton:	test_inet_pton.o
 test_ascii2addr:	test_ascii2addr.o
 		${CC} ${CFLAGS} -o $@ test_ascii2addr.o ${LIBS}
 
-clean:
-		rm -f ${PROGS} ${CLEANFILES}

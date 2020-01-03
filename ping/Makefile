@@ -9,5 +9,3 @@ all:	${PROGS}
 ping:	${OBJS}
 		${CC} ${CFLAGS} -o $@ ${OBJS} ${LIBS}
 
-clean:
-		rm -f ${PROGS} ${CLEANFILES}

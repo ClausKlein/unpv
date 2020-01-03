@@ -1,6 +1,6 @@
 include ../Make.defines
 
-PROGS =	dump register add
+PROGS = dump register add
 OBJS = printsadbmsg.o name.o
 
 all:	${PROGS}
@@ -13,3 +13,4 @@ register:	register.o ${OBJS}
 
 add:	add.o ${OBJS}
 	${CC} ${CFLAGS} -o $@ $@.o ${OBJS} ${LIBS}
+

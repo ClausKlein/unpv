@@ -63,5 +63,3 @@ tcpservpoll01:	tcpservpoll01.o
 tsigpipe:	tsigpipe.o
 		${CC} ${CFLAGS} -o $@ tsigpipe.o ${LIBS}
 
-clean:
-		rm -f ${PROGS} ${CLEANFILES}

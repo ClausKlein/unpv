@@ -1,4 +1,5 @@
 #include "unp.h"
+
 #include <net/pfkeyv2.h>
 
 /* include sadb_register */
@@ -7,8 +8,7 @@ sadb_register(int type) {
     int s;
     char buf[4096]; /* XXX */
     struct sadb_msg msg;
-    int goteof;
-    int mypid;
+    pid_t mypid;
 
     s = Socket(PF_KEY, SOCK_RAW, PF_KEY_V2);
 
@@ -28,7 +28,7 @@ sadb_register(int type) {
     printf("\nReply returned:\n");
     /* Read and print SADB_REGISTER reply, discarding any others */
     for (;;) {
-        int msglen;
+        ssize_t msglen;
         struct sadb_msg *msgp;
 
         msglen = Read(s, &buf, sizeof(buf));

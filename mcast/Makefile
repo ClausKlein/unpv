@@ -22,5 +22,3 @@ udpcli06:	udpcli06.o dgclimcast6.o
 udpserv01:	udpserv01.o
 		${CC} ${CFLAGS} -o $@ udpserv01.o ${LIBS}
 
-clean:
-		rm -f ${PROGS} ${CLEANFILES}

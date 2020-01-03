@@ -61,5 +61,3 @@ example02:	example02.o
 example03:	example03.o
 		${CC} ${CFLAGS} -o $@ example03.o ${LIBS}
 
-clean:
-		rm -f ${PROGS} ${CLEANFILES}

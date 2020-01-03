@@ -10,5 +10,3 @@ udpcli01:	udpcli01.o dgcli01.o
 udpserv01:	udpserv01.o dgecho01.o
 		${CC} ${CFLAGS} -o $@ udpserv01.o dgecho01.o ${LIBS}
 
-clean:
-		rm -f ${PROGS} ${CLEANFILES}

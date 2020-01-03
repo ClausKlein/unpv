@@ -26,5 +26,3 @@ prifnameindex:	prifnameindex.o
 mynetstat:	mynetstat.o
 		${CC} ${CFLAGS} -o $@ mynetstat.o ${LIBS}
 
-clean:
-		rm -f ${PROGS} ${CLEANFILES}

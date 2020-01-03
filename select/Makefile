@@ -13,5 +13,3 @@ tcpcli02:	tcpcli02.o strcliselect02.o
 tcpcli03:	tcpcli03.o
 		${CC} ${CFLAGS} -o $@ tcpcli03.o ${LIBS}
 
-clean:
-		rm -f ${PROGS} ${CLEANFILES}

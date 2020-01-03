@@ -49,14 +49,18 @@ LIBROUTE_OBJS = @LIBROUTE_OBJS@
 # Following are all the object files to create in the libxti/ directory.
 LIBXTI_OBJS = @LIBXTI_OBJS@
 
-CLEANFILES = tags core core.* *.core *.o temp.* *.out typescript* \
-			*.lc *.lh *.bsdi *.sparc *.uw *.a *.d *~
+CLEANFILES = core core.* *.core *.o temp.* *.out typescript* \
+			*.lc *.lh *.bsdi *.sparc *.uw *.a
 
 # common targes
 .PHONY: all clean distclean
 all:
-clean:
-distclean:
+
+clean::
+		rm -f ${PROGS} ${CLEANFILES}
+
+distclean::
+		rm -f *.d
 
 -include *.d
 

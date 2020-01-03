@@ -50,5 +50,3 @@ daytimeudpcli3:	daytimeudpcli3.o
 daytimeudpcli4:	daytimeudpcli4.o
 		${CC} ${CFLAGS} -o $@ daytimeudpcli4.o ${LIBS}
 
-clean:
-		rm -f ${PROGS} ${CLEANFILES}

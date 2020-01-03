@@ -9,5 +9,3 @@ all:	${PROGS}
 traceroute:	${OBJS}
 		${CC} ${CFLAGS} -o $@ ${OBJS} ${LIBS}
 
-clean:
-		rm -f ${PROGS} ${CLEANFILES}

@@ -70,5 +70,3 @@ test1:	test1.o
 test2:	test2.o
 		${CC} ${CFLAGS} -o $@ test2.o ${LIBS}
 
-clean:
-		rm -f ${PROGS} ${CLEANFILES}

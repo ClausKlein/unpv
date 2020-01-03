@@ -17,18 +17,18 @@ SUBDIRS+= ./icmpd ./key ./test ./libroute ./traceroute
 
 all: $(SUBDIRS)
 
-clean: $(SUBDIRS)
+clean:: $(SUBDIRS)
 	rm -f $(CLEANFILES)
 
-distclean:
+distclean::
 	rm -f $(CLEANFILES) config.cache config.log config.status ### config.h Make.defines Makefile
 	find . -type d -name '*.dSYM' | xargs rm -rf
-	find . \( -name '*.d' -o -name '*.o' -o -name '*~' \) -delete
+	find . \( -name 'tags' -o -name '*.d' -o -name '*.o' -o -name '*~' \) -delete
 
 .PHONY: $(SUBDIRS) all clean distclean
 $(SUBDIRS):
 	${MAKE} -C $@ -w$(MAKEFLAGS) $(MAKECMDGOALS)
 
 # No need to change
-$(MAKECMDGOALS): $(SUBDIRS)
+$(MAKECMDGOALS):: $(SUBDIRS)
 

@@ -34,5 +34,3 @@ tisfdtype:	tisfdtype.o
 tshutdown:	tshutdown.o
 		${CC} ${CFLAGS} -o $@ tshutdown.o ${LIBS}
 
-clean:
-		rm -f ${PROGS} core core.* *.o temp.* *.out typescript*

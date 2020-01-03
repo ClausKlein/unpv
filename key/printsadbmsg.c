@@ -1,4 +1,5 @@
 #include "unp.h"
+
 #include <net/pfkeyv2.h>
 
 const char *
@@ -202,28 +203,28 @@ lifetime_print(struct sadb_ext *ext) {
            life->sadb_lifetime_exttype == SADB_EXT_LIFETIME_HARD ?
            "Hard" :
            "Soft");
-    printf("  %d allocations, %d bytes", life->sadb_lifetime_allocations,
+    printf("  %d allocations, %lld bytes", life->sadb_lifetime_allocations,
            life->sadb_lifetime_bytes);
     if (life->sadb_lifetime_exttype == SADB_EXT_LIFETIME_CURRENT) {
         time_t t;
-        struct tmp *tm;
+        struct tm *tmp;
         char buf[100];
 
         /* absolute times */
         t = life->sadb_lifetime_addtime;
-        tm = localtime(&t);
-        strftime(buf, sizeof(buf), "%c", tm);
+        tmp = localtime(&t);
+        strftime(buf, sizeof(buf), "%c", tmp);
         printf("\n  added at %s, ", buf);
         if (life->sadb_lifetime_usetime == 0) {
             printf("never used\n");
         } else {
             t = life->sadb_lifetime_usetime;
-            tm = localtime(&t);
-            strftime(buf, sizeof(buf), "%c", tm);
+            tmp = localtime(&t);
+            strftime(buf, sizeof(buf), "%c", tmp);
             printf("first used at %s\n", buf);
         }
     } else {
-        printf("%d addtime, %d usetime\n", life->sadb_lifetime_addtime,
+        printf("%lld addtime, %lld usetime\n", life->sadb_lifetime_addtime,
                life->sadb_lifetime_usetime);
     }
 }

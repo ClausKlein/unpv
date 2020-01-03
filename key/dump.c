@@ -1,8 +1,6 @@
 #include "unp.h"
-#include <net/pfkeyv2.h>
 
-void    print_sadb_msg(struct sadb_msg *msg, int msglen);
-int     getsatypebyname(char *name);
+#include <net/pfkeyv2.h>
 
 /* include sadb_dump */
 void

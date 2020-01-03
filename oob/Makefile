@@ -52,5 +52,3 @@ tcpcli02:	tcpcli02.o strcliselect02.o heartbeatcli.o
 tcpserv02:	tcpserv02.o strecho02.o heartbeatserv.o sigchldwaitpid.o
 		${CC} ${CFLAGS} -o $@ tcpserv02.o strecho02.o heartbeatserv.o sigchldwaitpid.o ${LIBS}
 
-clean:
-		rm -f ${PROGS} ${CLEANFILES}

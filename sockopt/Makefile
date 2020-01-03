@@ -19,5 +19,3 @@ rcvbuf:	rcvbuf.o
 rcvbufset:	rcvbufset.o
 		${CC} ${CFLAGS} -o $@ rcvbufset.o ${LIBS}
 
-clean:
-		rm -f ${PROGS} ${CLEANFILES}

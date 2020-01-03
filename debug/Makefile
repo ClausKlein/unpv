@@ -28,5 +28,3 @@ test05:	test05.o
 test06:	test06.o
 		${CC} ${CFLAGS} -o $@ test06.o ${LIBS_XTI}
 
-clean:
-		rm -f ${PROGS} ${CLEANFILES}

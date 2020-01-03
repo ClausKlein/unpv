@@ -28,5 +28,3 @@ udpcli05:	udpcli05.o dgclibcast5.o
 udpcli06:	udpcli06.o dgclibcast6.o
 		${CC} ${CFLAGS} -o $@ udpcli06.o dgclibcast6.o ${LIBS}
 
-clean:
-		rm -f ${PROGS} ${CLEANFILES}

@@ -14,5 +14,3 @@ tpi_daytime:	tpi_daytime.o tpi_bind.o tpi_connect.o tpi_read.o tpi_close.o
 		${CC} ${CFLAGS} -o $@ tpi_daytime.o tpi_bind.o tpi_connect.o \
 			tpi_read.o tpi_close.o ${LIBS_XTI}
 
-clean:
-		rm -f ${PROGS} ${CLEANFILES}

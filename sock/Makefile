@@ -13,5 +13,3 @@ ${OBJS}: sock.h
 sock:	${OBJS}
 		${CC} ${CFLAGS} -o $@ ${OBJS} ${LIBS}
 
-clean:
-		rm -f ${PROGS} core core.* *.o temp.* *.out typescript*

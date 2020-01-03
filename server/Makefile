@@ -81,5 +81,3 @@ serv09:	serv09.o pthread09.o web_child.o pr_cpu_time.o readline.o
 		${CC} ${CFLAGS} -o $@ serv09.o pthread09.o web_child.o pr_cpu_time.o \
 			readline.o ${LIBS}
 
-clean:
-		rm -f ${PROGS} ${CLEANFILES}

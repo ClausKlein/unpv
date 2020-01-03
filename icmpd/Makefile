@@ -12,5 +12,3 @@ icmpd:	${OBJS}
 udpcli01:	udpcli01.o dgcli01.o
 		${CC} ${CFLAGS} -o $@ udpcli01.o dgcli01.o ${LIBS}
 
-clean:
-		rm -f ${PROGS} ${CLEANFILES}

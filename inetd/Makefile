@@ -10,5 +10,3 @@ daytimetcpsrv2:	daytimetcpsrv2.o
 daytimetcpsrv3:	daytimetcpsrv3.o
 		${CC} ${CFLAGS} -o $@ daytimetcpsrv3.o ${LIBS}
 
-clean:
-		rm -f ${PROGS} ${CLEANFILES}

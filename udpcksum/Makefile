@@ -17,5 +17,3 @@ udpcksum-libnet:	${OBJSNET}
 senddnsquery-libnet.o:	senddnsquery-libnet.c
 		${CC} ${CFLAGS} `libnet-config --defines --cflags` -c -o $@ $<
 
-clean:
-		rm -f ${PROGS} ${CLEANFILES}
