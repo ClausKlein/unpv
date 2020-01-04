@@ -1,6 +1,9 @@
+# Make.defines
+# config.h
 *.a
 *.bak
 *.bs
+*.d
 *.exe
 *.la
 *.lo
@@ -12,7 +15,6 @@
 *~
 .*.swp
 .*~
-Make.defines
 Makefile
 advio/daytimetcpcli
 advio/daytimeudpcli3
@@ -32,7 +34,6 @@ bcast/udpcli03
 bcast/udpcli04
 bcast/udpcli05
 bcast/udpcli06
-config.h
 config.log
 config.status
 debug/backlog
@@ -175,7 +176,11 @@ threads/example03
 threads/tcpcli01
 threads/tcpcli02
 threads/tcpserv01
+threads/tcpserv02
 threads/test01
+threads/web01
+threads/web02
+threads/web03
 traceroute/traceroute
 udpcksum/udpcksum
 udpcliserv/udpcli01

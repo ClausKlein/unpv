@@ -1,7 +1,7 @@
 /* Doesn't work right.  Main thread sucks up all the CPU time polling unless
    we call thr_yield(). */
 #include    "unpthread.h"
-#include    <thread.h>      /* Solaris threads */
+//FIXME #include    <thread.h>      /* Solaris threads */
 
 #define MAXFILES    20
 #define SERV        "80"    /* port number or service name */
@@ -66,13 +66,13 @@ main(int argc, char **argv) {
             if ((n = pthread_create(&tid, NULL, &do_get_read, &file[i])) != 0) {
                 errno = n, err_sys("pthread_create error");
             }
-            printf("created thread %d\n", tid);
+            printf("created thread %p\n", tid);
             file[i].f_tid = tid;
             file[i].f_flags = F_CONNECTING;
             nconn++;
             nlefttoconn--;
         }
-        thr_yield();
+        //FIXME thr_yield();
 
         /* See if one of the threads is done */
         if ((n = pthread_mutex_lock(&ndone_mutex)) != 0) {
@@ -92,7 +92,7 @@ main(int argc, char **argv) {
                     ndone--;
                     nconn--;
                     nlefttoread--;
-                    printf("thread id %d for %s done\n",
+                    printf("thread id %p for %s done\n",
                            file[i].f_tid, fptr->f_name);
                 }
             }
@@ -115,7 +115,7 @@ do_get_read(void *vptr) {
 
     fd = Tcp_connect(fptr->f_host, SERV);
     fptr->f_fd = fd;
-    printf("do_get_read for %s, fd %d, thread %d\n",
+    printf("do_get_read for %s, fd %d, thread %p\n",
            fptr->f_name, fd, fptr->f_tid);
 
     write_get_cmd(fptr);    /* write() the GET command */

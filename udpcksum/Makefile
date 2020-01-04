@@ -15,5 +15,5 @@ udpcksum-libnet:	${OBJSNET}
 
 # Include special compilation flags from libnet-config program
 senddnsquery-libnet.o:	senddnsquery-libnet.c
-		${CC} ${CFLAGS} `libnet-config --defines --cflags` -c -o $@ $<
+		${CC} ${CPPFLAGS} ${CFLAGS} `libnet-config --defines --cflags` -c -o $@ $<
 

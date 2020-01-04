@@ -22,10 +22,10 @@
     }
 
 #define NLOOP        50
-#define BUFFSIZE     10
+#define MY_BUFFSIZE  10
 
 struct buf_t {
-    int       b_buf[BUFFSIZE];    /* the buffer which contains integer items */
+    int       b_buf[MY_BUFFSIZE];    /* the buffer which contains integer items */
     int       b_nitems;           /* #items currently in buffer */
     int       b_nextget;
     int       b_nextput;
@@ -42,7 +42,7 @@ main(int argc, char **argv) {
     int         n;
     pthread_t   tidA, tidB;
 
-    printf("main, addr(stack) = %x, addr(global) = %x, addr(func) = %x\n",
+    printf("main, addr(stack) = %p, addr(global) = %p, addr(func) = %p\n",
            &n, &buf_t, &produce_loop);
     if ((n = pthread_create(&tidA, NULL, &produce_loop, NULL)) != 0) {
         errno = n, err_sys("pthread_create error for A");
@@ -66,14 +66,14 @@ void
 produce(struct buf_t *bptr, int val) {
     Pthread_mutex_lock(&bptr->b_mutex);
     /* Wait if buffer is full */
-    while (bptr->b_nitems >= BUFFSIZE) {
+    while (bptr->b_nitems >= MY_BUFFSIZE) {
         Pthread_cond_wait(&bptr->b_cond_producer, &bptr->b_mutex);
     }
 
     /* There is room, store the new value */
     printf("produce %d\n", val);
     bptr->b_buf[bptr->b_nextput] = val;
-    if (++bptr->b_nextput >= BUFFSIZE) {
+    if (++bptr->b_nextput >= MY_BUFFSIZE) {
         bptr->b_nextput = 0;
     }
     bptr->b_nitems++;
@@ -96,7 +96,7 @@ consume(struct buf_t *bptr) {
     /* There is data, fetch the value */
     val = bptr->b_buf[bptr->b_nextget];
     printf("consume %d\n", val);
-    if (++bptr->b_nextget >= BUFFSIZE) {
+    if (++bptr->b_nextget >= MY_BUFFSIZE) {
         bptr->b_nextget = 0;
     }
     bptr->b_nitems--;
@@ -112,7 +112,7 @@ void *
 produce_loop(void *vptr) {
     int     i;
 
-    printf("produce_loop thread, addr(stack) = %x\n", &i);
+    printf("produce_loop thread, addr(stack) = %p\n", &i);
     for (i = 0; i < NLOOP; i++) {
         produce(&buf_t, i);
     }
@@ -124,9 +124,10 @@ void *
 consume_loop(void *vptr) {
     int     i, val;
 
-    printf("consume_loop thread, addr(stack) = %x\n", &i);
+    printf("consume_loop thread, addr(stack) = %p\n", &i);
     for (i = 0; i < NLOOP; i++) {
         val = consume(&buf_t);
+        val++;
     }
 
     return(NULL);

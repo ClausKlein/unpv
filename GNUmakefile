@@ -5,8 +5,8 @@ SUBDIRS:= ./lib ./libfree ./advio ./bcast ./inetd ./intro ./ioctl ./ipopts ./mca
 ./ssntp ./tcpcliserv ./udpcliserv ./unixdomain
 
 ###FIXME build errors on Darwin
-## SUBDIRS+= ./debug ./route ./sctp ./streams ./threads ./libgai ./udpcksum
-SUBDIRS+= ./icmpd ./key ./test ./libroute ./traceroute
+## SUBDIRS+= ./debug ./sctp ./streams ./libgai ./udpcksum
+SUBDIRS+= ./icmpd ./key ./test ./libroute ./traceroute ./route ./threads
 
 ###FIXME build errors on Linux
 ## SUBDIRS+= ./debug ./icmpd ./key ./route ./sctp ./streams \

@@ -3,6 +3,7 @@
 void *
 myfunc(void *ptr) {
     pause();
+    return NULL;
 }
 
 int
@@ -22,6 +23,6 @@ main(int argc, char **argv) {
 
             exit(0);
         }
-        printf("created tid %d\n", tid);
+        printf("created tid %p\n", tid);
     }
 }

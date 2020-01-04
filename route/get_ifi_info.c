@@ -4,14 +4,14 @@
 /* include get_ifi_info1 */
 struct ifi_info *
 get_ifi_info(int family, int doaliases) {
-    int                 flags;
+    int                 flags = 0;
     char                *buf, *next, *lim;
     size_t              len;
     struct if_msghdr    *ifm;
     struct ifa_msghdr   *ifam;
     struct sockaddr     *sa, *rti_info[RTAX_MAX];
     struct sockaddr_dl  *sdl;
-    struct ifi_info     *ifi, *ifisave, *ifihead, **ifipnext;
+    struct ifi_info     *ifi = NULL, *ifisave, *ifihead, **ifipnext;
 
     buf = Net_rt_iflist(family, 0, &len);
 

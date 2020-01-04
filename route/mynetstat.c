@@ -5,7 +5,7 @@ void    pr_iflist(int);
 
 int
 main(int argc, char **argv) {
-    int family;
+    int family = 0;
 
     if (argc != 2) {
         err_quit("usage: mynetstat <inet4|inet6|all>");
@@ -59,7 +59,7 @@ pr_rtable(int family) {
 
 void
 pr_iflist(int family) {
-    int                 flags;
+    int                 flags = 0;
     char                *buf, *next, *lim;
     u_char              *ptr;
     size_t              len;

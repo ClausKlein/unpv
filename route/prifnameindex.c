@@ -2,7 +2,7 @@
 
 int
 main(int argc, char **argv) {
-    int                 n;
+    unsigned int        n;
     char                ifname[IFNAMSIZ];
     struct if_nameindex *ifptr, *save;
 

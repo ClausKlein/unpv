@@ -13,7 +13,7 @@ if_nametoindex(const char *name) {
 
 unsigned int
 If_nametoindex(const char *name) {
-    int     index;
+    unsigned int index;
 
     if ((index = if_nametoindex(name)) == 0) {
         err_quit("if_nametoindex error for %s", name);

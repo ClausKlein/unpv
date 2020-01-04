@@ -10,7 +10,6 @@ main(int argc, char **argv) {
     int                 sockfd;
     char                *buf;
     pid_t               pid;
-    ssize_t             n;
     struct rt_msghdr    *rtm;
     struct sockaddr     *sa, *rti_info[RTAX_MAX];
     struct sockaddr_in  *sin;
@@ -39,7 +38,7 @@ main(int argc, char **argv) {
     Write(sockfd, rtm, rtm->rtm_msglen);
 
     do {
-        n = Read(sockfd, rtm, BUFLEN);
+        Read(sockfd, rtm, BUFLEN);
     } while (rtm->rtm_type != RTM_GET || rtm->rtm_seq != SEQ ||
              rtm->rtm_pid != pid);
     /* end getrt1 */
