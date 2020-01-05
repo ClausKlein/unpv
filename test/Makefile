@@ -1,6 +1,6 @@
 include ../Make.defines
 
-PROGS =	accept_eintr test1 treadline1 treadline2 treadline3 \
+PROGS =	accept_eintr test1 test2 treadline1 treadline2 treadline3 \
 		tsnprintf tshutdown ###FIXME tisfdtype 
 
 TEST1_OBJS = test1.o funcs.o

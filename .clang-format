@@ -35,7 +35,7 @@ BraceWrapping:
 #
 ### Force pointers NOT to the type for C++.
 DerivePointerAlignment: false
-#TBD PointerAlignment: Right
+PointerAlignment: Right
 #NO! SpaceBeforeCpp11BracedList: true
 Cpp11BracedListStyle: true
 FixNamespaceComments: true

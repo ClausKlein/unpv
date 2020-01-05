@@ -2,7 +2,7 @@
 
 /* globals */
 extern struct sockaddr_in   servaddr, cliaddr;
-extern char     buff[8192];
+extern char     buff[BUFFSIZE];
 extern int      verbose;
 
 int     TcpSockByAddr(char *, int);
