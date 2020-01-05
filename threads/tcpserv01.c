@@ -4,7 +4,7 @@ static void *doit(void *);      /* each thread executes this function */
 
 int
 main(int argc, char **argv) {
-    int             listenfd, connfd;
+    int             listenfd = -1, connfd;
     pthread_t       tid;
     socklen_t       addrlen, len;
     struct sockaddr *cliaddr;

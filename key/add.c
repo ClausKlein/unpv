@@ -1,6 +1,4 @@
-#include "unp.h"
-
-#include <net/pfkeyv2.h>
+#include "unpkey.h"
 
 int
 salen(struct sockaddr *sa) {
@@ -118,7 +116,7 @@ sadb_add(struct sockaddr *src, struct sockaddr *dst, int type, int alg,
 
         msglen = Read(s, &buf, sizeof(buf));
         msgp = (struct sadb_msg *)&buf;
-        if (msgp->sadb_msg_pid == mypid &&
+        if ((pid_t)(msgp->sadb_msg_pid) == mypid &&
                 msgp->sadb_msg_type == SADB_ADD) {
             print_sadb_msg(msgp, msglen);
             break;
@@ -162,7 +160,7 @@ main(int argc, char **argv) {
     len = strlen(p);
     kp = keydata = malloc(keybits / 8);
     for (i = 0; i < keybits; i += 8) {
-        int c;
+        unsigned int c;
 
         if (len < 2) {
             err_quit("%s: not enough bytes (expected %d)\n", argv[5], keybits / 8);

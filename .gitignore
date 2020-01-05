@@ -4,6 +4,7 @@
 *.bak
 *.bs
 *.d
+*.dSYM/
 *.exe
 *.la
 *.lo
@@ -15,6 +16,7 @@
 *~
 .*.swp
 .*~
+/autom4te.cache/
 Makefile
 advio/daytimetcpcli
 advio/daytimeudpcli3
@@ -34,6 +36,7 @@ bcast/udpcli03
 bcast/udpcli04
 bcast/udpcli05
 bcast/udpcli06
+config.cache
 config.log
 config.status
 debug/backlog

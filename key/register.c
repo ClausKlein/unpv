@@ -1,6 +1,4 @@
-#include "unp.h"
-
-#include <net/pfkeyv2.h>
+#include "unpkey.h"
 
 /* include sadb_register */
 void
@@ -33,7 +31,7 @@ sadb_register(int type) {
 
         msglen = Read(s, &buf, sizeof(buf));
         msgp = (struct sadb_msg *)&buf;
-        if (msgp->sadb_msg_pid == mypid &&
+        if ((pid_t)(msgp->sadb_msg_pid) == mypid &&
                 msgp->sadb_msg_type == SADB_REGISTER) {
             print_sadb_msg(msgp, msglen);
             break;

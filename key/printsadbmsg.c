@@ -1,6 +1,4 @@
-#include "unp.h"
-
-#include <net/pfkeyv2.h>
+#include "unpkey.h"
 
 const char *
 get_sadb_msg_type(int type) {

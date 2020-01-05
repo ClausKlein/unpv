@@ -447,7 +447,7 @@ void    Close(int);
 void    Dup2(int, int);
 int     Fcntl(int, int, int);
 void    Gettimeofday(struct timeval*, void*);
-int     Ioctl(int, int, void*);
+int     Ioctl(int, unsigned int, void*);
 pid_t   Fork(void);
 void*   Malloc(size_t);
 int     Mkstemp(char*);

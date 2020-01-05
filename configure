@@ -2199,6 +2199,7 @@ _ACEOF
 case "$host_os" in
 *aix*)		CPPFLAGS="$CPPFLAGS -D_ALL_SOURCE" ;;
 *osf*)		CPPFLAGS="$CPPFLAGS -D_SOCKADDR_LEN" ;;
+*darwin*)	CPPFLAGS="$CPPFLAGS -D_SOCKADDR_LEN" ;;
 esac
 
 ac_ext=c
@@ -3130,7 +3131,7 @@ _ACEOF
 fi
 
 if test "$ac_cv_lib_pthread_pthread_create" = yes ; then
-   CFLAGS="$CFLAGS -D_REENTRANT"
+   CPPFLAGS="$CPPFLAGS -D_REENTRANT"
 else
    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for pthread_create in -lpthreads" >&5
 $as_echo_n "checking for pthread_create in -lpthreads... " >&6; }
@@ -3178,7 +3179,7 @@ _ACEOF
 fi
 
    if test "$ac_cv_lib_pthreads_pthread_create" = yes ; then
-      CFLAGS="$CFLAGS -D_REENTRANT"
+      CPPFLAGS="$CPPFLAGS -D_REENTRANT"
    fi
 fi
 
@@ -6078,7 +6079,7 @@ LIBS=`echo $LIBS | sed 's/-lxti//'`
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for -I$HOME/doc/unp2ev1/src/include" >&5
 $as_echo_n "checking for -I$HOME/doc/unp2ev1/src/include... " >&6; }
 if test -d $HOME/doc/unp2ev1/src/include ; then
-	CFLAGS="$CFLAGS -I$HOME/doc/unp2ev1/src/include"
+	CPPFLAGS="$CPPFLAGS -I$HOME/doc/unp2ev1/src/include"
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
 else
@@ -6087,16 +6088,16 @@ $as_echo "no" >&6; }
 fi
 
 if test "$ac_cv_c_compiler_gnu" = yes; then
-   CFLAGS="$CFLAGS -Wall -Wextra -Wno-unused-parameter -std=c11"
+   CFLAGS="$CFLAGS -Wall -Wextra -Wpedantic -Wno-unused-parameter -std=c11"
          fi
 
 case "$host_os" in
-*aix*)		CFLAGS="$CFLAGS -D_ALL_SOURCE" ;;
-*osf*)		CFLAGS="$CFLAGS -D_SOCKADDR_LEN" ;;
+*aix*)		CPPFLAGS="$CPPFLAGS -D_ALL_SOURCE" ;;
+*osf*)		CPPFLAGS="$CPPFLAGS -D_SOCKADDR_LEN" ;;
 *solaris*)	if test "$ac_cv_c_compiler_gnu" = yes; then
-		   CFLAGS="$CFLAGS -D__EXTENSIONS__"
+		   CPPFLAGS="$CPPFLAGS -D__EXTENSIONS__"
 		else
-		   CFLAGS="$CFLAGS -D__STDC__"
+		   CPPFLAGS="$CPPFLAGS -D__STDC__"
 		fi ;;
 esac
 

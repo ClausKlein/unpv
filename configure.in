@@ -27,10 +27,11 @@ dnl
 dnl Some system-specific stuff ...
 dnl Some operating systems require additional flags in order to get all
 dnl the definitions that we're looking for in some system headers.
-dnl The configure script uses both CFLAGS and CPPFLAGS when compiling.
+dnl The configure script uses both CPPFLAGS when compiling.
 case "$host_os" in
 *aix*)		CPPFLAGS="$CPPFLAGS -D_ALL_SOURCE" ;;
 *osf*)		CPPFLAGS="$CPPFLAGS -D_SOCKADDR_LEN" ;;
+*darwin*)	CPPFLAGS="$CPPFLAGS -D_SOCKADDR_LEN" ;;
 esac
 
 AC_PROG_CC
@@ -48,15 +49,15 @@ dnl	LIBS_XTI="-lxti -lresolv -lnsl -lpthread"
 dnl	LIBUNP="./libunp.a"
 dnl	LIBUNPXTI="./libunpxti.a"
 dnl
-dnl If a threads library is found, need to update CFLAGS too.
+dnl If a threads library is found, need to update CPPFLAGS too.
 dnl
 AC_CHECK_LIB(pthread, pthread_create)
 if test "$ac_cv_lib_pthread_pthread_create" = yes ; then
-   CFLAGS="$CFLAGS -D_REENTRANT"
+   CPPFLAGS="$CPPFLAGS -D_REENTRANT"
 else
    AC_CHECK_LIB(pthreads, pthread_create)
    if test "$ac_cv_lib_pthreads_pthread_create" = yes ; then
-      CFLAGS="$CFLAGS -D_REENTRANT"
+      CPPFLAGS="$CPPFLAGS -D_REENTRANT"
    fi
 fi
 
@@ -657,7 +658,7 @@ AC_SUBST(LIBUNP_NAME)
 AC_SUBST(LIBUNPXTI_NAME)
 
 dnl ##################################################################
-dnl Now that we're doing compiling, modify CFLAGS.
+dnl Now that we're doing compiling, modify CPPFLAGS.
 dnl
 dnl If the directory $HOME/doc/unp2ev1/src/include exists, the user can
 dnl place modified copies of the system's headers in there, with the
@@ -667,7 +668,7 @@ dnl instead of void*, and so on.
 dnl
 AC_MSG_CHECKING(for -I$HOME/doc/unp2ev1/src/include)
 if test -d $HOME/doc/unp2ev1/src/include ; then
-	CFLAGS="$CFLAGS -I$HOME/doc/unp2ev1/src/include"
+	CPPFLAGS="$CPPFLAGS -I$HOME/doc/unp2ev1/src/include"
 	AC_MSG_RESULT(yes)
 else
 	AC_MSG_RESULT(no)
@@ -677,7 +678,7 @@ dnl If the compiler is gcc, enable all warnings.  Main purpose is to
 dnl catch any function call where the function has not been prototyped.
 dnl
 if test "$ac_cv_prog_gcc" = yes; then
-   CFLAGS="$CFLAGS -Wall -Wextra -Wno-unused-parameter -std=c11"
+   CFLAGS="$CFLAGS -Wall -Wextra -Wpedantic -Wno-unused-parameter -std=c11"
    dnl
    dnl These warnings are useful during development, but not to deploy.
    dnl CFLAGS="$CFLAGS -W -Wall -Wstrict-prototypes -Wmissing-prototypes -Wpointer-arith -Wreturn-type -Wcast-qual -Wwrite-strings -Wswitch -Wshadow -Wno-format-extra-args"
@@ -687,12 +688,12 @@ dnl Some system-specific stuff ...
 dnl Some operating systems require additional flags in order to get all
 dnl the definitions that we're looking for in some system headers.
 case "$host_os" in
-*aix*)		CFLAGS="$CFLAGS -D_ALL_SOURCE" ;;
-*osf*)		CFLAGS="$CFLAGS -D_SOCKADDR_LEN" ;;
+*aix*)		CPPFLAGS="$CPPFLAGS -D_ALL_SOURCE" ;;
+*osf*)		CPPFLAGS="$CPPFLAGS -D_SOCKADDR_LEN" ;;
 *solaris*)	if test "$ac_cv_prog_gcc" = yes; then
-		   CFLAGS="$CFLAGS -D__EXTENSIONS__"
+		   CPPFLAGS="$CPPFLAGS -D__EXTENSIONS__"
 		else
-		   CFLAGS="$CFLAGS -D__STDC__"
+		   CPPFLAGS="$CPPFLAGS -D__STDC__"
 		fi ;;
 esac
 

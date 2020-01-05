@@ -61,7 +61,7 @@ Gettimeofday(struct timeval *tv, void *foo) {
 }
 
 int
-Ioctl(int fd, int request, void *arg) {
+Ioctl(int fd, unsigned int request, void *arg) {
     int     n;
 
     if ((n = ioctl(fd, request, arg)) == -1) {

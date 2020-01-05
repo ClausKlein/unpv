@@ -1,6 +1,4 @@
-#include "unp.h"
-
-#include <net/pfkeyv2.h>
+#include "unpkey.h"
 
 /* include sadb_dump */
 void

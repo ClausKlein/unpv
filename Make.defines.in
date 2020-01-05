@@ -18,9 +18,10 @@
 
 # Disable the built-in implicit rules.
 MAKEFLAGS+= --no-builtin-rules
+CCACHE:=$(shell which ccache)
 
-CC = ccache @CC@
-CPPFLAGS = -MMD -MP -I../lib
+CC = ${CCACHE} @CC@
+CPPFLAGS = @CPPFLAGS@ -MMD -MP -I../lib
 CFLAGS = @CFLAGS@
 LIBS = @LIBUNP@ @LIBS@
 LIBS_XTI = @LIBUNPXTI@ @LIBUNP@ @LIBS_XTI@
@@ -60,7 +61,7 @@ clean::
 		rm -f ${PROGS} ${CLEANFILES}
 
 distclean::
-		rm -f *.d
+		rm -rf *.d *~ *.dSYM
 
 -include *.d
 
