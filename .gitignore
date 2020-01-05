@@ -1,4 +1,5 @@
 # Make.defines
+# Makefile
 # config.h
 *.a
 *.bak
@@ -8,6 +9,7 @@
 *.exe
 *.la
 *.lo
+*.log
 *.o
 *.obj
 *.old
@@ -17,7 +19,6 @@
 .*.swp
 .*~
 /autom4te.cache/
-Makefile
 advio/daytimetcpcli
 advio/daytimeudpcli3
 advio/daytimeudpcli4
@@ -37,7 +38,6 @@ bcast/udpcli04
 bcast/udpcli05
 bcast/udpcli06
 config.cache
-config.log
 config.status
 debug/backlog
 debug/test02
