@@ -23,7 +23,7 @@ clean:: $(SUBDIRS)
 	rm -f $(CLEANFILES)
 
 distclean::
-	rm -f $(CLEANFILES) config.cache config.log config.status config.h Make.defines Makefile
+	rm -f $(CLEANFILES) config.cache config.log config.status config.h Makefile #NO! Make.defines
 	find . -type d -name '*.dSYM' | xargs rm -rf
 	find . \( -name 'tags' -o -name '*.d' -o -name '*.o' -o -name '*~' \) -delete
 
