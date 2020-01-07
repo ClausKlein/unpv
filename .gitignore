@@ -1,6 +1,3 @@
-# Make.defines
-# Makefile
-# config.h
 *.a
 *.bak
 *.bs
@@ -18,7 +15,10 @@
 *~
 .*.swp
 .*~
+/Make.defines
+/Makefile
 /autom4te.cache/
+/config.h
 advio/daytimetcpcli
 advio/daytimeudpcli3
 advio/daytimeudpcli4

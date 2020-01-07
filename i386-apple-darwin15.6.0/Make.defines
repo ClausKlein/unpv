@@ -23,8 +23,8 @@ CCACHE:=$(shell which ccache)
 CC = ${CCACHE} gcc
 CPPFLAGS =  -D_SOCKADDR_LEN -D_REENTRANT -MMD -MP -I../lib
 CFLAGS = -g -O2 -Wall -Wextra -Wpedantic -Wno-unused-parameter -std=c11
-LIBS = ../libunp.a -lresolv -lpthread
-LIBS_XTI = ../libunpxti.a ../libunp.a -lresolv -lpthread
+LIBS = ../libunp.a /Users/clausklein/lib/libbind.a -lpthread
+LIBS_XTI = ../libunpxti.a ../libunp.a /Users/clausklein/lib/libbind.a -lpthread
 RANLIB = ranlib
 
 # Following is the main library, built from all the object files

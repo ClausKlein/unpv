@@ -78,16 +78,16 @@ if test -f /usr/local/bind/lib/libbind.a ; then
 	LIBS="/usr/local/bind/lib/libbind.a  $LIBS"
 else
 	AC_MSG_RESULT(no)
-	AC_MSG_CHECKING(for $HOME/libbind.a)
-	if test -f $HOME/libbind.a ; then
+	AC_MSG_CHECKING(for $HOME/lib/libbind.a)
+	if test -f $HOME/lib/libbind.a ; then
 		AC_MSG_RESULT(yes)
-		LIBS="$HOME/libbind.a  $LIBS"
+		LIBS="$HOME/lib/libbind.a  $LIBS"
 	else
 		AC_MSG_RESULT(no)
-		AC_MSG_CHECKING(for $HOME/libresolv.a)
-		if test -f $HOME/libresolv.a ; then
+		AC_MSG_CHECKING(for $HOME/lib/libresolv.a)
+		if test -f $HOME/lib/libresolv.a ; then
 			AC_MSG_RESULT(yes)
-			LIBS="$HOME/libresolv.a  $LIBS"
+			LIBS="$HOME/lib/libresolv.a  $LIBS"
 		else
 			AC_MSG_RESULT(no)
 			AC_CHECK_LIB(resolv, res_init)
@@ -103,31 +103,31 @@ dnl We now need to check for our own libraries, but we cannot prepend
 dnl them to the LIBS variable, as that variable is used when compiling
 dnl programs later in this script, and that would mess things up.
 dnl
-dnl If the user has a file named $HOME/libunp.a, then use it.
+dnl If the user has a file named $HOME/lib/libunp.a, then use it.
 dnl Else store our library in current directory.
 dnl I use this because my source directory is NFS mounted from my various
 dnl systems, but I have a unique home directory on each system.
 dnl
-AC_MSG_CHECKING(for $HOME/libunp.a)
-if test -f $HOME/libunp.a ; then
+AC_MSG_CHECKING(for $HOME/lib/libunp.a)
+if test -f $HOME/lib/libunp.a ; then
 	AC_MSG_RESULT(yes)
-	LIBUNP="$HOME/libunp.a"
-	LIBUNP_NAME=$HOME/libunp.a
+	LIBUNP="$HOME/lib/libunp.a"
+	LIBUNP_NAME=$HOME/lib/libunp.a
 else
 	AC_MSG_RESULT(no, using ./libunp.a)
 	LIBUNP="../libunp.a"
 	LIBUNP_NAME=../libunp.a
 fi
 
-dnl If the user has a file named $HOME/libunpxti.a, then use it.
+dnl If the user has a file named $HOME/lib/libunpxti.a, then use it.
 dnl Else store our library in current directory.
 dnl Same reasoning as above.
 dnl
-AC_MSG_CHECKING(for $HOME/libunpxti.a)
-if test -f $HOME/libunpxti.a ; then
+AC_MSG_CHECKING(for $HOME/lib/libunpxti.a)
+if test -f $HOME/lib/libunpxti.a ; then
 	AC_MSG_RESULT(yes)
-	LIBUNPXTI="$HOME/libunpxti.a"
-	LIBUNPXTI_NAME=$HOME/libunpxti.a
+	LIBUNPXTI="$HOME/lib/libunpxti.a"
+	LIBUNPXTI_NAME=$HOME/lib/libunpxti.a
 else
 	AC_MSG_RESULT(no, using ./libunpxti.a)
 	LIBUNPXTI="../libunpxti.a"

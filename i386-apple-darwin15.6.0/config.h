@@ -28,6 +28,9 @@
 /* Define to 1 if you have the <fcntl.h> header file. */
 #define HAVE_FCNTL_H 1
 
+/* Define to 1 if you have the `ascii2addr' function. */
+#define HAVE_ASCII2ADDR 1
+
 /* Define to 1 if you have the `getaddrinfo' function. */
 #define HAVE_GETADDRINFO 1
 
@@ -101,7 +104,7 @@
 /* #undef HAVE_LIBPTHREADS */
 
 /* Define to 1 if you have the `resolv' library (-lresolv). */
-#define HAVE_LIBRESOLV 1
+/* #undef HAVE_LIBRESOLV */
 
 /* Define to 1 if you have the `xti' library (-lxti). */
 /* #undef HAVE_LIBXTI */
