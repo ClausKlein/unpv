@@ -18,6 +18,7 @@
 
 int main(int argc, char* argv[])
 {
+#if defined BSD || defined __APPLE__
     struct ifaddrs *ifaddr, *ifa;
     int family, len, s;
     char host[NI_MAXHOST];
@@ -64,18 +65,17 @@ int main(int argc, char* argv[])
             printf("\t%s\n", host);
         }
 
-#if defined BSD || defined __APPLE__
         if (family == AF_LINK) {
             struct sockaddr_dl* sdlptr = (struct sockaddr_dl*)ifa->ifa_addr;
             if (sdlptr->sdl_type == IFT_ETHER && sdlptr->sdl_alen) {
                 printf("\tether %s\n", link_ntoa((sdlptr)));
             }
-#endif
         }
     }
 
     freeifaddrs(ifaddr);
     exit(EXIT_SUCCESS);
+#endif
 }
 
 /***

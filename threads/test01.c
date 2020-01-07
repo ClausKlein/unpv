@@ -23,6 +23,6 @@ main(int argc, char **argv) {
 
             exit(0);
         }
-        printf("created tid %p\n", tid);
+        printf("created tid %ld\n", tid);
     }
 }

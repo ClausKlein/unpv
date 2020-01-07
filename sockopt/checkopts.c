@@ -180,7 +180,7 @@ sock_str_timeval(union val *ptr, int len) {
         snprintf(strres, sizeof(strres),
                  "size (%d) not sizeof(struct timeval)", len);
     else
-        snprintf(strres, sizeof(strres), "%ld sec, %d usec",
+        snprintf(strres, sizeof(strres), "%ld sec, %ld usec",
                  tvptr->tv_sec, tvptr->tv_usec);
     return(strres);
 }

@@ -5,12 +5,13 @@ SUBDIRS:= ./lib ./libfree ./advio ./bcast ./inetd ./intro ./ioctl ./ipopts ./mca
 ./ssntp ./tcpcliserv ./udpcliserv ./unixdomain
 
 ###FIXME build errors on Darwin
-## SUBDIRS+= ./debug ./sctp ./streams ./libgai ./udpcksum
-SUBDIRS+= ./icmpd ./key ./test ./libroute ./traceroute ./route ./threads
+### SUBDIRS+= ./debug ./sctp ./streams ./libgai ./udpcksum
+#OK SUBDIRS+= ./icmpd ./key ./test ./libroute ./traceroute ./route ./threads
 
 ###FIXME build errors on Linux
-## SUBDIRS+= ./debug ./icmpd ./key ./route ./sctp ./streams \
-## ./test ./threads ./libgai ./libroute ./traceroute ./udpcksum
+### SUBDIRS+= ./debug ./icmpd ./key ./route ./sctp ./streams \
+### ./test ./threads ./libgai ./libroute ./traceroute ./udpcksum
+SUBDIRS+= ./icmpd ./test ./threads
 
 ###FIXME build errors on Cygwin: libfree
 # SUBDIRS+= lib intro mysdr mcast ssntp

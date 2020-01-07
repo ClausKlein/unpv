@@ -66,7 +66,7 @@ main(int argc, char **argv) {
             if ((n = pthread_create(&tid, NULL, &do_get_read, &file[i])) != 0) {
                 errno = n, err_sys("pthread_create error");
             }
-            printf("created thread %p\n", tid);
+            printf("created thread %ld\n", tid);
             file[i].f_tid = tid;
             file[i].f_flags = F_CONNECTING;
             nconn++;
@@ -92,7 +92,7 @@ main(int argc, char **argv) {
                     ndone--;
                     nconn--;
                     nlefttoread--;
-                    printf("thread id %p for %s done\n",
+                    printf("thread id %ld for %s done\n",
                            file[i].f_tid, fptr->f_name);
                 }
             }
@@ -115,7 +115,7 @@ do_get_read(void *vptr) {
 
     fd = Tcp_connect(fptr->f_host, SERV);
     fptr->f_fd = fd;
-    printf("do_get_read for %s, fd %d, thread %p\n",
+    printf("do_get_read for %s, fd %d, thread %ld\n",
            fptr->f_name, fd, fptr->f_tid);
 
     write_get_cmd(fptr);    /* write() the GET command */

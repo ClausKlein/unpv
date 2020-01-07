@@ -8,6 +8,9 @@
 
 #include <net/if.h>
 
+#if defined(IF_NAMESIZE) && !defined(IFNAMSIZ)
+#define IFNAMSIZ  IF_NAMESIZE
+#endif
 #define IFI_NAME  IFNAMSIZ /* same as IFNAMSIZ in <net/if.h> */
 #define IFI_HADDR 8        /* allow for 64-bit EUI-64 in future */
 

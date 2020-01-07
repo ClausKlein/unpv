@@ -34,7 +34,7 @@ doit(void *vptr) {
         Pthread_mutex_lock(&counter_mutex);
 
         val = counter;
-        printf("%p: %d\n", pthread_self(), val + 1);
+        printf("%ld: %d\n", pthread_self(), val + 1);
         counter = val + 1;
 
         Pthread_mutex_unlock(&counter_mutex);

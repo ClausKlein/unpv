@@ -6,7 +6,9 @@
 void
 dg_echo(int sockfd, SA *pcliaddr, socklen_t clilen) {
     int                     flags;
+#if defined(IP_RECVDSTADDR) || defined(IP_RECVIF)
     const int               on = 1;
+#endif
     socklen_t               len;
     ssize_t                 n;
     char                    mesg[MAXLINE], str[INET6_ADDRSTRLEN],

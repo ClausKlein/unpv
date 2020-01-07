@@ -43,18 +43,19 @@ void
 pr_ipv4(char **listptr) {
     struct in_addr  inaddr;
     struct hostent  *hptr = NULL;
-    int             h_errno = 0;
 
-#ifdef  REENTRANT
+#ifdef  HAVE_GETHOSTBYNAME_R
     struct hostent  hent;
     char            buf[8192];
 #endif
+
+    h_errno = 0;
 
     for (; *listptr != NULL; listptr++) {
         inaddr = *((struct in_addr *)(*listptr));
         printf("	IPv4 address: %s", inet_ntoa(inaddr));
 
-#ifdef  REENTRANT
+#ifdef  HAVE_GETHOSTBYNAME_R
         /**
          *     int gethostbyaddr_r(const void *addr, socklen_t len, int type,
          *             struct hostent *ret, char *buf, size_t buflen,

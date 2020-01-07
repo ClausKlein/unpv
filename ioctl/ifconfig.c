@@ -33,6 +33,7 @@
  * downloaded from
  * http://www.opensource.apple.com/source/network_cmds/network_cmds-245.19/ifconfig.tproj/
  */
+#if defined BSD || defined __APPLE__
 
 #include <sys/param.h>
 #define KERNEL_PRIVATE
@@ -1676,3 +1677,13 @@ clone_destroy(const char* val, int d, int s, const struct afswtch* rafp) {
         err(1, "SIOCIFDESTROY");
     }
 }
+
+#else
+#include <stdlib.h>
+
+int
+main(int argc, char* const* argv)
+{
+    exit(1);
+}
+#endif

@@ -70,7 +70,7 @@ main(int argc, char **argv) {
 
         nconn--;
         nlefttoread--;
-        printf("thread id %p for %s done\n", tid, fptr->f_name);
+        printf("thread id %ld for %s done\n", tid, fptr->f_name);
     }
 
     exit(0);
@@ -88,7 +88,7 @@ do_get_read(void *vptr) {
 
     fd = Tcp_connect(fptr->f_host, SERV);
     fptr->f_fd = fd;
-    printf("do_get_read for %s, fd %d, thread %p\n",
+    printf("do_get_read for %s, fd %d, thread %ld\n",
            fptr->f_name, fd, fptr->f_tid);
 
     write_get_cmd(fptr);    /* write() the GET command */

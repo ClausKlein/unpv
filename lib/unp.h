@@ -29,6 +29,7 @@
 #include <netinet/in.h> /* sockaddr_in{} and other Internet defns */
 #include <signal.h>
 #include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h> /* for S_xxx file mode constants */

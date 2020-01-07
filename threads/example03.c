@@ -43,7 +43,7 @@ main(int argc, char **argv) {
     pthread_t   tidA, tidB;
 
     printf("main, addr(stack) = %p, addr(global) = %p, addr(func) = %p\n",
-           &n, &buf_t, &produce_loop);
+           (void *) &n, (void *) &buf_t, (void *) &produce_loop);
     if ((n = pthread_create(&tidA, NULL, &produce_loop, NULL)) != 0) {
         errno = n, err_sys("pthread_create error for A");
     }
@@ -112,7 +112,7 @@ void *
 produce_loop(void *vptr) {
     int     i;
 
-    printf("produce_loop thread, addr(stack) = %p\n", &i);
+    printf("produce_loop thread, addr(stack) = %ls\n", &i);
     for (i = 0; i < NLOOP; i++) {
         produce(&buf_t, i);
     }
@@ -124,7 +124,7 @@ void *
 consume_loop(void *vptr) {
     int     i, val;
 
-    printf("consume_loop thread, addr(stack) = %p\n", &i);
+    printf("consume_loop thread, addr(stack) = %ls\n", &i);
     for (i = 0; i < NLOOP; i++) {
         val = consume(&buf_t);
         val++;

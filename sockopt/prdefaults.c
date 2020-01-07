@@ -10,7 +10,7 @@ main() {
         err_sys("TCP socket error");
     }
 
-#ifdef notdef
+#ifdef HAVE_ASCII2ADDR
     struct sockaddr_in  servaddr;
     bzero(&servaddr, sizeof(servaddr));
     servaddr.sin_family      = AF_INET;
