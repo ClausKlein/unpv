@@ -18,11 +18,14 @@ SUBDIRS+= ./mcast ./mysdr ./nonblock ./ping ./server ./icmpd ./threads
 endif
 
 
-.PHONY: $(SUBDIRS) all clean distclean
-all: config.h $(SUBDIRS)
+.PHONY: $(SUBDIRS) setup all clean distclean
+setup:: Make.defines config.h
 
+all: setup $(SUBDIRS)
+
+Make.defines: config.h
 config.h: configure config.h.in
-	./configure
+	./configure --config-cache
 
 clean:: $(SUBDIRS)
 	rm -f $(CLEANFILES)
