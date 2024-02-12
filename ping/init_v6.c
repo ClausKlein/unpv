@@ -1,7 +1,7 @@
 #include "ping.h"
 
 void
-init_v6() {
+init_v6(void) {
 #ifdef IPV6
 
 #if defined(IPV6_RECVHOPLIMIT) || defined(IPV6_HOPLIMIT)

@@ -12,7 +12,7 @@ sig_usr(int signo) { /* one signal handler for SIGUSR1 and SIGUSR2 */
 }
 
 void
-TELL_WAIT() {
+TELL_WAIT(void) {
     if (signal(SIGUSR1, sig_usr) == SIG_ERR) {
         err_sys("signal(SIGINT) error");
     }

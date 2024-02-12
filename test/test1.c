@@ -23,7 +23,7 @@ int                verbose;
  * Check whether various header flags are defined.
  */
 void
-header_flags() {
+header_flags(void) {
 
     /* these are all "if not defined" */
 #ifndef MSG_DONTROUTE
@@ -49,7 +49,7 @@ header_flags() {
  * we can see it with tcpdump and separate it from the other outputs.
  */
 void
-sendto_01() {
+sendto_01(void) {
     int       sockfd, n;
     socklen_t len;
 
@@ -117,7 +117,7 @@ sendto_01() {
  * the return address can differ from our original destination address.
  */
 void
-udp_01() {
+udp_01(void) {
     int sockfd, n;
     /*
      * Now an unconnected UDP socket.

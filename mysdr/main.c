@@ -9,7 +9,7 @@ int
 main(int argc, char **argv) {
     int                 sockfd = -1;
     const int           on = 1;
-    socklen_t           salen;
+    socklen_t           salen = 0;
     struct sockaddr     *sa;
 
     if (argc == 1) {

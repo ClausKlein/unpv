@@ -1,7 +1,7 @@
 #include    "ping.h"
 
 void
-send_v6() {
+send_v6(void) {
 #ifdef  IPV6
     int                 len;
     struct icmp6_hdr    *icmp6;

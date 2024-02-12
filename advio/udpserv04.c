@@ -7,8 +7,8 @@ main(int argc, char **argv) {
     int                 sockfd = -1, family, port;
     const int           on = 1;
     pid_t               pid;
-    socklen_t           salen;
-    struct sockaddr     *sa, *wild;
+    socklen_t           salen = 0;
+    struct sockaddr     *sa = NULL, *wild;
     struct ifi_info     *ifi;
 
     if (argc == 2) {

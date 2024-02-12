@@ -128,6 +128,7 @@ consume_loop(void *vptr) {
     for (i = 0; i < NLOOP; i++) {
         val = consume(&buf_t);
         val++;
+        (void) val;
     }
 
     return(NULL);

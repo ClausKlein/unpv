@@ -6,7 +6,7 @@ int
 main(int argc, char **argv) {
     int             listenfd = -1, connfd;
     pthread_t       tid;
-    socklen_t       addrlen, len;
+    socklen_t       addrlen = 0, len;
     struct sockaddr *cliaddr;
 
     if (argc == 2) {

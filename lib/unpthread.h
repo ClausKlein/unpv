@@ -7,8 +7,8 @@
 #include "unp.h"
 
 void my_lock_init(char* pathname);
-void my_lock_wait();
-void my_lock_release();
+void my_lock_wait(void);
+void my_lock_release(void);
 
 void Pthread_create(pthread_t*, const pthread_attr_t*, void* (*)(void*), void*);
 void Pthread_join(pthread_t, void**);

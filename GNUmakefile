@@ -12,8 +12,8 @@ ifeq ($(UNAME),Darwin)
 	SUBDIRS+= ./key ./libroute ./route
 else
 ###FIXME build errors on Linux
-SUBDIRS+= ./mcast ./mysdr ./nonblock ./ping ./server ./icmpd ./threads
-### SUBDIRS+= ./debug ./key ./route ./sctp ./streams \
+SUBDIRS+= ./mcast ./mysdr ./threads
+### SUBDIRS+= ./nonblock ./ping ./server ./icmpd ./debug ./key ./route ./sctp ./streams \
 ### ./libgai ./libroute ./traceroute ./udpcksum
 endif
 

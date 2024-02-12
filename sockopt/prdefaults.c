@@ -3,7 +3,7 @@
 static void doit(int, const char *);
 
 int
-main() {
+main(void) {
     int     tcpsock, udpsock;
 
     if ((tcpsock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
