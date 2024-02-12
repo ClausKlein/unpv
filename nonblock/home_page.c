@@ -8,7 +8,7 @@ home_page(const char *host, const char *fname) {
     fd = Tcp_connect(host, SERV);   /* blocking connect() */
 
     n = snprintf(line, sizeof(line), GET_CMD, fname);
-    Writen(fd, line, n);
+    Written(fd, line, n);
 
     for (; ;) {
         if ((n = Read(fd, line, MAXLINE)) == 0) {

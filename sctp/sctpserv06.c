@@ -6,7 +6,7 @@ main(int argc, char **argv) {
     char readbuf[BUFFSIZE];
     struct sockaddr_in servaddr, cliaddr;
     struct sctp_sndrcvinfo sri;
-    struct sctp_event_subscribe evnts;
+    struct sctp_event_subscribe events;
     int stream_increment = 1;
     socklen_t len;
     size_t rd_sz;
@@ -23,17 +23,17 @@ main(int argc, char **argv) {
     Bind(sock_fd, (SA *) &servaddr, sizeof(servaddr));
 
     /* include mod_serv06 */
-    bzero(&evnts, sizeof(evnts));
-    evnts.sctp_data_io_event = 1;
-    evnts.sctp_association_event = 1;
-    evnts.sctp_address_event = 1;
-    evnts.sctp_send_failure_event = 1;
-    evnts.sctp_peer_error_event = 1;
-    evnts.sctp_shutdown_event = 1;
-    evnts.sctp_partial_delivery_event = 1;
-    evnts.sctp_adaption_layer_event = 1;
+    bzero(&events, sizeof(events));
+    events.sctp_data_io_event = 1;
+    events.sctp_association_event = 1;
+    events.sctp_address_event = 1;
+    events.sctp_send_failure_event = 1;
+    events.sctp_peer_error_event = 1;
+    events.sctp_shutdown_event = 1;
+    events.sctp_partial_delivery_event = 1;
+    events.sctp_adaption_layer_event = 1;
     Setsockopt(sock_fd, IPPROTO_SCTP, SCTP_EVENTS,
-               &evnts, sizeof(evnts));
+               &events, sizeof(events));
 
     Listen(sock_fd, LISTENQ);
     for (; ;) {

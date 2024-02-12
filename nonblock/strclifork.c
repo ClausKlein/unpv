@@ -16,7 +16,7 @@ str_cli(FILE *fp, int sockfd) {
 
     /* parent: stdin -> server */
     while (Fgets(sendline, MAXLINE, fp) != NULL) {
-        Writen(sockfd, sendline, strlen(sendline));
+        Written(sockfd, sendline, strlen(sendline));
     }
 
     Shutdown(sockfd, SHUT_WR);  /* EOF on stdin, send FIN */

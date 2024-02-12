@@ -7,7 +7,7 @@ str_echo(int sockfd) {
 
 again:
     while ((n = read(sockfd, buf, MAXLINE)) > 0) {
-        Writen(sockfd, buf, n);
+        Written(sockfd, buf, n);
     }
 
     if (n < 0 && errno == EINTR) {

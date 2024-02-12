@@ -137,7 +137,7 @@ write_get_cmd(struct file *fptr) {
     char    line[MAXLINE];
 
     n = snprintf(line, sizeof(line), GET_CMD, fptr->f_name);
-    Writen(fptr->f_fd, line, n);
+    Written(fptr->f_fd, line, n);
     printf("wrote %d bytes for %s\n", n, fptr->f_name);
 
     fptr->f_flags = F_READING;          /* clears F_CONNECTING */
@@ -151,7 +151,7 @@ home_page(const char *host, const char *fname) {
     fd = Tcp_connect(host, SERV);   /* blocking connect() */
 
     n = snprintf(line, sizeof(line), GET_CMD, fname);
-    Writen(fd, line, n);
+    Written(fd, line, n);
 
     for (; ;) {
         if ((n = Read(fd, line, MAXLINE)) == 0) {

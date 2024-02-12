@@ -77,7 +77,7 @@ socklen_t size;
  * return:
  *  `dst' (as a const)
  * notes:
- *  (1) uses no statics
+ *  (1) uses no statistics
  *  (2) takes a u_char* not an in_addr as input
  * author:
  *  Paul Vixie, 1996.

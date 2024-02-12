@@ -143,7 +143,7 @@ dnl
 AC_HEADER_STDC
 dnl
 dnl The includes (the 4th argument to AC_CHECK_HEADERS) here are
-dnl the defeault set ($ac_includes_default) plus <sys/param.h>
+dnl the default set ($ac_includes_default) plus <sys/param.h>
 dnl for <sys/sysctl.h> on NetBSD and OpenBSD.
 AC_CHECK_HEADERS(sys/types.h sys/socket.h sys/time.h time.h netinet/in.h arpa/inet.h errno.h fcntl.h netdb.h signal.h stdio.h stdlib.h string.h sys/stat.h sys/uio.h unistd.h sys/wait.h sys/un.h sys/param.h sys/select.h sys/sysctl.h poll.h sys/event.h strings.h sys/ioctl.h sys/filio.h sys/sockio.h pthread.h net/if_dl.h xti.h xti_inet.h netconfig.h netdir.h stropts.h, [], [], [
 #include <stdio.h>
@@ -565,7 +565,7 @@ if test "$ac_cv_header_pthread_h" = yes ; then
 fi
 LIB_OBJS="$LIB_OBJS wrapunix.o"
 LIB_OBJS="$LIB_OBJS write_fd.o"
-LIB_OBJS="$LIB_OBJS writen.o"
+LIB_OBJS="$LIB_OBJS written.o"
 LIB_OBJS="$LIB_OBJS writable_timeo.o"
 
 dnl ##################################################################

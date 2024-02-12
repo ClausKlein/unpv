@@ -3,7 +3,7 @@
 #define SCTP_MAXLINE    800
 
 void
-sctpstr_cli_echoall(FILE *fp, int sock_fd, struct sockaddr *to, socklen_t tolen) {
+sctpstr_cli_echoall(FILE *fp, int sock_fd, struct sockaddr *to, socklen_t token) {
     struct sockaddr_in peeraddr;
     struct sctp_sndrcvinfo sri;
     char sendline[SCTP_MAXLINE], recvline[SCTP_MAXLINE];
@@ -24,14 +24,14 @@ sctpstr_cli_echoall(FILE *fp, int sock_fd, struct sockaddr *to, socklen_t tolen)
             snprintf(sendline + strsz, sizeof(sendline) - strsz,
                      ".msg.%d 1", i);
             Sctp_sendmsg(sock_fd, sendline, sizeof(sendline),
-                         to, tolen,
+                         to, token,
                          0, 0,
                          i,
                          0, 0);
             snprintf(sendline + strsz, sizeof(sendline) - strsz,
                      ".msg.%d 2", i);
             Sctp_sendmsg(sock_fd, sendline, sizeof(sendline),
-                         to, tolen,
+                         to, token,
                          0, 0,
                          i,
                          0, 0);

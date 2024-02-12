@@ -5,6 +5,6 @@ typedef struct {
 Thread  *tptr;      /* array of Thread structures; calloc'ed */
 
 #define MAXNCLI 32
-int                 clifd[MAXNCLI], iget, iput;
+int                 clifd[MAXNCLI], iget, input;
 pthread_mutex_t     clifd_mutex;
 pthread_cond_t      clifd_cond;

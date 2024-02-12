@@ -24,7 +24,7 @@ again:
             }
             printf("\n");
         }
-        Writen(sockfd, buf, n);
+        Written(sockfd, buf, n);
     }
 
     if (n < 0 && errno == EINTR) {

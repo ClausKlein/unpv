@@ -155,8 +155,8 @@ write_get_cmd(struct file *fptr) {
     strcat(line, fptr->f_name);
     strcat(line, " HTTP/1.0\r\n\r\n");
     n = strlen(line);
-    if (writen(fptr->f_fd, line, n) != n) {
-        err_sys("writen error");
+    if (written(fptr->f_fd, line, n) != n) {
+        err_sys("written error");
     }
     printf("wrote %d bytes for %s\n", n, fptr->f_name);
 
@@ -174,8 +174,8 @@ home_page(const char *host, const char *fname) {
     strcat(line, fname);
     strcat(line, " HTTP/1.0\r\n\r\n");
     n = strlen(line);
-    if (writen(fd, line, n) != n) {
-        err_sys("writen error");
+    if (written(fd, line, n) != n) {
+        err_sys("written error");
     }
 
     for (; ;) {

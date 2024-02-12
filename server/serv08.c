@@ -24,7 +24,7 @@ main(int argc, char **argv) {
 
     nthreads = atoi(argv[argc - 1]);
     tptr = Calloc(nthreads, sizeof(Thread));
-    iget = iput = 0;
+    iget = input = 0;
 
     /* 4create all the threads */
     for (i = 0; i < nthreads; i++) {
@@ -38,12 +38,12 @@ main(int argc, char **argv) {
         connfd = Accept(listenfd, cliaddr, &clilen);
 
         Pthread_mutex_lock(&clifd_mutex);
-        clifd[iput] = connfd;
-        if (++iput == MAXNCLI) {
-            iput = 0;
+        clifd[input] = connfd;
+        if (++input == MAXNCLI) {
+            input = 0;
         }
-        if (iput == iget) {
-            err_quit("iput = iget = %d", iput);
+        if (input == iget) {
+            err_quit("input = iget = %d", input);
         }
         Pthread_cond_signal(&clifd_cond);
         Pthread_mutex_unlock(&clifd_mutex);

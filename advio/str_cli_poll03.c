@@ -53,7 +53,7 @@ str_cli(FILE *fp, int sockfd) {
                     continue;
                 }
 
-                Writen(sockfd, buf, n);
+                Written(sockfd, buf, n);
             }
         }
     }

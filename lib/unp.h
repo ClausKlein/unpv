@@ -321,7 +321,7 @@ int              udp_server(const char*, const char*, socklen_t*);
 int              udp_server_reuseaddr(const char* host, const char* serv,
                                       socklen_t* addrlenp);
 int              writable_timeo(int, int);
-ssize_t          writen(int, const void*, size_t);
+ssize_t          written(int, const void*, size_t);
 ssize_t          write_fd(int, void*, size_t, int);
 
 #ifdef MCAST
@@ -516,7 +516,7 @@ void    Shutdown(int, int);
 int     Sockatmark(int);
 int     Socket(int, int, int);
 void    Socketpair(int, int, int, int*);
-void    Writen(int, void*, size_t);
+void    Written(int, void*, size_t);
 
 void err_dump(const char*, ...);
 void err_msg(const char*, ...);

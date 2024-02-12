@@ -55,7 +55,7 @@ udp_write(char *buf, int userlen) {
     }
 
     /* 4fill in rest of IP header; */
-    /* 4ip_output() calcuates & stores IP header checksum */
+    /* 4ip_output() calculates & stores IP header checksum */
     ip->ip_v = IPVERSION;
     ip->ip_hl = sizeof(struct ip) >> 2;
     ip->ip_tos = 0;

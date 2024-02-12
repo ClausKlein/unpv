@@ -13,6 +13,6 @@ str_echo(int sockfd) {
         }
 
         result.sum = args.arg1 + args.arg2;
-        Writen(sockfd, &result, sizeof(result));
+        Written(sockfd, &result, sizeof(result));
     }
 }

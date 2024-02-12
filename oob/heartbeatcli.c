@@ -1,7 +1,7 @@
 #include    "unp.h"
 
 static int      servfd;
-static int      nsec;           /* #seconds betweeen each alarm */
+static int      nsec;           /* #seconds between each alarm */
 static int      maxnprobes;     /* #probes w/no response before quit */
 static int      nprobes;        /* #probes since last server response */
 static void sig_urg(int), sig_alrm(int);

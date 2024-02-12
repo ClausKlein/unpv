@@ -18,6 +18,6 @@ str_echo(int sockfd) {
         }
 
         n = strlen(line);
-        Writen(sockfd, line, n);
+        Written(sockfd, line, n);
     }
 }

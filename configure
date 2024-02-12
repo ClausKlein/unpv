@@ -6028,7 +6028,7 @@ if test "$ac_cv_header_pthread_h" = yes ; then
 fi
 LIB_OBJS="$LIB_OBJS wrapunix.o"
 LIB_OBJS="$LIB_OBJS write_fd.o"
-LIB_OBJS="$LIB_OBJS writen.o"
+LIB_OBJS="$LIB_OBJS written.o"
 LIB_OBJS="$LIB_OBJS writable_timeo.o"
 
 LIBFREE_OBJS=

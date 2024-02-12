@@ -89,7 +89,7 @@ main(int argc, char **argv) {
                     Close(sockfd);
                     client[i].fd = -1;
                 } else {
-                    Writen(sockfd, buf, n);
+                    Written(sockfd, buf, n);
                 }
 
                 if (--nready <= 0) {

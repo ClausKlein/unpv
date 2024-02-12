@@ -57,7 +57,7 @@ main(int argc, char **argv) {
 
     Mcast_join(recvfd, sasend, salen, NULL, 0);
 
-    //FIXME we can't receive our multicast mesages send under apple, linux and cygwin
+    //FIXME we can't receive our multicast messages send under apple, linux and cygwin
     // example: mcast/sendrecv 224.0.0.251 5353
     //XXX  and: mcast/sendrecv FF02::FB 5353    does not work?
     //     and: mcast/sendrecv FF01::FB 5353

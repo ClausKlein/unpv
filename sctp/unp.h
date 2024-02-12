@@ -281,9 +281,9 @@ char*            sock_ntop_host(const SA*, socklen_t);
 int              sockfd_to_family(int);
 void             str_echo(int);
 void             str_cli(FILE*, int);
-void sctpstr_cli(FILE* fp, int sock_fd, struct sockaddr* to, socklen_t tolen);
+void sctpstr_cli(FILE* fp, int sock_fd, struct sockaddr* to, socklen_t token);
 void sctpstr_cli_echoall(FILE* fp, int sock_fd, struct sockaddr* to,
-                         socklen_t tolen);
+                         socklen_t token);
 uint8_t* sctp_pdapi_recvmsg(int sock_fd, int* rdlen, SA* from, int* from_len,
                             struct sctp_sndrcvinfo* sri, int* msg_flags);
 int      sctp_bind_arg_list(int sock_fd, char** argv, int argc);
@@ -307,7 +307,7 @@ int     udp_server(const char*, const char*, socklen_t*);
 int     udp_server_reuseaddr(const char* host, const char* serv,
                              socklen_t* addrlenp);
 int     writable_timeo(int, int);
-ssize_t writen(int, const void*, size_t);
+ssize_t written(int, const void*, size_t);
 ssize_t write_fd(int, void*, size_t, int);
 
 #ifdef MCAST
@@ -502,7 +502,7 @@ void    Shutdown(int, int);
 int     Sockatmark(int);
 int     Socket(int, int, int);
 void    Socketpair(int, int, int, int*);
-void    Writen(int, void*, size_t);
+void    Written(int, void*, size_t);
 
 void err_dump(const char*, ...);
 void err_msg(const char*, ...);

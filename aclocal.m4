@@ -15,7 +15,7 @@ AC_DEFUN(AC_CHECK_FUNC_PROTO,
 dnl ##################################################################
 dnl We cannot use the AC_CHECK_TYPE macros because AC_CHECK_TYPE
 dnl #includes only <sys/types.h>, <stdlib.h>, and <stddef.h>.
-dnl Unfortunately, many implementations today hide typedefs in wierd
+dnl Unfortunately, many implementations today hide typedefs in weird
 dnl locations: Solaris 2.5.1 has uint8_t and uint32_t in <pthread.h>.
 dnl SunOS 4.1.x has int8_t in <sys/bitypes.h>.
 dnl So we define our own macro AC_UNP_CHECK_TYPE that does the same

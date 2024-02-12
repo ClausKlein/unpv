@@ -4,7 +4,7 @@ int
 main(int argc, char **argv) {
     int sock_fd;
     struct sockaddr_in servaddr;
-    struct sctp_event_subscribe evnts;
+    struct sctp_event_subscribe events;
 
     if (argc != 2)
         err_quit("Missing host argument - use '%s host'\n",
@@ -16,11 +16,11 @@ main(int argc, char **argv) {
     servaddr.sin_port = htons(SERV_PORT);
     Inet_pton(AF_INET, argv[1], &servaddr.sin_addr);
     /* include mod_client04 */
-    bzero(&evnts, sizeof(evnts));
-    evnts.sctp_data_io_event = 1;
-    evnts.sctp_association_event = 1;
+    bzero(&events, sizeof(events));
+    events.sctp_data_io_event = 1;
+    events.sctp_association_event = 1;
     Setsockopt(sock_fd, IPPROTO_SCTP, SCTP_EVENTS,
-               &evnts, sizeof(evnts));
+               &events, sizeof(events));
 
     sctpstr_cli(stdin, sock_fd, (SA *)&servaddr, sizeof(servaddr));
     /* end mod_client04 */

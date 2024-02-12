@@ -21,7 +21,7 @@ main(int argc, char **argv) {
 
     Connect(sockfd, (SA *) &servaddr, sizeof(servaddr));
 
-    Writen(sockfd, "foo", 3);   /* no newline */
+    Written(sockfd, "foo", 3);   /* no newline */
     sleep(30);
 
     exit(0);

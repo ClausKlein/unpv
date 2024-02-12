@@ -17,7 +17,7 @@ thread_main(void *arg) {
     printf("thread %d starting\n", (int) arg);
     for (; ;) {
         Pthread_mutex_lock(&clifd_mutex);
-        while (iget == iput) {
+        while (iget == input) {
             Pthread_cond_wait(&clifd_cond, &clifd_mutex);
         }
         connfd = clifd[iget];   /* connected socket to service */

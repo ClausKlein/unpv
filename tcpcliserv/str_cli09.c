@@ -13,7 +13,7 @@ str_cli(FILE *fp, int sockfd) {
             printf("invalid input: %s", sendline);
             continue;
         }
-        Writen(sockfd, &args, sizeof(args));
+        Written(sockfd, &args, sizeof(args));
 
         if (Readn(sockfd, &result, sizeof(result)) == 0) {
             err_quit("str_cli: server terminated prematurely");

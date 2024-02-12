@@ -16,7 +16,7 @@ main(int argc, char **argv) {
     fprintf(stderr, "connected\n");
 
     while ((n = Read(STDIN_FILENO, buff, BUFF)) > 0) {
-        Writen(sockfd, buff, n);
+        Written(sockfd, buff, n);
     }
     Close(STDIN_FILENO);
     /* Shutdown(sockfd, SHUT_WR); */

@@ -79,12 +79,12 @@ oncemore:
 
             if (crlf) {
                 ntowrite = crlf_strip(wbuf, writelen, rbuf, nread);
-                if (writen(STDOUT_FILENO, wbuf, ntowrite) != ntowrite) {
-                    err_sys("writen error to stdout");
+                if (written(STDOUT_FILENO, wbuf, ntowrite) != ntowrite) {
+                    err_sys("written error to stdout");
                 }
             } else {
-                if (writen(STDOUT_FILENO, rbuf, nread) != nread) {
-                    err_sys("writen error to stdout");
+                if (written(STDOUT_FILENO, rbuf, nread) != nread) {
+                    err_sys("written error to stdout");
                 }
             }
 

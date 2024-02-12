@@ -32,7 +32,7 @@ str_cli(FILE *fp, int sockfd) {
                 }
             }
 
-            Writen(STDOUT_FILENO, recvline, strlen(recvline));
+            Written(STDOUT_FILENO, recvline, strlen(recvline));
         }
 
         if (FD_ISSET(fileno(fp), &rset)) {  /* input is readable */
@@ -44,7 +44,7 @@ str_cli(FILE *fp, int sockfd) {
                 continue;
             }
 
-            Writen(sockfd, sendline, strlen(sendline));
+            Written(sockfd, sendline, strlen(sendline));
         }
     }
 }

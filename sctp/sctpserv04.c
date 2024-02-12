@@ -6,7 +6,7 @@ main(int argc, char **argv) {
     char readbuf[BUFFSIZE];
     struct sockaddr_in servaddr, cliaddr;
     struct sctp_sndrcvinfo sri;
-    struct sctp_event_subscribe evnts;
+    struct sctp_event_subscribe events;
     int stream_increment = 1;
     int close_time;
     socklen_t len;
@@ -28,10 +28,10 @@ main(int argc, char **argv) {
     /* end mod_serv04 */
     Bind(sock_fd, (SA *) &servaddr, sizeof(servaddr));
 
-    bzero(&evnts, sizeof(evnts));
-    evnts.sctp_data_io_event = 1;
+    bzero(&events, sizeof(events));
+    events.sctp_data_io_event = 1;
     Setsockopt(sock_fd, IPPROTO_SCTP, SCTP_EVENTS,
-               &evnts, sizeof(evnts));
+               &events, sizeof(events));
 
     Listen(sock_fd, LISTENQ);
     for (; ;) {

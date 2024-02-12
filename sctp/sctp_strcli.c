@@ -1,7 +1,7 @@
 #include    "unp.h"
 
 void
-sctpstr_cli(FILE *fp, int sock_fd, struct sockaddr *to, socklen_t tolen) {
+sctpstr_cli(FILE *fp, int sock_fd, struct sockaddr *to, socklen_t token) {
     struct sockaddr_in peeraddr;
     struct sctp_sndrcvinfo sri;
     char sendline[MAXLINE], recvline[MAXLINE];
@@ -18,7 +18,7 @@ sctpstr_cli(FILE *fp, int sock_fd, struct sockaddr *to, socklen_t tolen) {
         sri.sinfo_stream = strtol(&sendline[1], NULL, 0);
         out_sz = strlen(sendline);
         Sctp_sendmsg(sock_fd, sendline, out_sz,
-                     to, tolen,
+                     to, token,
                      0, 0,
                      sri.sinfo_stream,
                      0, 0);

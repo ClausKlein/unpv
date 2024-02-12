@@ -41,8 +41,8 @@ sntp_proc(char *buf, ssize_t n, struct timeval *nowptr) {
     ntp = (struct ntpdata *) buf;
     version = (ntp->status & VERSION_MASK) >> 3;
     mode = ntp->status & MODE_MASK;
-    printf("\nv%d, mode %d (%s), strat %d, ", version, mode,
-           (mode == MODE_BROADCAST) ? "broadcast" : "unkown", ntp->stratum);
+    printf("\nv%d, mode %d (%s), start %d, ", version, mode,
+           (mode == MODE_BROADCAST) ? "broadcast" : "unknown", ntp->stratum);
     if (mode == MODE_CLIENT) {
         printf("client\n");
         return;

@@ -78,7 +78,7 @@ main(int argc, char **argv) {
                     FD_CLR(sockfd, &allset);
                     client[i] = -1;
                 } else {
-                    Writen(sockfd, buf, n);
+                    Written(sockfd, buf, n);
                 }
 
                 if (--nready <= 0) {

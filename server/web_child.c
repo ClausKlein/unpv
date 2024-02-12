@@ -19,6 +19,6 @@ web_child(int sockfd) {
             err_quit("client request for %d bytes", ntowrite);
         }
 
-        Writen(sockfd, result, ntowrite);
+        Written(sockfd, result, ntowrite);
     }
 }

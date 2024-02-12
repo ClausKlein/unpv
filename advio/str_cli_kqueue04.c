@@ -37,7 +37,7 @@ str_cli(FILE *fp, int sockfd) {
             if (kev[i].ident == fileno(fp)) {  /* input is readable */
                 n = Read(fileno(fp), buf, MAXLINE);
                 if (n > 0) {
-                    Writen(sockfd, buf, n);
+                    Written(sockfd, buf, n);
                 }
 
                 if (n == 0 || (isfile && n == kev[i].data)) {

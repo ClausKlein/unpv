@@ -1,6 +1,6 @@
 09Sep96
 
-Please read the comments at the begiinning of getaddrinfo.c.
+Please read the comments at the beginning of getaddrinfo.c.
 
 Supplied with this function are the two files inet_pton.c and
 inet_ntop.c from the BIND-4.9.4 release.  The arguments of

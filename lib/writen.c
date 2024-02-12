@@ -1,8 +1,8 @@
-/* include writen */
+/* include written */
 #include    "unp.h"
 
 ssize_t                     /* Write "n" bytes to a descriptor. */
-writen(int fd, const void *vptr, size_t n) {
+written(int fd, const void *vptr, size_t n) {
     size_t      nleft;
     ssize_t     nwritten;
     const char  *ptr;
@@ -23,12 +23,12 @@ writen(int fd, const void *vptr, size_t n) {
     }
     return(n);
 }
-/* end writen */
+/* end written */
 
 void
-Writen(int fd, void *ptr, size_t nbytes) {
+Written(int fd, void *ptr, size_t nbytes) {
     ssize_t toWrite = nbytes;
-    if (writen(fd, ptr, nbytes) != toWrite) {
-        err_sys("writen error");
+    if (written(fd, ptr, nbytes) != toWrite) {
+        err_sys("written error");
     }
 }

@@ -55,7 +55,7 @@ serv04:	serv04.o child04.o lock_pthread.o web_child.o pr_cpu_time.o
 		${CC} ${CFLAGS} -o $@ serv04.o child04.o lock_pthread.o \
 			web_child.o pr_cpu_time.o ${LIBS}
 
-# serv05: prefork, descrptor passing to children.  Similar to NSCA server.
+# serv05: prefork, descriptor passing to children.  Similar to NSCA server.
 serv05:	serv05.o child05.o lock_fcntl.o web_child.o pr_cpu_time.o
 		${CC} ${CFLAGS} -o $@ serv05.o child05.o lock_fcntl.o web_child.o \
 			pr_cpu_time.o ${LIBS}

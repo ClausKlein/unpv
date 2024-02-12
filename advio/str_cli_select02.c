@@ -35,7 +35,7 @@ str_cli(FILE *fp, int sockfd) {
                 continue;
             }
 
-            Writen(sockfd, sendline, strlen(sendline));
+            Written(sockfd, sendline, strlen(sendline));
         }
     }
 }

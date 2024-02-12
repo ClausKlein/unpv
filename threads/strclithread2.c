@@ -30,7 +30,7 @@ copyto(void *arg) {
     char    sendline[MAXLINE];
 
     while (Fgets(sendline, MAXLINE, fp) != NULL) {
-        Writen(sockfd, sendline, strlen(sendline));
+        Written(sockfd, sendline, strlen(sendline));
     }
 
     Shutdown(sockfd, SHUT_WR);  /* EOF on stdin, send FIN */

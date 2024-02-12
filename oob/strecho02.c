@@ -12,6 +12,6 @@ str_echo(int sockfd) {
             return;    /* connection closed by other end */
         }
 
-        Writen(sockfd, line, n);
+        Written(sockfd, line, n);
     }
 }

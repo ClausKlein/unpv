@@ -35,7 +35,7 @@ distclean::
 	find . -type d -name '*.dSYM' | xargs rm -rf
 	find . \( -name 'tags' -o -name '*.d' -o -name '*.o' -o -name '*~' \) -delete
 
-$(SUBDIRS):
+$(SUBDIRS)::
 	${MAKE} -C $@ -w$(MAKEFLAGS) $(MAKECMDGOALS)
 
 # No need to change

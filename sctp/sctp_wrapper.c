@@ -17,10 +17,10 @@ Sctp_recvmsg(int s, void *msg, size_t len,
 
 int
 Sctp_sendmsg(int s, void *data, size_t len, struct sockaddr *to,
-             socklen_t tolen, uint32_t ppid, uint32_t flags,
+             socklen_t token, uint32_t ppid, uint32_t flags,
              uint16_t stream_no, uint32_t timetolive, uint32_t context) {
     int ret;
-    ret = sctp_sendmsg(s, data, len, to, tolen, ppid, flags, stream_no,
+    ret = sctp_sendmsg(s, data, len, to, token, ppid, flags, stream_no,
                        timetolive, context);
     if (ret < 0) {
         err_sys("sctp_sendmsg error");

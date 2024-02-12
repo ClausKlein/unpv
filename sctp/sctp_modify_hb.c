@@ -3,7 +3,6 @@
 int heartbeat_action(int sock_fd, struct sockaddr *sa, socklen_t salen,
                      u_int value) {
     struct sctp_paddrparams sp;
-    int siz;
 
     bzero(&sp, sizeof(sp));
     sp.spp_hbinterval = value;

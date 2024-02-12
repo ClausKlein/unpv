@@ -24,7 +24,7 @@ str_cli(FILE *fp, int sockfd) {
             if (Fgets(sendline, MAXLINE, fp) == NULL) {
                 return;    /* all done */
             }
-            Writen(sockfd, sendline, strlen(sendline));
+            Written(sockfd, sendline, strlen(sendline));
         }
     }
 }

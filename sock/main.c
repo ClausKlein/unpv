@@ -28,8 +28,8 @@ char    foreignip[32];      /* foreign IP address, dotted-decimal string */
 int     foreignport;        /* foreign port number */
 int     halfclose;          /* TCP half close option */
 int     ignorewerr;         /* true if write() errors should be ignored */
-int     iptos = -1;         /* IP_TOS opton */
-int     ipttl = -1;         /* IP_TTL opton */
+int     iptos = -1;         /* IP_TOS option */
+int     ipttl = -1;         /* IP_TTL option */
 char    joinip[32];         /* multicast IP address, dotted-decimal string */
 int     keepalive;          /* SO_KEEPALIVE */
 long    linger = -1;        /* 0 or positive turns on option */

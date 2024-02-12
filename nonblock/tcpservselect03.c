@@ -77,7 +77,7 @@ main(int argc, char **argv) {
                     FD_CLR(sockfd, &allset);
                     client[i] = -1;
                 }
-                Writen(sockfd, line, n);
+                Written(sockfd, line, n);
 
                 if (--nready <= 0) {
                     break;    /* no more readable descriptors */

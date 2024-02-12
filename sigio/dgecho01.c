@@ -16,7 +16,7 @@ static DG   dg[QSIZE];          /* queue of datagrams to process */
 static long cntread[QSIZE + 1]; /* diagnostic counter */
 
 static int  iget;       /* next one for main loop to process */
-static int  iput;       /* next one for signal handler to read into */
+static int  input;       /* next one for signal handler to read into */
 static int  nqueue;     /* # on queue for main loop to process */
 static socklen_t clilen;/* max length of sockaddr{} */
 
@@ -39,7 +39,7 @@ dg_echo(int sockfd_arg, SA *pcliaddr, socklen_t clilen_arg) {
         dg[i].dg_sa = Malloc(clilen);
         dg[i].dg_salen = clilen;
     }
-    iget = iput = nqueue = 0;
+    iget = input = nqueue = 0;
 
     Signal(SIGHUP, sig_hup);
     Signal(SIGIO, sig_io);
@@ -87,7 +87,7 @@ sig_io(int signo) {
             err_quit("receive overflow");
         }
 
-        ptr = &dg[iput];
+        ptr = &dg[input];
         ptr->dg_salen = clilen;
         len = recvfrom(sockfd, ptr->dg_data, MAXDG, 0,
                        ptr->dg_sa, &ptr->dg_salen);
@@ -102,8 +102,8 @@ sig_io(int signo) {
 
         nread++;
         nqueue++;
-        if (++iput >= QSIZE) {
-            iput = 0;
+        if (++input >= QSIZE) {
+            input = 0;
         }
 
     }
