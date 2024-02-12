@@ -349,7 +349,7 @@ rt_xaddrs(caddr_t cp, caddr_t cplim, struct rt_addrinfo* rtinfo) {
 }
 
 void
-usage() {
+usage(void) {
 #ifndef INET6
     fprintf(
         stderr, "%s",
@@ -530,7 +530,7 @@ main(int argc, char* const* argv) {
             fprintf(stderr, "out of sync parsing NET_RT_IFLIST\n");
             fprintf(stderr, "expected %d, got %d\n", RTM_IFINFO, ifm->ifm_type);
             fprintf(stderr, "msglen = %d\n", ifm->ifm_msglen);
-            fprintf(stderr, "buf:%p, next:%p, lim:%p\n", buf, next, lim);
+            fprintf(stderr, "buf:%s, next:%s, lim:%s\n", buf, next, lim);
             exit(1);
         }
 
@@ -862,10 +862,7 @@ setip6lifetime(const char* cmd, const char* val, int s,
 }
 #endif
 
-void                  setifbroadaddr(addr, dummy, s, afp) const char* addr;
-int                   dummy;
-int                   s;
-const struct afswtch* afp;
+void setifbroadaddr(const char* addr, int dummy, int s, const struct afswtch* afp)
 {
     if (afp->af_getaddr) {
         (*afp->af_getaddr)(addr, DSTADDR);

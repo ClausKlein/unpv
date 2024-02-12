@@ -177,9 +177,8 @@ Sigfillset(sigset_t *set) {
 
 int
 Sigismember(const sigset_t *set, int signo) {
-    int     n;
-
-    if ((n = sigismember(set, signo)) == -1) {
+    int n = sigismember(set, signo);
+    if (n == -1) {
         err_sys("sigismember error");
     }
     return(n);

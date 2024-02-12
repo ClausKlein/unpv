@@ -17,7 +17,7 @@ gf_time(void) {
     strcpy(str, &ptr[11]);
     /* Fri Sep 13 00:00:00 1986\n\0 */
     /* 0123456789012345678901234 5  */
-    snprintf(str + 8, sizeof(str) - 8, ".%06ld", tv.tv_usec);
+    snprintf(str + 8, sizeof(str) - 8, ".%06d", tv.tv_usec);
 
     return(str);
 }

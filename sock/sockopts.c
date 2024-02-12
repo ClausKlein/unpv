@@ -328,7 +328,7 @@ sockopts(int sockfd, int doall) {
         }
 
         if (verbose)
-            fprintf(stderr, "SO_RCVTIMEO: %ld.%06ld\n",
+            fprintf(stderr, "SO_RCVTIMEO: %ld.%06d\n",
                     timer.tv_sec, timer.tv_usec);
 #else
         fprintf(stderr, "warning: SO_RCVTIMEO not supported by host\n");
@@ -353,7 +353,7 @@ sockopts(int sockfd, int doall) {
         }
 
         if (verbose)
-            fprintf(stderr, "SO_SNDTIMEO: %ld.%06ld\n",
+            fprintf(stderr, "SO_SNDTIMEO: %ld.%06d\n",
                     timer.tv_sec, timer.tv_usec);
 #else
         fprintf(stderr, "warning: SO_SNDTIMEO not supported by host\n");
