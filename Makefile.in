@@ -17,6 +17,7 @@ else
 endif
 
 
+.PHONY: $(SUBDIRS) all clean distclean
 all: $(SUBDIRS)
 
 clean:: $(SUBDIRS)
@@ -27,7 +28,6 @@ distclean::
 	find . -type d -name '*.dSYM' | xargs rm -rf
 	find . \( -name 'tags' -o -name '*.d' -o -name '*.o' -o -name '*~' \) -delete
 
-.PHONY: $(SUBDIRS) all clean distclean
 $(SUBDIRS):
 	${MAKE} -C $@ -w$(MAKEFLAGS) $(MAKECMDGOALS)
 
