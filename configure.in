@@ -415,10 +415,11 @@ AC_CACHE_VAL(ac_cv_ipv4,
 #	include <sys/types.h>
 #	include <sys/socket.h>
 #	include <netinet/in.h>
+#	include <stdlib.h>
 	/* Make sure the definitions for AF_INET and struct sockaddr_in
 	 * are defined, and that we can actually create an IPv4 TCP socket.
 	 */
-	main()
+	void main(void)
 	{
 		int fd;
 		struct sockaddr_in foo;
@@ -439,10 +440,11 @@ AC_CACHE_VAL(ac_cv_ipv6,
 #	include <sys/types.h>
 #	include <sys/socket.h>
 #	include <netinet/in.h>
+#	include <stdlib.h>
 	/* Make sure the definitions for AF_INET6 and struct sockaddr_in6
 	 * are defined, and that we can actually create an IPv6 TCP socket.
 	 */
-	main()
+	void main(void)
 	{
 		int fd;
 		struct sockaddr_in6 foo;
@@ -463,10 +465,11 @@ AC_CACHE_VAL(ac_cv_unixdomain,
 #	include <sys/types.h>
 #	include <sys/socket.h>
 #	include <sys/un.h>
+#	include <stdlib.h>
 	/* Make sure the definitions for AF_UNIX and struct sockaddr_un
 	 * are defined, and that we can actually create an IPv4 TCP socket.
 	 */
-	main()
+	void main(void)
 	{
 		int fd;
 		struct sockaddr_un foo;
@@ -487,7 +490,8 @@ AC_CACHE_VAL(ac_cv_multicast,
 #	include <sys/types.h>
 #	include <sys/socket.h>
 #	include <netinet/in.h>
-	main()
+#	include <stdlib.h>
+	void main(void)
 	{
 		int fd;
 		unsigned char flag = 1;

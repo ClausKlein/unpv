@@ -4,18 +4,17 @@ export CC=gcc
 
 UNAME=$(shell uname)
 
-SUBDIRS:= ./lib ./libfree ./advio ./bcast ./inetd ./intro ./ioctl ./ipopts \
-./names ./oob ./rtt ./select ./sigio ./sock ./sockopt \
-./ssntp ./tcpcliserv ./udpcliserv ./unixdomain ./test
+SUBDIRS:= ./lib ./libfree ./advio ./bcast ./inetd ./intro ./ioctl ./ipopts ./mcast \
+./mysdr ./names ./nonblock ./oob ./ping ./rtt ./select ./server ./sigio ./sock ./sockopt \
+./ssntp ./tcpcliserv ./udpcliserv ./unixdomain ./icmpd ./test ./threads
 
 ifeq ($(UNAME),Darwin)
 ###FIXME build errors on Darwin
-### SUBDIRS+= ./debug ./sctp ./streams ./libgai ./udpcksum ./traceroute
-	SUBDIRS+= ./key ./libroute ./route
+### SUBDIRS+= ./debug ./sctp ./streams ./libgai ./udpcksum
+	SUBDIRS+= ./key ./libroute ./traceroute ./route
 else
 ###FIXME build errors on Linux
-SUBDIRS+= ./mcast ./mysdr ./threads
-### SUBDIRS+= ./nonblock ./ping ./server ./icmpd ./debug ./key ./route ./sctp ./streams \
+### SUBDIRS+= ./debug ./key ./route ./sctp ./streams \
 ### ./libgai ./libroute ./traceroute ./udpcksum
 endif
 

@@ -1,6 +1,5 @@
 /* include serv08 */
 #include "pthread08.h"
-#include "unpthread.h"
 
 static int nthreads;
 pthread_mutex_t clifd_mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -9,7 +8,7 @@ pthread_cond_t clifd_cond = PTHREAD_COND_INITIALIZER;
 int main(int argc, char **argv) {
     int i, listenfd = -1, connfd;
     void sig_int(int), thread_make(int);
-    socklen_t addrlen, clilen;
+    socklen_t addrlen = 0, clilen;
     struct sockaddr *cliaddr;
 
     if (argc == 3) {

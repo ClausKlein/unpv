@@ -1,6 +1,5 @@
 /* include serv05a */
 #include "child.h"
-#include "unp.h"
 
 static int nchildren;
 
@@ -10,7 +9,7 @@ int main(int argc, char **argv) {
     pid_t child_make(int, int, int);
     ssize_t n;
     fd_set rset, masterset;
-    socklen_t addrlen, clilen;
+    socklen_t addrlen = 0, clilen;
     struct sockaddr *cliaddr;
 
     if (argc == 3) {

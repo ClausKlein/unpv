@@ -27,7 +27,7 @@ void my_lock_init(char *pathname) {
 /* end my_lock_init */
 
 /* include my_lock_wait */
-void my_lock_wait() {
+void my_lock_wait(void) {
     int rc;
 
     while ((rc = fcntl(lock_fd, F_SETLKW, &lock_it)) < 0) {
@@ -39,7 +39,7 @@ void my_lock_wait() {
     }
 }
 
-void my_lock_release() {
+void my_lock_release(void) {
     if (fcntl(lock_fd, F_SETLKW, &unlock_it) < 0) {
         err_sys("fcntl error for my_lock_release");
     }

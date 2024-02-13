@@ -1,7 +1,5 @@
 #include "pthread07.h"
 
-#include "unpthread.h"
-
 void thread_make(int i) {
     void *thread_main(void *);
 
