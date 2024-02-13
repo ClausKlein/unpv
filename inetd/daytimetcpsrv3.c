@@ -1,12 +1,12 @@
-#include    "unp.h"
-#include    <time.h>
+#include <time.h>
 
-int
-main(int argc, char **argv) {
-    socklen_t       len;
+#include "unp.h"
+
+int main(int argc, char **argv) {
+    socklen_t len;
     struct sockaddr *cliaddr;
-    char            buff[MAXLINE];
-    time_t          ticks;
+    char buff[MAXLINE];
+    time_t ticks;
 
     daemon_inetd(argv[0], 0);
 
@@ -19,6 +19,6 @@ main(int argc, char **argv) {
     snprintf(buff, sizeof(buff), "%.24s\r\n", ctime(&ticks));
     Write(0, buff, strlen(buff));
 
-    Close(0);   /* close TCP connection */
+    Close(0); /* close TCP connection */
     exit(0);
 }

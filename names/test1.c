@@ -1,19 +1,18 @@
-#include    "unp.h"
+#include "unp.h"
 
-void    pr_ipv4(char **);
+void pr_ipv4(char **);
 
-int
-main(int argc, char **argv) {
-    char            *ptr, **pptr, **listptr, buf[INET6_ADDRSTRLEN];
-    char            *list[100];
-    int             i, addrtype, addrlen;
-    struct hostent  *hptr;
+int main(int argc, char **argv) {
+    char *ptr, **pptr, **listptr, buf[INET6_ADDRSTRLEN];
+    char *list[100];
+    int i, addrtype, addrlen;
+    struct hostent *hptr;
 
     while (--argc > 0) {
         ptr = *++argv;
         if ((hptr = gethostbyname(ptr)) == NULL) {
-            err_msg("gethostbyname error for host: %s: %s",
-                    ptr, hstrerror(h_errno));
+            err_msg("gethostbyname error for host: %s: %s", ptr,
+                    hstrerror(h_errno));
             continue;
         }
         printf("official host name: %s\n", hptr->h_name);

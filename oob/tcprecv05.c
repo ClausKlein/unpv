@@ -1,12 +1,11 @@
-#include    "unp.h"
+#include "unp.h"
 
-int     listenfd, connfd;
+int listenfd, connfd;
 
-void    sig_urg(int);
+void sig_urg(int);
 
-int
-main(int argc, char **argv) {
-    int     size;
+int main(int argc, char **argv) {
+    int size;
 
     if (argc == 2) {
         listenfd = Tcp_listen(NULL, argv[1], NULL);
@@ -24,18 +23,17 @@ main(int argc, char **argv) {
     Signal(SIGURG, sig_urg);
     Fcntl(connfd, F_SETOWN, getpid());
 
-    for (; ;) {
+    for (;;) {
         pause();
     }
 }
 
-void
-sig_urg(int signo) {
-    int     n;
-    char    buff[2048];
+void sig_urg(int signo) {
+    int n;
+    char buff[2048];
 
     printf("SIGURG received\n");
     n = Recv(connfd, buff, sizeof(buff) - 1, MSG_OOB);
-    buff[n] = 0;        /* null terminate */
+    buff[n] = 0; /* null terminate */
     printf("read %d OOB byte\n", n);
 }

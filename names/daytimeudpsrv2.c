@@ -1,12 +1,12 @@
-#include    "unp.h"
-#include    <time.h>
+#include <time.h>
 
-int
-main(int argc, char **argv) {
-    int             sockfd = -1;
-    char            buff[MAXLINE];
-    time_t          ticks;
-    socklen_t       len;
+#include "unp.h"
+
+int main(int argc, char **argv) {
+    int sockfd = -1;
+    char buff[MAXLINE];
+    time_t ticks;
+    socklen_t len;
     struct sockaddr_storage cliaddr;
 
     if (argc == 2) {
@@ -17,7 +17,7 @@ main(int argc, char **argv) {
         err_quit("usage: daytimeudpsrv [ <host> ] <service or port>");
     }
 
-    for (; ;) {
+    for (;;) {
         len = sizeof(cliaddr);
         Recvfrom(sockfd, buff, MAXLINE, 0, (SA *)&cliaddr, &len);
         printf("datagram from %s\n", Sock_ntop((SA *)&cliaddr, len));

@@ -1,15 +1,14 @@
-#include    "../lib/unp.h"
+#include "../lib/unp.h"
 
 #ifndef AF_INET6
-#define AF_INET6    AF_MAX+1    /* just to let this compile */
+#    define AF_INET6 AF_MAX + 1 /* just to let this compile */
 #endif
 
-int     inet_pton(int, const char *, void *);
+int inet_pton(int, const char *, void *);
 
-int
-main(int argc, char **argv) {
-    int     i;
-    char    buff[100];
+int main(int argc, char **argv) {
+    int i;
+    char buff[100];
 
     /*
      * Make certain that we can test the difference between 0.0.0.0
@@ -37,9 +36,9 @@ main(int argc, char **argv) {
     }
 
     printf("inet_pton(AF_INET6, \"1.2.3.4\", buff) returns %d\n",
-           inet_pton(AF_INET6,  "1.2.3.4", buff));
+           inet_pton(AF_INET6, "1.2.3.4", buff));
     printf("inet_pton(AF_INET6, \"::1.2.3.4\", buff) returns %d\n",
-           inet_pton(AF_INET6,  "::1.2.3.4", buff));
+           inet_pton(AF_INET6, "::1.2.3.4", buff));
 
     exit(0);
 }

@@ -7,14 +7,13 @@
  * It is provided "as is" without express or implied warranty.
  */
 
-#include    "sock.h"
+#include "sock.h"
 
-void
-source_udp(int sockfd) { /* TODO: use sendto ?? */
-    int         i, n, option;
-    socklen_t   optlen;
+void source_udp(int sockfd) { /* TODO: use sendto ?? */
+    int i, n, option;
+    socklen_t optlen;
 
-    pattern(wbuf, writelen);    /* fill send buffer with a pattern */
+    pattern(wbuf, writelen); /* fill send buffer with a pattern */
 
     if (pauseinit) {
         sleep_us(pauseinit * 1000);
@@ -27,8 +26,9 @@ source_udp(int sockfd) { /* TODO: use sendto ?? */
                     err_ret("write returned %d, expected %d", n, writelen);
                     /* also call getsockopt() to clear so_error */
                     optlen = sizeof(option);
-                    if (getsockopt(sockfd, SOL_SOCKET, SO_ERROR,
-                                   &option, &optlen) < 0) {
+                    if (getsockopt(sockfd, SOL_SOCKET, SO_ERROR, &option,
+                                   &optlen)
+                        < 0) {
                         err_sys("SO_ERROR getsockopt error");
                     }
                 } else {
@@ -37,14 +37,15 @@ source_udp(int sockfd) { /* TODO: use sendto ?? */
             }
         } else {
             if ((n = sendto(sockfd, wbuf, writelen, 0,
-                            (struct sockaddr *) &servaddr,
-                            sizeof(servaddr))) != writelen) {
+                            (struct sockaddr *)&servaddr, sizeof(servaddr)))
+                != writelen) {
                 if (ignorewerr) {
                     err_ret("sendto returned %d, expected %d", n, writelen);
                     /* also call getsockopt() to clear so_error */
                     optlen = sizeof(option);
-                    if (getsockopt(sockfd, SOL_SOCKET, SO_ERROR,
-                                   &option, &optlen) < 0) {
+                    if (getsockopt(sockfd, SOL_SOCKET, SO_ERROR, &option,
+                                   &optlen)
+                        < 0) {
                         err_sys("SO_ERROR getsockopt error");
                     }
                 } else {
@@ -70,6 +71,6 @@ source_udp(int sockfd) { /* TODO: use sendto ?? */
     }
 
     if (close(sockfd) < 0) {
-        err_sys("close error");    /* since SO_LINGER may be set */
+        err_sys("close error"); /* since SO_LINGER may be set */
     }
 }

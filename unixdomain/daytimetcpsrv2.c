@@ -1,14 +1,14 @@
-#include    "unp.h"
-#include    <time.h>
+#include <time.h>
 
-int
-main(int argc, char **argv) {
-    size_t          i;
-    int             connfd, listenfd = -1;
-    socklen_t       addrlen = 0, len;
+#include "unp.h"
+
+int main(int argc, char **argv) {
+    size_t i;
+    int connfd, listenfd = -1;
+    socklen_t addrlen = 0, len;
     struct sockaddr *cliaddr;
-    char            buff[MAXLINE];
-    time_t          ticks;
+    char buff[MAXLINE];
+    time_t ticks;
 
     if (argc == 2) {
         listenfd = Tcp_listen(NULL, argv[1], &addrlen);
@@ -20,7 +20,7 @@ main(int argc, char **argv) {
 
     cliaddr = Malloc(addrlen);
 
-    for (; ;) {
+    for (;;) {
         len = addrlen;
         connfd = Accept(listenfd, cliaddr, &len);
         printf("connection from %s\n", Sock_ntop(cliaddr, len));

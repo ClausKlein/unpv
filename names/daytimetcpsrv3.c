@@ -1,14 +1,14 @@
-#include    "unp.h"
-#include    <time.h>
+#include <time.h>
 
-int
-main(int argc, char **argv) {
-    int             listenfd = -1, connfd;
-    socklen_t       addrlen = 0, len;
+#include "unp.h"
+
+int main(int argc, char **argv) {
+    int listenfd = -1, connfd;
+    socklen_t addrlen = 0, len;
     struct sockaddr *cliaddr;
-    struct linger   ling;
-    char            buff[MAXLINE];
-    time_t          ticks;
+    struct linger ling;
+    char buff[MAXLINE];
+    time_t ticks;
 
     if (argc == 2) {
         listenfd = Tcp_listen(NULL, argv[1], &addrlen);
@@ -20,7 +20,7 @@ main(int argc, char **argv) {
 
     cliaddr = Malloc(addrlen);
 
-    for (; ;) {
+    for (;;) {
         len = addrlen;
         connfd = Accept(listenfd, cliaddr, &len);
         printf("connection from %s\n", Sock_ntop(cliaddr, len));
@@ -34,7 +34,7 @@ main(int argc, char **argv) {
         snprintf(buff, sizeof(buff), "%.24s\r\n", ctime(&ticks));
         Write(connfd, buff, strlen(buff));
 
-        sleep(2);   /* let data get across before RST */
+        sleep(2); /* let data get across before RST */
         Close(connfd);
     }
 }

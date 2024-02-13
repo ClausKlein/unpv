@@ -1,18 +1,18 @@
-#include    <sys/types.h>
-#include    <sys/time.h>
-#include    <errno.h>
-#include    <stddef.h>
-#include    "ourhdr.h"
+#include <errno.h>
+#include <stddef.h>
+#include <sys/time.h>
+#include <sys/types.h>
 
-void
-sleep_us(unsigned int nusecs) {
-    struct timeval  tval;
+#include "ourhdr.h"
 
-    for (; ;) {
+void sleep_us(unsigned int nusecs) {
+    struct timeval tval;
+
+    for (;;) {
         tval.tv_sec = nusecs / 1000000;
         tval.tv_usec = nusecs % 1000000;
         if (select(0, NULL, NULL, NULL, &tval) == 0) {
-            break;    /* all OK */
+            break; /* all OK */
         }
         /*
          * Note than on an interrupted system call (i.e, SIGIO) there's not

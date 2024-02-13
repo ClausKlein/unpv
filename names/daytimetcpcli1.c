@@ -1,15 +1,14 @@
-#include    "unp.h"
+#include "unp.h"
 
-int
-main(int argc, char **argv) {
-    int                 sockfd = -1, n;
-    char                recvline[MAXLINE + 1];
-    struct sockaddr_in  servaddr;
-    struct in_addr      **pptr = NULL;
-    struct in_addr      *inetaddrp[2];
-    struct in_addr      inetaddr;
-    struct hostent      *hp;
-    struct servent      *sp;
+int main(int argc, char **argv) {
+    int sockfd = -1, n;
+    char recvline[MAXLINE + 1];
+    struct sockaddr_in servaddr;
+    struct in_addr **pptr = NULL;
+    struct in_addr *inetaddrp[2];
+    struct in_addr inetaddr;
+    struct hostent *hp;
+    struct servent *sp;
 
     if (argc != 3) {
         err_quit("usage: daytimetcpcli1 <hostname> <service>");
@@ -24,7 +23,7 @@ main(int argc, char **argv) {
             pptr = inetaddrp;
         }
     } else {
-        pptr = (struct in_addr **) hp->h_addr_list;
+        pptr = (struct in_addr **)hp->h_addr_list;
     }
 
     if ((sp = getservbyname(argv[2], "tcp")) == NULL) {
@@ -38,11 +37,10 @@ main(int argc, char **argv) {
         servaddr.sin_family = AF_INET;
         servaddr.sin_port = sp->s_port;
         memcpy(&servaddr.sin_addr, *pptr, sizeof(struct in_addr));
-        printf("trying %s\n",
-               Sock_ntop((SA *) &servaddr, sizeof(servaddr)));
+        printf("trying %s\n", Sock_ntop((SA *)&servaddr, sizeof(servaddr)));
 
-        if (connect(sockfd, (SA *) &servaddr, sizeof(servaddr)) == 0) {
-            break;    /* success */
+        if (connect(sockfd, (SA *)&servaddr, sizeof(servaddr)) == 0) {
+            break; /* success */
         }
         err_ret("connect error");
         close(sockfd);
@@ -52,7 +50,7 @@ main(int argc, char **argv) {
     }
 
     while ((n = Read(sockfd, recvline, MAXLINE)) > 0) {
-        recvline[n] = 0;    /* null terminate */
+        recvline[n] = 0; /* null terminate */
         Fputs(recvline, stdout);
     }
     exit(0);

@@ -1,7 +1,6 @@
-#include    "unp.h"
+#include "unp.h"
 
-int
-main(int argc, char **argv) {
+int main(int argc, char **argv) {
     int sock_fd, msg_flags, connfd, childpid;
     sctp_assoc_t assoc;
     char readbuf[BUFFSIZE];
@@ -17,26 +16,20 @@ main(int argc, char **argv) {
     servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
     servaddr.sin_port = htons(SERV_PORT);
 
-    Bind(sock_fd, (SA *) &servaddr, sizeof(servaddr));
+    Bind(sock_fd, (SA *)&servaddr, sizeof(servaddr));
 
     bzero(&events, sizeof(events));
     events.sctp_data_io_event = 1;
-    Setsockopt(sock_fd, IPPROTO_SCTP, SCTP_EVENTS,
-               &events, sizeof(events));
+    Setsockopt(sock_fd, IPPROTO_SCTP, SCTP_EVENTS, &events, sizeof(events));
 
     Listen(sock_fd, LISTENQ);
     /* include mod_servfork */
-    for (; ;) {
+    for (;;) {
         len = sizeof(struct sockaddr_in);
-        rd_sz = Sctp_recvmsg(sock_fd, readbuf, sizeof(readbuf),
-                             (SA *)&cliaddr, &len,
-                             &sri, &msg_flags);
-        Sctp_sendmsg(sock_fd, readbuf, rd_sz,
-                     (SA *)&cliaddr, len,
-                     sri.sinfo_ppid,
-                     sri.sinfo_flags,
-                     sri.sinfo_stream,
-                     0, 0);
+        rd_sz = Sctp_recvmsg(sock_fd, readbuf, sizeof(readbuf), (SA *)&cliaddr,
+                             &len, &sri, &msg_flags);
+        Sctp_sendmsg(sock_fd, readbuf, rd_sz, (SA *)&cliaddr, len,
+                     sri.sinfo_ppid, sri.sinfo_flags, sri.sinfo_stream, 0, 0);
         assoc = sctp_address_to_associd(sock_fd, (SA *)&cliaddr, len);
         if ((int)assoc == 0) {
             err_ret("Can't get association id");

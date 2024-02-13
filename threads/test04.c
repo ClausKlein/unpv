@@ -1,14 +1,13 @@
 /* test readline() */
 
-#include    "unpthread.h"
+#include "unpthread.h"
 
-static char *infile;    /* from argv[1]; read-only by threads */
+static char *infile; /* from argv[1]; read-only by threads */
 
-void *
-myfunc(void *ptr) {
-    int     i, fdin;
-    char    buf[MAXLINE];
-    FILE    *fpout;
+void *myfunc(void *ptr) {
+    int i, fdin;
+    char buf[MAXLINE];
+    FILE *fpout;
 
     snprintf(buf, sizeof(buf), "temp.%d", pthread_self());
     fpout = Fopen(buf, "w+");
@@ -25,13 +24,12 @@ myfunc(void *ptr) {
     Fclose(fpout);
 
     printf("thread %d done\n", pthread_self());
-    return(NULL);
+    return (NULL);
 }
 
-int
-main(int argc, char **argv) {
-    int             i, nthreads;
-    pthread_t       tid;
+int main(int argc, char **argv) {
+    int i, nthreads;
+    pthread_t tid;
 
     if (argc != 3) {
         err_quit("usage: test04 <input-file> <#threads>");

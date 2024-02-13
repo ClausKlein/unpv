@@ -1,10 +1,9 @@
-#include    "unproute.h"
+#include "unproute.h"
 
-void    pr_rtable(int);
-void    pr_iflist(int);
+void pr_rtable(int);
+void pr_iflist(int);
 
-int
-main(int argc, char **argv) {
+int main(int argc, char **argv) {
     int family = 0;
 
     if (argc != 2) {
@@ -13,7 +12,7 @@ main(int argc, char **argv) {
     if (strcmp(argv[1], "inet4") == 0) {
         family = AF_INET;
     }
-#ifdef  AF_INET6
+#ifdef AF_INET6
     else if (strcmp(argv[1], "inet6") == 0) {
         family = AF_INET6;
     }
@@ -31,18 +30,17 @@ main(int argc, char **argv) {
     exit(0);
 }
 
-void
-pr_rtable(int family) {
-    char                *buf, *next, *lim;
-    size_t              len;
-    struct rt_msghdr    *rtm;
-    struct sockaddr     *sa, *rti_info[RTAX_MAX];
+void pr_rtable(int family) {
+    char *buf, *next, *lim;
+    size_t len;
+    struct rt_msghdr *rtm;
+    struct sockaddr *sa, *rti_info[RTAX_MAX];
 
     buf = Net_rt_dump(family, 0, &len);
 
     lim = buf + len;
     for (next = buf; next < lim; next += rtm->rtm_msglen) {
-        rtm = (struct rt_msghdr *) next;
+        rtm = (struct rt_msghdr *)next;
         sa = (struct sockaddr *)(rtm + 1);
         get_rtaddrs(rtm->rtm_addrs, sa, rti_info);
         if ((sa = rti_info[RTAX_DST]) != NULL) {
@@ -57,22 +55,21 @@ pr_rtable(int family) {
     }
 }
 
-void
-pr_iflist(int family) {
-    int                 flags = 0;
-    char                *buf, *next, *lim;
-    u_char              *ptr;
-    size_t              len;
-    struct if_msghdr    *ifm;
-    struct ifa_msghdr   *ifam;
-    struct sockaddr     *sa, *rti_info[RTAX_MAX];
-    struct sockaddr_dl  *sdl;
+void pr_iflist(int family) {
+    int flags = 0;
+    char *buf, *next, *lim;
+    u_char *ptr;
+    size_t len;
+    struct if_msghdr *ifm;
+    struct ifa_msghdr *ifam;
+    struct sockaddr *sa, *rti_info[RTAX_MAX];
+    struct sockaddr_dl *sdl;
 
     buf = Net_rt_iflist(family, 0, &len);
 
     lim = buf + len;
     for (next = buf; next < lim; next += ifm->ifm_msglen) {
-        ifm = (struct if_msghdr *) next;
+        ifm = (struct if_msghdr *)next;
         if (ifm->ifm_type == RTM_IFINFO) {
             sa = (struct sockaddr *)(ifm + 1);
             get_rtaddrs(ifm->ifm_addrs, sa, rti_info);
@@ -98,17 +95,16 @@ pr_iflist(int family) {
                 }
                 printf(">\n");
 
-                if (sa->sa_family == AF_LINK &&
-                        (sdl = (struct sockaddr_dl *) sa) &&
-                        (sdl->sdl_alen > 0)) {
-                    ptr = (u_char *) &sdl->sdl_data[sdl->sdl_nlen];
+                if (sa->sa_family == AF_LINK && (sdl = (struct sockaddr_dl *)sa)
+                    && (sdl->sdl_alen > 0)) {
+                    ptr = (u_char *)&sdl->sdl_data[sdl->sdl_nlen];
                     printf("  %x:%x:%x:%x:%x:%x\n", *ptr, *(ptr + 1),
                            *(ptr + 2), *(ptr + 3), *(ptr + 4), *(ptr + 5));
                 }
             }
 
         } else if (ifm->ifm_type == RTM_NEWADDR) {
-            ifam = (struct ifa_msghdr *) next;
+            ifam = (struct ifa_msghdr *)next;
             sa = (struct sockaddr *)(ifam + 1);
             get_rtaddrs(ifam->ifam_addrs, sa, rti_info);
             if ((sa = rti_info[RTAX_IFA]) != NULL) {

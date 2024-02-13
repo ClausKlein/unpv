@@ -7,14 +7,13 @@
  * tries to detect overflow.
  */
 
-#include    "unp.h"
+#include <stdarg.h> /* ANSI C header file */
 
-#include    <stdarg.h>      /* ANSI C header file */
+#include "unp.h"
 
-int
-snprintf(char *buf, size_t size, const char *fmt, ...) {
-    int         n;
-    va_list     ap;
+int snprintf(char *buf, size_t size, const char *fmt, ...) {
+    int n;
+    va_list ap;
 
     va_start(ap, fmt);
     vsprintf(buf, fmt, ap); /* Sigh, some vsprintf's return ptr, not length */
@@ -23,5 +22,5 @@ snprintf(char *buf, size_t size, const char *fmt, ...) {
     if (n >= size) {
         err_quit("snprintf: '%s' overflowed array", fmt);
     }
-    return(n);
+    return (n);
 }

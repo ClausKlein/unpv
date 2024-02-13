@@ -1,10 +1,10 @@
-#include    "unp.h"
-#include    <netinet/tcp.h>     /* for TCP_MAXSEG value */
+#include <netinet/tcp.h> /* for TCP_MAXSEG value */
 
-int
-main(int argc, char **argv) {
-    int         sockfd, mss, sendbuff;
-    socklen_t   optlen;
+#include "unp.h"
+
+int main(int argc, char **argv) {
+    int sockfd, mss, sendbuff;
+    socklen_t optlen;
 
     sockfd = Socket(AF_INET, SOCK_STREAM, 0);
 

@@ -1,9 +1,8 @@
-#include    "unp.h"
+#include "unp.h"
 
-void
-str_echo(int sockfd) {
-    ssize_t     n;
-    char        buf[MAXLINE];
+void str_echo(int sockfd) {
+    ssize_t n;
+    char buf[MAXLINE];
 
 again:
     while ((n = read(sockfd, buf, MAXLINE)) > 0) {

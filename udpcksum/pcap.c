@@ -1,14 +1,13 @@
 /* include open_pcap */
-#include    "udpcksum.h"
+#include "udpcksum.h"
 
-#define CMD     "udp and src host %s and src port %d"
+#define CMD "udp and src host %s and src port %d"
 
-void
-open_pcap(void) {
-    uint32_t            localnet, netmask;
-    char                cmd[MAXLINE], errbuf[PCAP_ERRBUF_SIZE],
-                        str1[INET_ADDRSTRLEN], str2[INET_ADDRSTRLEN];
-    struct bpf_program  fcode;
+void open_pcap(void) {
+    uint32_t localnet, netmask;
+    char cmd[MAXLINE], errbuf[PCAP_ERRBUF_SIZE], str1[INET_ADDRSTRLEN],
+        str2[INET_ADDRSTRLEN];
+    struct bpf_program fcode;
 
     if (device == NULL) {
         if ((device = pcap_lookupdev(errbuf)) == NULL) {
@@ -30,8 +29,7 @@ open_pcap(void) {
                Inet_ntop(AF_INET, &localnet, str1, sizeof(str1)),
                Inet_ntop(AF_INET, &netmask, str2, sizeof(str2)));
 
-    snprintf(cmd, sizeof(cmd), CMD,
-             Sock_ntop_host(dest, destlen),
+    snprintf(cmd, sizeof(cmd), CMD, Sock_ntop_host(dest, destlen),
              ntohs(sock_get_port(dest, destlen)));
     if (verbose) {
         printf("cmd = %s\n", cmd);
@@ -54,16 +52,15 @@ open_pcap(void) {
 /* end open_pcap */
 
 /* include next_pcap */
-char *
-next_pcap(int *len) {
-    char                *ptr;
-    struct pcap_pkthdr  hdr;
+char *next_pcap(int *len) {
+    char *ptr;
+    struct pcap_pkthdr hdr;
 
     /* 4keep looping until packet ready */
-    while ((ptr = (char *) pcap_next(pd, &hdr)) == NULL)
+    while ((ptr = (char *)pcap_next(pd, &hdr)) == NULL)
         ;
 
-    *len = hdr.caplen;  /* captured length */
-    return(ptr);
+    *len = hdr.caplen; /* captured length */
+    return (ptr);
 }
 /* end next_pcap */

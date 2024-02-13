@@ -1,14 +1,13 @@
-#include    "unpthread.h"
+#include "unpthread.h"
 
 #define NLOOP 5000
 
-int             counter;        /* incremented by threads */
+int counter; /* incremented by threads */
 
-void    *doit(void *);
+void *doit(void *);
 
-int
-main(int argc, char **argv) {
-    pthread_t   tidA, tidB;
+int main(int argc, char **argv) {
+    pthread_t tidA, tidB;
 
     Pthread_create(&tidA, NULL, &doit, NULL);
     Pthread_create(&tidB, NULL, &doit, NULL);
@@ -20,9 +19,8 @@ main(int argc, char **argv) {
     exit(0);
 }
 
-void *
-doit(void *vptr) {
-    int     i, val;
+void *doit(void *vptr) {
+    int i, val;
 
     /*
      * Each thread fetches, prints, and increments the counter NLOOP times.
@@ -35,5 +33,5 @@ doit(void *vptr) {
         counter = val + 1;
     }
 
-    return(NULL);
+    return (NULL);
 }

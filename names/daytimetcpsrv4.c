@@ -1,13 +1,13 @@
-#include    "unp.h"
-#include    <time.h>
+#include <time.h>
 
-int
-main(int argc, char **argv) {
-    int             listenfd = -1, connfd;
-    socklen_t       addrlen = 0, len;
+#include "unp.h"
+
+int main(int argc, char **argv) {
+    int listenfd = -1, connfd;
+    socklen_t addrlen = 0, len;
     struct sockaddr *cliaddr;
-    char            buff[MAXLINE], host[NI_MAXHOST], serv[NI_MAXSERV];
-    time_t          ticks;
+    char buff[MAXLINE], host[NI_MAXHOST], serv[NI_MAXSERV];
+    time_t ticks;
 
     if (argc == 2) {
         listenfd = Tcp_listen(NULL, argv[1], &addrlen);
@@ -19,11 +19,12 @@ main(int argc, char **argv) {
 
     cliaddr = Malloc(addrlen);
 
-    for (; ;) {
+    for (;;) {
         len = addrlen;
         connfd = Accept(listenfd, cliaddr, &len);
         if (getnameinfo(cliaddr, len, host, NI_MAXHOST, serv, NI_MAXSERV,
-                        NI_NUMERICHOST | NI_NUMERICSERV) == 0) {
+                        NI_NUMERICHOST | NI_NUMERICSERV)
+            == 0) {
             printf("connection from %s.%s\n", host, serv);
         }
 

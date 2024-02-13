@@ -7,20 +7,19 @@
  * It is provided "as is" without express or implied warranty.
  */
 
-#include    "sock.h"
+#include "sock.h"
 
-void
-sink_udp(int sockfd) {  /* TODO: use recvfrom ?? */
-    int     n, flags;
+void sink_udp(int sockfd) { /* TODO: use recvfrom ?? */
+    int n, flags;
 
     if (pauseinit) {
         sleep_us(pauseinit * 1000);
     }
 
-    for (; ;) {      /* read until peer closes connection; -n opt ignored */
+    for (;;) { /* read until peer closes connection; -n opt ignored */
         /* msgpeek = 0 or MSG_PEEK */
         flags = msgpeek;
-oncemore:
+    oncemore:
         if ((n = recv(sockfd, rbuf, readlen, flags)) < 0) {
             err_sys("recv error");
 
@@ -30,7 +29,7 @@ oncemore:
             }
             break;
 
-#ifdef  notdef      /* following not possible with TCP */
+#ifdef notdef /* following not possible with TCP */
         } else if (n != readlen) {
             err_quit("read returned %d, expected %d", n, readlen);
         }
@@ -43,9 +42,9 @@ oncemore:
                     (flags == MSG_PEEK) ? " (MSG_PEEK)" : "");
             if (verbose > 1) {
                 fprintf(stderr, "printing %d bytes\n", n);
-                rbuf[n] = 0;    /* make certain it's null terminated */
-                fprintf(stderr, "SDAP header: %lx\n", *((long *) rbuf));
-                fprintf(stderr, "next long: %lx\n", *((long *) rbuf + 4));
+                rbuf[n] = 0; /* make certain it's null terminated */
+                fprintf(stderr, "SDAP header: %lx\n", *((long *)rbuf));
+                fprintf(stderr, "next long: %lx\n", *((long *)rbuf + 4));
                 fputs(&rbuf[8], stderr);
             }
         }
@@ -55,8 +54,8 @@ oncemore:
         }
 
         if (flags != 0) {
-            flags = 0;      /* avoid infinite loop */
-            goto oncemore;  /* read the message again */
+            flags = 0;     /* avoid infinite loop */
+            goto oncemore; /* read the message again */
         }
     }
 

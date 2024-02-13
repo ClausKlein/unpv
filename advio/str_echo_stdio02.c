@@ -1,9 +1,8 @@
-#include    "unp.h"
+#include "unp.h"
 
-void
-str_echo(int sockfd) {
-    char        line[MAXLINE];
-    FILE        *fpin, *fpout;
+void str_echo(int sockfd) {
+    char line[MAXLINE];
+    FILE *fpin, *fpout;
 
     fpin = Fdopen(sockfd, "r");
     fpout = Fdopen(sockfd, "w");

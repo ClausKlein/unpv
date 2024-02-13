@@ -2,9 +2,9 @@
 #ifndef __unp_xti_h
 #define __unp_xti_h
 
-#include "unp.h"
-
 #include <xti.h>
+
+#include "unp.h"
 #ifdef HAVE_XTI_INET_H
 #    include <xti_inet.h>
 #endif
@@ -87,66 +87,66 @@
 extern char xti_serv_dev[];
 /* end unpxtih2 */
 
-void err_xti(const char* fmt, ...);
-void err_xti_ret(const char* fmt, ...);
+void err_xti(const char *fmt, ...);
+void err_xti_ret(const char *fmt, ...);
 
-int  Getmsg(int, struct strbuf*, struct strbuf*, int*);
-void Putmsg(int, const struct strbuf*, const struct strbuf*, int);
+int Getmsg(int, struct strbuf *, struct strbuf *, int *);
+void Putmsg(int, const struct strbuf *, const struct strbuf *, int);
 
 #ifdef HAVE_NETCONFIG_H
-void* Setnetconfig(void);
-void* Setnetpath(void);
+void *Setnetconfig(void);
+void *Setnetpath(void);
 #endif
 
-void* T_alloc(int, int, int);
-int   T_accept(int, int, struct t_call*);
-void  T_bind(int, const struct t_bind*, struct t_bind*);
-void  T_close(int);
-void  T_connect(int, const struct t_call*, struct t_call*);
-void  T_free(void*, int);
-void  T_getprotaddr(int, struct t_bind*, struct t_bind*);
-int   T_getstate(int);
-void  T_listen(int, struct t_call*);
-int   T_look(int);
-int   T_open(const char*, int, struct t_info*);
-void  T_optmgmt(int, const struct t_optmgmt*, struct t_optmgmt*);
-int   T_rcv(int, void*, unsigned int, int*);
-void  T_rcvdis(int, struct t_discon*);
-void  T_rcvrel(int);
-void  T_rcvudata(int, struct t_unitdata*, int*);
-void  T_rcvuderr(int, struct t_uderr*);
-void  T_snd(int, void*, unsigned int, int);
-void  T_sndrel(int);
-void  T_sndudata(int, struct t_unitdata*);
+void *T_alloc(int, int, int);
+int T_accept(int, int, struct t_call *);
+void T_bind(int, const struct t_bind *, struct t_bind *);
+void T_close(int);
+void T_connect(int, const struct t_call *, struct t_call *);
+void T_free(void *, int);
+void T_getprotaddr(int, struct t_bind *, struct t_bind *);
+int T_getstate(int);
+void T_listen(int, struct t_call *);
+int T_look(int);
+int T_open(const char *, int, struct t_info *);
+void T_optmgmt(int, const struct t_optmgmt *, struct t_optmgmt *);
+int T_rcv(int, void *, unsigned int, int *);
+void T_rcvdis(int, struct t_discon *);
+void T_rcvrel(int);
+void T_rcvudata(int, struct t_unitdata *, int *);
+void T_rcvuderr(int, struct t_uderr *);
+void T_snd(int, void *, unsigned int, int);
+void T_sndrel(int);
+void T_sndudata(int, struct t_unitdata *);
 
-int   xti_accept(int, struct netbuf*, int);
-int   xti_getopt(int, int, int, void*, socklen_t*);
-char* xti_flags_str(int);
-char* xti_tlook_str(int);
-char* xti_ntop(const struct netbuf*);
-char* xti_ntop_host(const struct netbuf*);
-int   xti_rdwr(int);
-int   xti_setopt(int, int, int, void*, socklen_t);
+int xti_accept(int, struct netbuf *, int);
+int xti_getopt(int, int, int, void *, socklen_t *);
+char *xti_flags_str(int);
+char *xti_tlook_str(int);
+char *xti_ntop(const struct netbuf *);
+char *xti_ntop_host(const struct netbuf *);
+int xti_rdwr(int);
+int xti_setopt(int, int, int, void *, socklen_t);
 
-int   Xti_accept(int, struct netbuf*, int);
-void  Xti_getopt(int, int, int, void*, socklen_t*);
-char* Xti_flags_str(int);
-char* Xti_tlook_str(int);
-char* Xti_ntop(const struct netbuf*);
-char* Xti_ntop_host(const struct netbuf*);
-void  Xti_rdwr(int);
-void  Xti_setopt(int, int, int, void*, socklen_t);
+int Xti_accept(int, struct netbuf *, int);
+void Xti_getopt(int, int, int, void *, socklen_t *);
+char *Xti_flags_str(int);
+char *Xti_tlook_str(int);
+char *Xti_ntop(const struct netbuf *);
+char *Xti_ntop_host(const struct netbuf *);
+void Xti_rdwr(int);
+void Xti_setopt(int, int, int, void *, socklen_t);
 
-char* xti_str_lend(struct t_opthdr*);
-char* xti_str_uscalard(struct t_opthdr*);
-char* xti_str_uchard(struct t_opthdr*);
-char* xti_str_ucharx(struct t_opthdr*);
-char* xti_str_yn(t_uscalar_t);
-char* xti_str_syng(t_scalar_t);
-char* xti_str_uiyn(struct t_opthdr*);
-char* xti_str_usyn(struct t_opthdr*);
-char* xti_str_linger(struct t_opthdr*);
-char* xti_str_kpalive(struct t_opthdr*);
-char* xti_str_flags(t_scalar_t);
+char *xti_str_lend(struct t_opthdr *);
+char *xti_str_uscalard(struct t_opthdr *);
+char *xti_str_uchard(struct t_opthdr *);
+char *xti_str_ucharx(struct t_opthdr *);
+char *xti_str_yn(t_uscalar_t);
+char *xti_str_syng(t_scalar_t);
+char *xti_str_uiyn(struct t_opthdr *);
+char *xti_str_usyn(struct t_opthdr *);
+char *xti_str_linger(struct t_opthdr *);
+char *xti_str_kpalive(struct t_opthdr *);
+char *xti_str_flags(t_scalar_t);
 
 #endif /* __unp_xti_h */

@@ -1,11 +1,9 @@
-#include    "unp.h"
+#include "unp.h"
 
-void
-str_cli(FILE *fp, int sockfd) {
-    char    sendline[MAXLINE], recvline[MAXLINE];
+void str_cli(FILE *fp, int sockfd) {
+    char sendline[MAXLINE], recvline[MAXLINE];
 
     while (Fgets(sendline, MAXLINE, fp) != NULL) {
-
         Written(sockfd, sendline, 1);
         sleep(1);
         Written(sockfd, sendline + 1, strlen(sendline) - 1);

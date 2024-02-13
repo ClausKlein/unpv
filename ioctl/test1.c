@@ -1,10 +1,10 @@
-#include    "unp.h"
-#include    <net/if.h>
+#include <net/if.h>
 
-int
-main(int argc, char **argv) {
-    int     i, sockfd, numif;
-    char    buf[1024];
+#include "unp.h"
+
+int main(int argc, char **argv) {
+    int i, sockfd, numif;
+    char buf[1024];
 
     sockfd = Socket(AF_INET, SOCK_DGRAM, 0);
 

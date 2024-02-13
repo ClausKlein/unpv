@@ -1,7 +1,6 @@
-#include    "unp.h"
+#include "unp.h"
 
-int
-main(int argc, char **argv) {
+int main(int argc, char **argv) {
     int sock_fd;
     struct sockaddr_in servaddr;
     struct sctp_event_subscribe events;
@@ -9,8 +8,7 @@ main(int argc, char **argv) {
     char byemsg[10];
 
     if (argc < 2)
-        err_quit("Missing host argument - use '%s host [echo]'\n",
-                 argv[0]);
+        err_quit("Missing host argument - use '%s host [echo]'\n", argv[0]);
     if (argc > 2) {
         printf("Echoing messages to all streams\n");
         echo_to_all = 1;
@@ -24,8 +22,7 @@ main(int argc, char **argv) {
 
     bzero(&events, sizeof(events));
     events.sctp_data_io_event = 1;
-    Setsockopt(sock_fd, IPPROTO_SCTP, SCTP_EVENTS,
-               &events, sizeof(events));
+    Setsockopt(sock_fd, IPPROTO_SCTP, SCTP_EVENTS, &events, sizeof(events));
     /* include modified_client02 */
     if (echo_to_all == 0) {
         sctpstr_cli(stdin, sock_fd, (SA *)&servaddr, sizeof(servaddr));
@@ -33,12 +30,9 @@ main(int argc, char **argv) {
         sctpstr_cli_echoall(stdin, sock_fd, (SA *)&servaddr, sizeof(servaddr));
     }
     strcpy(byemsg, "goodbye");
-    Sctp_sendmsg(sock_fd, byemsg, strlen(byemsg),
-                 (SA *)&servaddr, sizeof(servaddr),
-                 0,
-                 MSG_ABORT,
-                 0, 0, 0);
+    Sctp_sendmsg(sock_fd, byemsg, strlen(byemsg), (SA *)&servaddr,
+                 sizeof(servaddr), 0, MSG_ABORT, 0, 0, 0);
     Close(sock_fd);
     /* end modified_client02 */
-    return(0);
+    return (0);
 }

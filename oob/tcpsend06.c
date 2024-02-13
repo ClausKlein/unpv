@@ -1,8 +1,7 @@
-#include    "unp.h"
+#include "unp.h"
 
-int
-main(int argc, char **argv) {
-    int     sockfd;
+int main(int argc, char **argv) {
+    int sockfd;
 
     if (argc != 3) {
         err_quit("usage: tcpsend06 <host> <port#>");

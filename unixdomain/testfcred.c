@@ -1,6 +1,7 @@
-#include    "unp.h"
-#include    <sys/param.h>
-#include    <sys/ucred.h>
+#include <sys/param.h>
+#include <sys/ucred.h>
+
+#include "unp.h"
 
 int main() {
     printf("sizeof(struct fcred) = %d\n", sizeof(struct fcred));

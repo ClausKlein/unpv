@@ -1,9 +1,8 @@
-#include    "unp.h"
+#include "unp.h"
 
-int
-main(int argc, char **argv) {
-    int     fd;
-    fd_set  exset;
+int main(int argc, char **argv) {
+    int fd;
+    fd_set exset;
 
     if (argc != 3) {
         err_quit("usage: test01 <hostname/IPaddress> <service/port#>");

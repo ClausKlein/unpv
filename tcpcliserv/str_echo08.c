@@ -1,14 +1,13 @@
-#include    "unp.h"
+#include "unp.h"
 
-void
-str_echo(int sockfd) {
-    long        arg1, arg2;
-    ssize_t     n;
-    char        line[MAXLINE];
+void str_echo(int sockfd) {
+    long arg1, arg2;
+    ssize_t n;
+    char line[MAXLINE];
 
-    for (; ;) {
+    for (;;) {
         if ((n = Readline(sockfd, line, MAXLINE)) == 0) {
-            return;    /* connection closed by other end */
+            return; /* connection closed by other end */
         }
 
         if (sscanf(line, "%ld%ld", &arg1, &arg2) == 2) {

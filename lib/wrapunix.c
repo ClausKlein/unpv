@@ -16,82 +16,73 @@
  *warning: passing arg 2 of `connect' discards `const' from pointer target type
  */
 
-#include    "unp.h"
+#include "unp.h"
 
-void *
-Calloc(size_t n, size_t size) {
-    void    *ptr;
+void *Calloc(size_t n, size_t size) {
+    void *ptr;
 
     if ((ptr = calloc(n, size)) == NULL) {
         err_sys("calloc error");
     }
-    return(ptr);
+    return (ptr);
 }
 
-void
-Close(int fd) {
+void Close(int fd) {
     if (close(fd) == -1) {
         err_sys("close error");
     }
 }
 
-void
-Dup2(int fd1, int fd2) {
+void Dup2(int fd1, int fd2) {
     if (dup2(fd1, fd2) == -1) {
         err_sys("dup2 error");
     }
 }
 
-int
-Fcntl(int fd, int cmd, int arg) {
+int Fcntl(int fd, int cmd, int arg) {
     int n;
 
     if ((n = fcntl(fd, cmd, arg)) == -1) {
         err_sys("fcntl error");
     }
-    return(n);
+    return (n);
 }
 
-void
-Gettimeofday(struct timeval *tv, void *foo) {
+void Gettimeofday(struct timeval *tv, void *foo) {
     if (gettimeofday(tv, foo) == -1) {
         err_sys("gettimeofday error");
     }
     return;
 }
 
-int
-Ioctl(int fd, unsigned int request, void *arg) {
-    int     n;
+int Ioctl(int fd, unsigned int request, void *arg) {
+    int n;
 
     if ((n = ioctl(fd, request, arg)) == -1) {
         err_sys("ioctl error");
     }
-    return(n);  /* streamio of I_LIST returns value */
+    return (n); /* streamio of I_LIST returns value */
 }
 
-pid_t
-Fork(void) {
-    pid_t   pid;
+pid_t Fork(void) {
+    pid_t pid;
 
     if ((pid = fork()) == -1) {
         err_sys("fork error");
     }
-    return(pid);
+    return (pid);
 }
 
-void *
-Malloc(size_t size) {
-    void    *ptr;
+void *Malloc(size_t size) {
+    void *ptr;
 
     if ((ptr = malloc(size)) == NULL) {
         err_sys("malloc error");
     }
-    return(ptr);
+    return (ptr);
 }
 
-int
-Mkstemp(char *template) {
+int Mkstemp(char *template) {
     int i;
 
 #ifdef HAVE_MKSTEMP
@@ -108,156 +99,138 @@ Mkstemp(char *template) {
     return i;
 }
 
-#include    <sys/mman.h>
+#include <sys/mman.h>
 
-void *
-Mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offset) {
-    void    *ptr;
+void *Mmap(void *addr, size_t len, int prot, int flags, int fd, off_t offset) {
+    void *ptr;
 
-    if ((ptr = mmap(addr, len, prot, flags, fd, offset)) == ((void *) - 1)) {
+    if ((ptr = mmap(addr, len, prot, flags, fd, offset)) == ((void *)-1)) {
         err_sys("mmap error");
     }
-    return(ptr);
+    return (ptr);
 }
 
-int
-Open(const char *pathname, int oflag, mode_t mode) {
-    int     fd;
+int Open(const char *pathname, int oflag, mode_t mode) {
+    int fd;
 
     if ((fd = open(pathname, oflag, mode)) == -1) {
         err_sys("open error for %s", pathname);
     }
-    return(fd);
+    return (fd);
 }
 
-void
-Pipe(int *fds) {
+void Pipe(int *fds) {
     if (pipe(fds) < 0) {
         err_sys("pipe error");
     }
 }
 
-ssize_t
-Read(int fd, void *ptr, size_t nbytes) {
-    ssize_t     n;
+ssize_t Read(int fd, void *ptr, size_t nbytes) {
+    ssize_t n;
 
     if ((n = read(fd, ptr, nbytes)) == -1) {
         err_sys("read error");
     }
-    return(n);
+    return (n);
 }
 
-void
-Sigaddset(sigset_t *set, int signo) {
+void Sigaddset(sigset_t *set, int signo) {
     if (sigaddset(set, signo) == -1) {
         err_sys("sigaddset error");
     }
 }
 
-void
-Sigdelset(sigset_t *set, int signo) {
+void Sigdelset(sigset_t *set, int signo) {
     if (sigdelset(set, signo) == -1) {
         err_sys("sigdelset error");
     }
 }
 
-void
-Sigemptyset(sigset_t *set) {
+void Sigemptyset(sigset_t *set) {
     if (sigemptyset(set) == -1) {
         err_sys("sigemptyset error");
     }
 }
 
-void
-Sigfillset(sigset_t *set) {
+void Sigfillset(sigset_t *set) {
     if (sigfillset(set) == -1) {
         err_sys("sigfillset error");
     }
 }
 
-int
-Sigismember(const sigset_t *set, int signo) {
+int Sigismember(const sigset_t *set, int signo) {
     int n = sigismember(set, signo);
     if (n == -1) {
         err_sys("sigismember error");
     }
-    return(n);
+    return (n);
 }
 
-void
-Sigpending(sigset_t *set) {
+void Sigpending(sigset_t *set) {
     if (sigpending(set) == -1) {
         err_sys("sigpending error");
     }
 }
 
-void
-Sigprocmask(int how, const sigset_t *set, sigset_t *oset) {
+void Sigprocmask(int how, const sigset_t *set, sigset_t *oset) {
     if (sigprocmask(how, set, oset) == -1) {
         err_sys("sigprocmask error");
     }
 }
 
-char *
-Strdup(const char *str) {
-    char    *ptr;
+char *Strdup(const char *str) {
+    char *ptr;
 
     if ((ptr = strdup(str)) == NULL) {
         err_sys("strdup error");
     }
-    return(ptr);
+    return (ptr);
 }
 
-long
-Sysconf(int name) {
-    long    val;
+long Sysconf(int name) {
+    long val;
 
-    errno = 0;      /* in case sysconf() does not change this */
+    errno = 0; /* in case sysconf() does not change this */
     if ((val = sysconf(name)) == -1) {
         err_sys("sysconf error");
     }
-    return(val);
+    return (val);
 }
 
-#ifdef  HAVE_SYS_SYSCTL_H
-void
-Sysctl(int *name, u_int namelen, void *oldp, size_t *oldlenp,
-       void *newp, size_t newlen) {
+#ifdef HAVE_SYS_SYSCTL_H
+void Sysctl(int *name, u_int namelen, void *oldp, size_t *oldlenp, void *newp,
+            size_t newlen) {
     if (sysctl(name, namelen, oldp, oldlenp, newp, newlen) == -1) {
         err_sys("sysctl error");
     }
 }
 #endif
 
-void
-Unlink(const char *pathname) {
+void Unlink(const char *pathname) {
     if (unlink(pathname) == -1) {
         err_sys("unlink error for %s", pathname);
     }
 }
 
-pid_t
-Wait(int *iptr) {
-    pid_t   pid;
+pid_t Wait(int *iptr) {
+    pid_t pid;
 
     if ((pid = wait(iptr)) == -1) {
         err_sys("wait error");
     }
-    return(pid);
+    return (pid);
 }
 
-pid_t
-Waitpid(pid_t pid, int *iptr, int options) {
-    pid_t   retpid;
+pid_t Waitpid(pid_t pid, int *iptr, int options) {
+    pid_t retpid;
 
     if ((retpid = waitpid(pid, iptr, options)) == -1) {
         err_sys("waitpid error");
     }
-    return(retpid);
+    return (retpid);
 }
 
-void
-Write(int fd, void *ptr, size_t nbytes) {
+void Write(int fd, void *ptr, size_t nbytes) {
     ssize_t toWrite = nbytes;
     if (write(fd, ptr, nbytes) != toWrite) {
         err_sys("write error");

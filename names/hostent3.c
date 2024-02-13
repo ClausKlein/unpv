@@ -1,17 +1,16 @@
-#include    "unp.h"
+#include "unp.h"
 
-void    pr_ipv4(char **);
+void pr_ipv4(char **);
 
-int
-main(int argc, char **argv) {
-    char            *ptr, **pptr;
-    struct hostent  *hptr;
+int main(int argc, char **argv) {
+    char *ptr, **pptr;
+    struct hostent *hptr;
 
     while (--argc > 0) {
         ptr = *++argv;
         if ((hptr = gethostbyname(ptr)) == NULL) {
-            err_msg("gethostbyname error for host: %s: %s",
-                    ptr, hstrerror(h_errno));
+            err_msg("gethostbyname error for host: %s: %s", ptr,
+                    hstrerror(h_errno));
             continue;
         }
         printf("official host name: %s\n", hptr->h_name);
@@ -21,13 +20,13 @@ main(int argc, char **argv) {
         }
 
         switch (hptr->h_addrtype) {
-        case AF_INET:
-            pr_ipv4(hptr->h_addr_list);
-            break;
+            case AF_INET:
+                pr_ipv4(hptr->h_addr_list);
+                break;
 
-        default:
-            err_ret("unknown address type");
-            break;
+            default:
+                err_ret("unknown address type");
+                break;
         }
     }
     exit(0);
@@ -39,14 +38,13 @@ main(int argc, char **argv) {
  */
 
 /* begin pr_ipv4 */
-void
-pr_ipv4(char **listptr) {
-    struct in_addr  inaddr;
-    struct hostent  *hptr = NULL;
+void pr_ipv4(char **listptr) {
+    struct in_addr inaddr;
+    struct hostent *hptr = NULL;
 
-#ifdef  HAVE_GETHOSTBYNAME_R
-    struct hostent  hent;
-    char            buf[8192];
+#ifdef HAVE_GETHOSTBYNAME_R
+    struct hostent hent;
+    char buf[8192];
 #endif
 
     h_errno = 0;
@@ -55,19 +53,18 @@ pr_ipv4(char **listptr) {
         inaddr = *((struct in_addr *)(*listptr));
         printf("	IPv4 address: %s", inet_ntoa(inaddr));
 
-#ifdef  HAVE_GETHOSTBYNAME_R
+#ifdef HAVE_GETHOSTBYNAME_R
         /**
          *     int gethostbyaddr_r(const void *addr, socklen_t len, int type,
          *             struct hostent *ret, char *buf, size_t buflen,
          *             struct hostent **result, int *h_errnop);
-        **/
-        if ((gethostbyaddr_r((char *) &inaddr, sizeof(struct in_addr),
-                             AF_INET, &hent,
-                             buf, sizeof(buf),
-                             &hptr, &h_errno)) < 0)
+         **/
+        if ((gethostbyaddr_r((char *)&inaddr, sizeof(struct in_addr), AF_INET,
+                             &hent, buf, sizeof(buf), &hptr, &h_errno))
+            < 0)
 #else
-        if ((gethostbyaddr((char *) &inaddr, sizeof(struct in_addr),
-                           AF_INET)) == NULL)
+        if ((gethostbyaddr((char *)&inaddr, sizeof(struct in_addr), AF_INET))
+            == NULL)
 #endif
 
         {

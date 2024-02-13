@@ -1,37 +1,36 @@
 /* Doesn't work right.  Main thread sucks up all the CPU time polling unless
    we call thr_yield(). */
-#include    "unpthread.h"
-//FIXME #include    <thread.h>      /* Solaris threads */
+#include "unpthread.h"
+// FIXME #include    <thread.h>      /* Solaris threads */
 
-#define MAXFILES    20
-#define SERV        "80"    /* port number or service name */
+#define MAXFILES 20
+#define SERV "80" /* port number or service name */
 
 struct file {
-    char  *f_name;            /* filename */
-    char  *f_host;            /* hostname or IP address */
-    int    f_fd;              /* descriptor */
-    int    f_flags;           /* F_xxx below */
-    pthread_t  f_tid;         /* thread ID */
+    char *f_name;    /* filename */
+    char *f_host;    /* hostname or IP address */
+    int f_fd;        /* descriptor */
+    int f_flags;     /* F_xxx below */
+    pthread_t f_tid; /* thread ID */
 } file[MAXFILES];
-#define F_CONNECTING    1   /* connect() in progress */
-#define F_READING       2   /* connect() complete; now reading */
-#define F_DONE          4   /* all done */
-#define F_JOINED        8   /* main has pthread_join'ed */
+#define F_CONNECTING 1 /* connect() in progress */
+#define F_READING 2    /* connect() complete; now reading */
+#define F_DONE 4       /* all done */
+#define F_JOINED 8     /* main has pthread_join'ed */
 
-int     nconn, nfiles, nlefttoconn, nlefttoread;
-char    get[] = "GET / HTTP/1.0\r\n\r\n";   /* for home page */
+int nconn, nfiles, nlefttoconn, nlefttoread;
+char get[] = "GET / HTTP/1.0\r\n\r\n"; /* for home page */
 
-int             ndone;      /* number of terminated threads & mutex */
+int ndone; /* number of terminated threads & mutex */
 pthread_mutex_t ndone_mutex = PTHREAD_MUTEX_INITIALIZER;
 
-void    *do_get_read(void *);
-void    home_page(const char *, const char *);
-void    write_get_cmd(struct file *);
+void *do_get_read(void *);
+void home_page(const char *, const char *);
+void write_get_cmd(struct file *);
 
-int
-main(int argc, char **argv) {
-    int         i, n, maxnconn;
-    pthread_t   tid;
+int main(int argc, char **argv) {
+    int i, n, maxnconn;
+    pthread_t tid;
     struct file *fptr;
 
     if (argc < 5) {
@@ -55,7 +54,7 @@ main(int argc, char **argv) {
         /* printf("nconn = %d, nlefttoconn = %d\n", nconn, nlefttoconn); */
         while (nconn < maxnconn && nlefttoconn > 0) {
             /* find a file to read */
-            for (i = 0 ; i < nfiles; i++)
+            for (i = 0; i < nfiles; i++)
                 if (file[i].f_flags == 0) {
                     break;
                 }
@@ -72,7 +71,7 @@ main(int argc, char **argv) {
             nconn++;
             nlefttoconn--;
         }
-        //FIXME thr_yield();
+        // FIXME thr_yield();
 
         /* See if one of the threads is done */
         if ((n = pthread_mutex_lock(&ndone_mutex)) != 0) {
@@ -81,19 +80,20 @@ main(int argc, char **argv) {
         if (ndone > 0) {
             for (i = 0; i < nfiles; i++) {
                 if (file[i].f_flags & F_DONE) {
-                    if ((n = pthread_join(file[i].f_tid, (void **) &fptr)) != 0) {
+                    if ((n = pthread_join(file[i].f_tid, (void **)&fptr))
+                        != 0) {
                         errno = n, err_sys("pthread_join error");
                     }
 
                     if (&file[i] != fptr) {
                         err_quit("file[i] != fptr");
                     }
-                    fptr->f_flags = F_JOINED;   /* clears F_DONE */
+                    fptr->f_flags = F_JOINED; /* clears F_DONE */
                     ndone--;
                     nconn--;
                     nlefttoread--;
-                    printf("thread id %ld for %s done\n",
-                           file[i].f_tid, fptr->f_name);
+                    printf("thread id %ld for %s done\n", file[i].f_tid,
+                           fptr->f_name);
                 }
             }
         }
@@ -105,26 +105,25 @@ main(int argc, char **argv) {
     exit(0);
 }
 
-void *
-do_get_read(void *vptr) {
-    int                 fd, n;
-    char                line[MAXLINE];
-    struct file         *fptr;
+void *do_get_read(void *vptr) {
+    int fd, n;
+    char line[MAXLINE];
+    struct file *fptr;
 
-    fptr = (struct file *) vptr;
+    fptr = (struct file *)vptr;
 
     fd = Tcp_connect(fptr->f_host, SERV);
     fptr->f_fd = fd;
-    printf("do_get_read for %s, fd %d, thread %ld\n",
-           fptr->f_name, fd, fptr->f_tid);
+    printf("do_get_read for %s, fd %d, thread %ld\n", fptr->f_name, fd,
+           fptr->f_tid);
 
-    write_get_cmd(fptr);    /* write() the GET command */
+    write_get_cmd(fptr); /* write() the GET command */
 
     /* Read server's reply */
-    for (; ;) {
+    for (;;) {
         if ((n = read(fd, line, MAXLINE)) <= 0) {
             if (n == 0) {
-                break;    /* server closed connection */
+                break; /* server closed connection */
             } else {
                 err_sys("read error");
             }
@@ -133,7 +132,7 @@ do_get_read(void *vptr) {
     }
     printf("end-of-file on %s\n", fptr->f_name);
     close(fd);
-    fptr->f_flags = F_DONE;     /* clears F_READING */
+    fptr->f_flags = F_DONE; /* clears F_READING */
 
     if ((n = pthread_mutex_lock(&ndone_mutex)) != 0) {
         errno = n, err_sys("pthread_mutex_lock error");
@@ -143,13 +142,12 @@ do_get_read(void *vptr) {
         errno = n, err_sys("pthread_mutex_unlock error");
     }
 
-    return(fptr);       /* terminate thread */
+    return (fptr); /* terminate thread */
 }
 
-void
-write_get_cmd(struct file *fptr) {
-    int     n;
-    char    line[MAXLINE];
+void write_get_cmd(struct file *fptr) {
+    int n;
+    char line[MAXLINE];
 
     strcpy(line, "GET ");
     strcat(line, fptr->f_name);
@@ -160,13 +158,12 @@ write_get_cmd(struct file *fptr) {
     }
     printf("wrote %d bytes for %s\n", n, fptr->f_name);
 
-    fptr->f_flags = F_READING;          /* clears F_CONNECTING */
+    fptr->f_flags = F_READING; /* clears F_CONNECTING */
 }
 
-void
-home_page(const char *host, const char *fname) {
-    int                 fd, n;
-    char                line[MAXLINE];
+void home_page(const char *host, const char *fname) {
+    int fd, n;
+    char line[MAXLINE];
 
     fd = Tcp_connect(host, SERV);
 
@@ -178,10 +175,10 @@ home_page(const char *host, const char *fname) {
         err_sys("written error");
     }
 
-    for (; ;) {
+    for (;;) {
         if ((n = read(fd, line, MAXLINE)) <= 0) {
             if (n == 0) {
-                break;    /* server closed connection */
+                break; /* server closed connection */
             } else {
                 err_sys("read error");
             }

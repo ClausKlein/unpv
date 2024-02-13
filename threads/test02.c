@@ -1,22 +1,20 @@
-#include    "unpthread.h"
+#include "unpthread.h"
 
-void *
-myfunc(void *ptr) {
-    int     val;
+void *myfunc(void *ptr) {
+    int val;
 
     printf("thread ID of myfunc: %d\n", pthread_self());
 
-    val = *((int *) ptr);
+    val = *((int *)ptr);
     printf("val = %d\n", val);
     sleep(10);
-    val = *((int *) ptr);
+    val = *((int *)ptr);
     printf("val = %d\n", val);
 }
 
-int
-main(int argc, char **argv) {
-    pthread_t   tid;
-    int         n, val;
+int main(int argc, char **argv) {
+    pthread_t tid;
+    int n, val;
 
     printf("thread ID of main: %d\n", pthread_self());
 

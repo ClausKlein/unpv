@@ -1,9 +1,8 @@
-#include    "unp.h"
+#include "unp.h"
 
-int
-main(int argc, char **argv) {
-    int                 sockfd;
-    struct sockaddr_in  servaddr;
+int main(int argc, char **argv) {
+    int sockfd;
+    struct sockaddr_in servaddr;
 
     if (argc != 2) {
         err_quit("usage: udpcli <IPaddress>");
@@ -20,9 +19,9 @@ main(int argc, char **argv) {
     cliaddr.sin_family = AF_INET;
     cliaddr.sin_addr.s_addr = htonl(INADDR_ANY);
     cliaddr.sin_port = htons(0); /* force assignment of ephemeral port */
-    Bind(sockfd, (SA *) &cliaddr, sizeof(cliaddr));
+    Bind(sockfd, (SA *)&cliaddr, sizeof(cliaddr));
 
-    dg_cli(stdin, sockfd, (SA *) &servaddr, sizeof(servaddr));
+    dg_cli(stdin, sockfd, (SA *)&servaddr, sizeof(servaddr));
 
     exit(0);
 }

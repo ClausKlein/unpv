@@ -1,16 +1,15 @@
-#include    "unp.h"
+#include "unp.h"
 
-int
-main(int argc, char **argv) {
-    int                 sockfd;
-    struct sockaddr_in  servaddr;
+int main(int argc, char **argv) {
+    int sockfd;
+    struct sockaddr_in servaddr;
 
     if (argc != 2) {
         err_quit("usage: udpcli <IPaddress>");
     }
 
     bzero(&servaddr, sizeof(servaddr));
-#ifdef  HAVE_SOCKADDR_SA_LEN
+#ifdef HAVE_SOCKADDR_SA_LEN
     servaddr.sin_len = sizeof(servaddr);
 #endif
     servaddr.sin_family = AF_INET;
@@ -19,7 +18,7 @@ main(int argc, char **argv) {
 
     sockfd = Socket(AF_INET, SOCK_DGRAM, 0);
 
-    dg_cli(stdin, sockfd, (SA *) &servaddr, sizeof(servaddr));
+    dg_cli(stdin, sockfd, (SA *)&servaddr, sizeof(servaddr));
 
     exit(0);
 }

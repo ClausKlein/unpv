@@ -1,7 +1,6 @@
-#include    "ping.h"
+#include "ping.h"
 
-void
-sig_alrm(int signo) {
+void sig_alrm(int signo) {
     (*pr->fsend)();
 
     alarm(1);

@@ -1,41 +1,38 @@
 #include "unpkey.h"
 
-int
-salen(struct sockaddr *sa) {
+int salen(struct sockaddr *sa) {
 #ifdef HAVE_SOCKADDR_SA_LEN
     return sa->sa_len;
 #else
     switch (sa->sa_family) {
-    case AF_INET:
-        return sizeof(struct sockaddr_in);
-#ifdef IPV6
-    case AF_INET6:
-        return sizeof(struct sockaddr_in6);
-#endif
-    default:
-        return 0;   /* XXX */
+        case AF_INET:
+            return sizeof(struct sockaddr_in);
+#    ifdef IPV6
+        case AF_INET6:
+            return sizeof(struct sockaddr_in6);
+#    endif
+        default:
+            return 0; /* XXX */
     }
 #endif
 }
 
-int
-prefix_all(struct sockaddr *sa) {
+int prefix_all(struct sockaddr *sa) {
     switch (sa->sa_family) {
-    case AF_INET:
-        return 32;
+        case AF_INET:
+            return 32;
 #ifdef IPV6
-    case AF_INET6:
-        return 128;
+        case AF_INET6:
+            return 128;
 #endif
-    default:
-        return 0;   /* XXX */
+        default:
+            return 0; /* XXX */
     }
 }
 
 /* include sadb_add */
-void
-sadb_add(struct sockaddr *src, struct sockaddr *dst, int type, int alg,
-         int spi, int keybits, unsigned char *keydata) {
+void sadb_add(struct sockaddr *src, struct sockaddr *dst, int type, int alg,
+              int spi, int keybits, unsigned char *keydata) {
     int s;
     char buf[4096], *p; /* XXX */
     struct sadb_msg *msg;
@@ -64,7 +61,7 @@ sadb_add(struct sockaddr *src, struct sockaddr *dst, int type, int alg,
     saext->sadb_sa_len = sizeof(*saext) / 8;
     saext->sadb_sa_exttype = SADB_EXT_SA;
     saext->sadb_sa_spi = htonl(spi);
-    saext->sadb_sa_replay = 0;  /* no replay protection with static keys */
+    saext->sadb_sa_replay = 0; /* no replay protection with static keys */
     saext->sadb_sa_state = SADB_SASTATE_MATURE;
     saext->sadb_sa_auth = alg;
     saext->sadb_sa_encrypt = SADB_EALG_NONE;
@@ -75,7 +72,7 @@ sadb_add(struct sockaddr *src, struct sockaddr *dst, int type, int alg,
     addrext = (struct sadb_address *)p;
     addrext->sadb_address_len = (sizeof(*addrext) + salen(src) + 7) / 8;
     addrext->sadb_address_exttype = SADB_EXT_ADDRESS_SRC;
-    addrext->sadb_address_proto = 0;    /* any protocol */
+    addrext->sadb_address_proto = 0; /* any protocol */
     addrext->sadb_address_prefixlen = prefix_all(src);
     addrext->sadb_address_reserved = 0;
     memcpy(addrext + 1, src, salen(src));
@@ -85,7 +82,7 @@ sadb_add(struct sockaddr *src, struct sockaddr *dst, int type, int alg,
     addrext = (struct sadb_address *)p;
     addrext->sadb_address_len = (sizeof(*addrext) + salen(dst) + 7) / 8;
     addrext->sadb_address_exttype = SADB_EXT_ADDRESS_DST;
-    addrext->sadb_address_proto = 0;    /* any protocol */
+    addrext->sadb_address_proto = 0; /* any protocol */
     addrext->sadb_address_prefixlen = prefix_all(dst);
     addrext->sadb_address_reserved = 0;
     memcpy(addrext + 1, dst, salen(dst));
@@ -116,8 +113,8 @@ sadb_add(struct sockaddr *src, struct sockaddr *dst, int type, int alg,
 
         msglen = Read(s, &buf, sizeof(buf));
         msgp = (struct sadb_msg *)&buf;
-        if ((pid_t)(msgp->sadb_msg_pid) == mypid &&
-                msgp->sadb_msg_type == SADB_ADD) {
+        if ((pid_t)(msgp->sadb_msg_pid) == mypid
+            && msgp->sadb_msg_type == SADB_ADD) {
             print_sadb_msg(msgp, msglen);
             break;
         }
@@ -126,8 +123,7 @@ sadb_add(struct sockaddr *src, struct sockaddr *dst, int type, int alg,
 }
 /* end sadb_add */
 
-int
-main(int argc, char **argv) {
+int main(int argc, char **argv) {
     struct addrinfo hints, *src, *dst;
     const char *p;
     unsigned char *keydata, *kp;
@@ -163,7 +159,8 @@ main(int argc, char **argv) {
         unsigned int c;
 
         if (len < 2) {
-            err_quit("%s: not enough bytes (expected %d)\n", argv[5], keybits / 8);
+            err_quit("%s: not enough bytes (expected %d)\n", argv[5],
+                     keybits / 8);
         }
         if (sscanf(p, "%2x", &c) != 1) {
             err_quit("%s contains invalid hex digit\n", argv[5]);

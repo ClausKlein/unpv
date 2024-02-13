@@ -8,8 +8,7 @@ int rtt_d_flag = 0; /* debug flag; can be set by caller */
  */
 #define RTT_RTOCALC(ptr) ((ptr)->rtt_srtt + (4.0 * (ptr)->rtt_rttvar))
 
-static double
-rtt_minmax(double rto) {
+static double rtt_minmax(double rto) {
     if (rto < RTT_RXTMIN) {
         rto = RTT_RXTMIN;
     } else if (rto > RTT_RXTMAX) {
@@ -18,17 +17,16 @@ rtt_minmax(double rto) {
     return (rto);
 }
 
-void
-rtt_init(struct rtt_info *ptr) {
+void rtt_init(struct rtt_info *ptr) {
     struct timeval tv;
 
     Gettimeofday(&tv, NULL);
     ptr->rtt_base = tv.tv_sec; /* # sec since 1/1/1970 at start */
 
-    ptr->rtt_rtt    = 0;
-    ptr->rtt_srtt   = 0;
+    ptr->rtt_rtt = 0;
+    ptr->rtt_srtt = 0;
     ptr->rtt_rttvar = 0.75;
-    ptr->rtt_rto    = rtt_minmax(RTT_RTOCALC(ptr));
+    ptr->rtt_rto = rtt_minmax(RTT_RTOCALC(ptr));
     /* first RTO at (srtt + (4 * rttvar)) = 3 seconds */
 }
 
@@ -37,9 +35,8 @@ rtt_init(struct rtt_info *ptr) {
  * Our timestamps are 32-bit integers that count milliseconds since
  * rtt_init() was called.
  */
-uint32_t
-rtt_ts(struct rtt_info *ptr) {
-    uint32_t       ts;
+uint32_t rtt_ts(struct rtt_info *ptr) {
+    uint32_t ts;
     struct timeval tv;
 
     Gettimeofday(&tv, NULL);
@@ -47,13 +44,9 @@ rtt_ts(struct rtt_info *ptr) {
     return (ts);
 }
 
-void
-rtt_newpack(struct rtt_info *ptr) {
-    ptr->rtt_nrexmt = 0;
-}
+void rtt_newpack(struct rtt_info *ptr) { ptr->rtt_nrexmt = 0; }
 
-int
-rtt_start(struct rtt_info *ptr) {
+int rtt_start(struct rtt_info *ptr) {
     return ((int)(ptr->rtt_rto + 0.5)); /* round double to int */
     /* return value can be used as: alarm(rtt_start(&foo)) */
 }
@@ -66,8 +59,7 @@ rtt_start(struct rtt_info *ptr) {
  * This function should be called right after turning off the
  * timer with alarm(0), or right after a timeout occurs.
  */
-void
-rtt_stop(struct rtt_info *ptr, uint32_t ms) {
+void rtt_stop(struct rtt_info *ptr, uint32_t ms) {
     double delta;
 
     ptr->rtt_rtt = ms / 1000.0; /* measured RTT in seconds */
@@ -94,8 +86,7 @@ rtt_stop(struct rtt_info *ptr, uint32_t ms) {
  * A timeout has occurred.
  * Return -1 if it's time to give up, else return 0.
  */
-int
-rtt_timeout(struct rtt_info *ptr) {
+int rtt_timeout(struct rtt_info *ptr) {
     ptr->rtt_rto *= 2; /* next RTO */
 
     if (++ptr->rtt_nrexmt > RTT_MAXNREXMT) {
@@ -107,8 +98,7 @@ rtt_timeout(struct rtt_info *ptr) {
 /*
  * Print debugging information on stderr, if the "rtt_d_flag" is nonzero.
  */
-void
-rtt_debug(struct rtt_info *ptr) {
+void rtt_debug(struct rtt_info *ptr) {
     if (rtt_d_flag == 0) {
         return;
     }

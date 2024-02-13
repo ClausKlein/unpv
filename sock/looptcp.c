@@ -7,26 +7,25 @@
  * It is provided "as is" without express or implied warranty.
  */
 
-#include    "sock.h"
+#include "sock.h"
 
 /* Copy everything from stdin to "sockfd",
  * and everything from "sockfd" to stdout. */
 
-void
-loop_tcp(int sockfd) {
-    int     maxfdp1, nread, ntowrite, stdineof, flags;
-    fd_set  rset;
+void loop_tcp(int sockfd) {
+    int maxfdp1, nread, ntowrite, stdineof, flags;
+    fd_set rset;
 
     if (pauseinit) {
-        sleep_us(pauseinit * 1000);    /* intended for server */
+        sleep_us(pauseinit * 1000); /* intended for server */
     }
 
     flags = 0;
     stdineof = 0;
     FD_ZERO(&rset);
-    maxfdp1 = sockfd + 1;   /* check descriptors [0..sockfd] */
+    maxfdp1 = sockfd + 1; /* check descriptors [0..sockfd] */
 
-    for (; ;) {
+    for (;;) {
         if (stdineof == 0) {
             FD_SET(STDIN_FILENO, &rset);
         }
@@ -36,7 +35,7 @@ loop_tcp(int sockfd) {
             err_sys("select error");
         }
 
-        if (FD_ISSET(STDIN_FILENO, &rset)) {    /* data to read on stdin */
+        if (FD_ISSET(STDIN_FILENO, &rset)) { /* data to read on stdin */
             if ((nread = read(STDIN_FILENO, rbuf, readlen)) < 0) {
                 err_sys("read error from stdin");
             } else if (nread == 0) { /* EOF on stdin */
@@ -46,10 +45,10 @@ loop_tcp(int sockfd) {
                     }
 
                     FD_CLR(STDIN_FILENO, &rset);
-                    stdineof = 1;   /* don't read stdin anymore */
-                    continue;       /* back to select() */
+                    stdineof = 1; /* don't read stdin anymore */
+                    continue;     /* back to select() */
                 }
-                break;      /* default: stdin EOF -> done */
+                break; /* default: stdin EOF -> done */
             }
 
             if (crlf) {
@@ -64,17 +63,17 @@ loop_tcp(int sockfd) {
             }
         }
 
-        if (FD_ISSET(sockfd, &rset)) {  /* data to read from socket */
+        if (FD_ISSET(sockfd, &rset)) { /* data to read from socket */
             /* msgpeek = 0 or MSG_PEEK */
             flags = msgpeek;
-oncemore:
+        oncemore:
             if ((nread = recv(sockfd, rbuf, readlen, flags)) < 0) {
                 err_sys("recv error");
             } else if (nread == 0) {
                 if (verbose) {
                     fprintf(stderr, "connection closed by peer\n");
                 }
-                break;      /* EOF, terminate */
+                break; /* EOF, terminate */
             }
 
             if (crlf) {
@@ -89,8 +88,8 @@ oncemore:
             }
 
             if (flags != 0) {
-                flags = 0;      /* no infinite loop */
-                goto oncemore;  /* read the message again */
+                flags = 0;     /* no infinite loop */
+                goto oncemore; /* read the message again */
             }
         }
     }
@@ -103,6 +102,6 @@ oncemore:
     }
 
     if (close(sockfd) < 0) {
-        err_sys("close error");    /* since SO_LINGER may be set */
+        err_sys("close error"); /* since SO_LINGER may be set */
     }
 }

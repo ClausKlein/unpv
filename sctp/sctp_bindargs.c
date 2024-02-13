@@ -1,7 +1,6 @@
-#include    "unp.h"
+#include "unp.h"
 
-int
-sctp_bind_arg_list(int sock_fd, char **argv, int argc) {
+int sctp_bind_arg_list(int sock_fd, char **argv, int argc) {
     struct addrinfo *addr;
     char *bindbuf, *p, portbuf[10];
     int addrcnt = 0;
@@ -19,5 +18,5 @@ sctp_bind_arg_list(int sock_fd, char **argv, int argc) {
     }
     Sctp_bindx(sock_fd, (SA *)bindbuf, addrcnt, SCTP_BINDX_ADD_ADDR);
     free(bindbuf);
-    return(0);
+    return (0);
 }

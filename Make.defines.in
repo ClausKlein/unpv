@@ -12,6 +12,7 @@
 # Standard stuff
 #
 .SUFFIXES:  .c .o
+$(VERBOSE).SILENT:
 
 .c.o:
 	$(COMPILE.c) $(OUTPUT_OPTION) $(CURDIR)/$<
@@ -57,11 +58,26 @@ CLEANFILES = core core.* *.core *.o temp.* *.out typescript* \
 .PHONY: all clean distclean
 all:
 
-clean::
+clean:
 		rm -f ${PROGS} ${CLEANFILES}
-
-distclean::
 		rm -rf *.d *~ *.dSYM
 
 -include *.d
+
+# These rules keep make from trying to use the match-anything rule below to
+# rebuild the makefiles--ouch!  Obviously, if you don't follow my convention
+# of using a `.mk' suffix on all non-standard makefiles you'll need to change
+# the pattern rule.
+#
+$(MAKEFILE) :: ;
+Makefile :: ;
+%.in :: ;
+%.mk :: ;
+%.d :: ;
+%.h :: ;
+
+# Anything we don't know how to build will use this rule.
+# The command is a do-nothing command.
+#
+% :: ;
 

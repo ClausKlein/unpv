@@ -1,4 +1,4 @@
-include ./Make.defines
+-include ./Make.defines
 
 UNAME=$(shell uname)
 
@@ -17,20 +17,32 @@ else
 endif
 
 
-.PHONY: $(SUBDIRS) all clean distclean
-all: $(SUBDIRS)
+.PHONY: $(SUBDIRS) setup init all clean distclean
+all: config.cache $(SUBDIRS)
 
-clean:: $(SUBDIRS)
-	rm -f $(CLEANFILES)
+setup: config.cache
+config.cache:
+	./configure --config-cache
+	${MAKE} -C lib -w$(MAKEFLAGS)
 
-distclean::
-	rm -f $(CLEANFILES) config.cache config.log config.status config.h Makefile #NO! Make.defines
+Make.defines: Make.defines.in
+config.h: config.h.in
+
+clean: $(SUBDIRS)
+
+distclean:
+	${MAKE} -C . -w$(MAKEFLAGS) clean
+	rm -f $(CLEANFILES) config.cache config.log config.status config.h Makefile Make.defines
 	find . -type d -name '*.dSYM' | xargs rm -rf
 	find . \( -name 'tags' -o -name '*.d' -o -name '*.o' -o -name '*~' \) -delete
 
-$(SUBDIRS):
+$(SUBDIRS): init
 	${MAKE} -C $@ -w$(MAKEFLAGS) $(MAKECMDGOALS)
 
-# No need to change
-$(MAKECMDGOALS):: $(SUBDIRS)
+init:
+	${MAKE} -C lib -w$(MAKEFLAGS)
 
+# No need to change
+$(MAKECMDGOALS): $(SUBDIRS)
+
+.NOTPARALLEL: setup init

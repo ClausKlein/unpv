@@ -1,10 +1,9 @@
 #include "unp.h"
 
-int
-main(int argc, char **argv) {
-    int              sockfd;
-    socklen_t        salen;
-    struct sockaddr  *serv;
+int main(int argc, char **argv) {
+    int sockfd;
+    socklen_t salen;
+    struct sockaddr *serv;
 
     if (argc != 2) {
         err_quit("usage: test2 <IPaddress>");
@@ -26,13 +25,13 @@ main(int argc, char **argv) {
 }
 
 #ifdef notdef
-int
-udp_client(const char *host, const char *serv, void **saptr, socklen_t *lenp) {
-    int             sockfd, n;
+int udp_client(const char *host, const char *serv, void **saptr,
+               socklen_t *lenp) {
+    int sockfd, n;
     struct addrinfo hints, *res, *ressave;
 
     bzero(&hints, sizeof(struct addrinfo));
-    hints.ai_family   = AF_UNSPEC;
+    hints.ai_family = AF_UNSPEC;
     hints.ai_socktype = SOCK_DGRAM;
 
     if ((n = getaddrinfo(host, serv, &hints, &res)) != 0)
@@ -60,9 +59,8 @@ udp_client(const char *host, const char *serv, void **saptr, socklen_t *lenp) {
     return (sockfd);
 }
 
-int
-Udp_client(const char *host, const char *serv, void **saptr,
-           socklen_t *lenptr) {
+int Udp_client(const char *host, const char *serv, void **saptr,
+               socklen_t *lenptr) {
     return (udp_client(host, serv, saptr, lenptr));
 }
 #endif

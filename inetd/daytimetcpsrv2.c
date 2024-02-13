@@ -1,8 +1,8 @@
-#include    "unp.h"
-#include    <time.h>
+#include <time.h>
 
-int
-main(int argc, char **argv) {
+#include "unp.h"
+
+int main(int argc, char **argv) {
     int listenfd, connfd;
     socklen_t addrlen, len;
     struct sockaddr *cliaddr;
@@ -23,7 +23,7 @@ main(int argc, char **argv) {
 
     cliaddr = Malloc(addrlen);
 
-    for (; ;) {
+    for (;;) {
         len = addrlen;
         connfd = Accept(listenfd, cliaddr, &len);
         err_msg("connection from %s", Sock_ntop(cliaddr, len));

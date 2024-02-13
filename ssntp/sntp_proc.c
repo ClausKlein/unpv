@@ -1,4 +1,4 @@
-#include    "sntp.h"
+#include "sntp.h"
 
 /** from RFC5905#section-14
  * An SNTP client implementing the on-wire protocol has a single server
@@ -25,20 +25,19 @@
  * functions, the association mode is set to broadcast client (mode 6)
  *
  **/
-void
-sntp_proc(char *buf, ssize_t n, struct timeval *nowptr) {
-    int             version, mode;
-    uint32_t        sec, useci;
-    double          usecf;
-    struct timeval  diff;
-    struct ntpdata  *ntp;
+void sntp_proc(char *buf, ssize_t n, struct timeval *nowptr) {
+    int version, mode;
+    uint32_t sec, useci;
+    double usecf;
+    struct timeval diff;
+    struct ntpdata *ntp;
 
     if (n < (ssize_t)sizeof(struct ntpdata)) {
         printf("\npacket too small: %ld bytes\n", n);
         return;
     }
 
-    ntp = (struct ntpdata *) buf;
+    ntp = (struct ntpdata *)buf;
     version = (ntp->status & VERSION_MASK) >> 3;
     mode = ntp->status & MODE_MASK;
     printf("\nv%d, mode %d (%s), start %d, ", version, mode,
@@ -49,10 +48,10 @@ sntp_proc(char *buf, ssize_t n, struct timeval *nowptr) {
     }
 
     sec = ntohl(ntp->xmt.int_part) - JAN_1970;
-    useci = ntohl(ntp->xmt.fraction);   /* 32-bit integer fraction */
-    usecf = useci;              /* integer fraction -> double */
-    usecf /= 4294967296.0;      /* divide by 2**32 -> [0, 1.0) */
-    useci = usecf * 1000000.0;  /* fraction -> parts per million */
+    useci = ntohl(ntp->xmt.fraction); /* 32-bit integer fraction */
+    usecf = useci;                    /* integer fraction -> double */
+    usecf /= 4294967296.0;            /* divide by 2**32 -> [0, 1.0) */
+    useci = usecf * 1000000.0;        /* fraction -> parts per million */
 
     diff.tv_sec = nowptr->tv_sec - sec;
     if ((diff.tv_usec = nowptr->tv_usec - useci) < 0) {

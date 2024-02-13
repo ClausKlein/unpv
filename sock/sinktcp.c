@@ -7,20 +7,19 @@
  * It is provided "as is" without express or implied warranty.
  */
 
-#include    "sock.h"
+#include "sock.h"
 
-void
-sink_tcp(int sockfd) {
-    int     n, flags;
+void sink_tcp(int sockfd) {
+    int n, flags;
 
     if (pauseinit) {
         sleep_us(pauseinit * 1000);
     }
 
-    for (; ;) {      /* read until peer closes connection; -n opt ignored */
+    for (;;) { /* read until peer closes connection; -n opt ignored */
         /* msgpeek = 0 or MSG_PEEK */
         flags = msgpeek;
-oncemore:
+    oncemore:
         if ((n = recv(sockfd, rbuf, readlen, flags)) < 0) {
             err_sys("recv error");
 
@@ -30,7 +29,7 @@ oncemore:
             }
             break;
 
-#ifdef  notdef      /* following not possible with TCP */
+#ifdef notdef /* following not possible with TCP */
         } else if (n != readlen) {
             err_quit("read returned %d, expected %d", n, readlen);
         }
@@ -47,12 +46,12 @@ oncemore:
         }
 
         if (flags != 0) {
-            flags = 0;      /* no infinite loop */
-            goto oncemore;  /* read the message again */
+            flags = 0;     /* no infinite loop */
+            goto oncemore; /* read the message again */
         }
     }
 
-    if (pauseclose) {   /* pausing here puts peer into FIN_WAIT_2 */
+    if (pauseclose) { /* pausing here puts peer into FIN_WAIT_2 */
         if (verbose) {
             fprintf(stderr, "pausing before close\n");
         }
@@ -60,6 +59,6 @@ oncemore:
     }
 
     if (close(sockfd) < 0) {
-        err_sys("close error");    /* since SO_LINGER may be set */
+        err_sys("close error"); /* since SO_LINGER may be set */
     }
 }

@@ -1,16 +1,15 @@
 #include "unp.h"
 
 static void recvfrom_int(int);
-static int  count;
+static int count;
 
-void
-dg_echo(int sockfd, SA *pcliaddr, socklen_t clilen) {
-    socklen_t   len;
-    char        mesg[MAXLINE];
+void dg_echo(int sockfd, SA *pcliaddr, socklen_t clilen) {
+    socklen_t len;
+    char mesg[MAXLINE];
 
     Signal(SIGINT, recvfrom_int);
 
-    for (; ;) {
+    for (;;) {
         len = clilen;
         Recvfrom(sockfd, mesg, MAXLINE, 0, pcliaddr, &len);
 
@@ -18,8 +17,7 @@ dg_echo(int sockfd, SA *pcliaddr, socklen_t clilen) {
     }
 }
 
-static void
-recvfrom_int(int signo) {
+static void recvfrom_int(int signo) {
     printf("\nreceived %d datagrams\n", count);
     exit(0);
 }

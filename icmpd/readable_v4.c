@@ -1,33 +1,32 @@
 /* include readable_v41 */
-#include    "icmpd.h"
-#include    <netinet/in_systm.h>
-#include    <netinet/ip.h>
-#include    <netinet/ip_icmp.h>
-#include    <netinet/udp.h>
+#include <netinet/in_systm.h>
+#include <netinet/ip.h>
+#include <netinet/ip_icmp.h>
+#include <netinet/udp.h>
 
-int
-readable_v4(void) {
-    int                 i, hlen1, hlen2, icmplen, sport;
-    char                buf[MAXLINE];
-    char                srcstr[INET_ADDRSTRLEN], dststr[INET_ADDRSTRLEN];
-    ssize_t             n;
-    socklen_t           len;
-    struct ip           *ip, *hip;
-    struct icmp         *icmp;
-    struct udphdr       *udp;
-    struct sockaddr_in  from, dest;
-    struct icmpd_err    icmpd_err;
+#include "icmpd.h"
+
+int readable_v4(void) {
+    int i, hlen1, hlen2, icmplen, sport;
+    char buf[MAXLINE];
+    char srcstr[INET_ADDRSTRLEN], dststr[INET_ADDRSTRLEN];
+    ssize_t n;
+    socklen_t len;
+    struct ip *ip, *hip;
+    struct icmp *icmp;
+    struct udphdr *udp;
+    struct sockaddr_in from, dest;
+    struct icmpd_err icmpd_err;
 
     len = sizeof(from);
-    n = Recvfrom(fd4, buf, MAXLINE, 0, (SA *) &from, &len);
+    n = Recvfrom(fd4, buf, MAXLINE, 0, (SA *)&from, &len);
 
-    printf("%ld bytes ICMPv4 from %s:",
-           n, Sock_ntop_host((SA *) &from, len));
+    printf("%ld bytes ICMPv4 from %s:", n, Sock_ntop_host((SA *)&from, len));
 
-    ip = (struct ip *) buf;     /* start of IP header */
-    hlen1 = ip->ip_hl << 2;     /* length of IP header */
+    ip = (struct ip *)buf;  /* start of IP header */
+    hlen1 = ip->ip_hl << 2; /* length of IP header */
 
-    icmp = (struct icmp *)(buf + hlen1);    /* start of ICMP header */
+    icmp = (struct icmp *)(buf + hlen1); /* start of ICMP header */
     if ((icmplen = n - hlen1) < 8) {
         err_quit("icmplen (%d) < 8", icmplen);
     }
@@ -36,9 +35,8 @@ readable_v4(void) {
     /* end readable_v41 */
 
     /* include readable_v42 */
-    if (icmp->icmp_type == ICMP_UNREACH ||
-            icmp->icmp_type == ICMP_TIMXCEED ||
-            icmp->icmp_type == ICMP_SOURCEQUENCH) {
+    if (icmp->icmp_type == ICMP_UNREACH || icmp->icmp_type == ICMP_TIMXCEED
+        || icmp->icmp_type == ICMP_SOURCEQUENCH) {
         if (icmplen < 8 + 20 + 8) {
             err_quit("icmplen (%d) < 8 + 20 + 8", icmplen);
         }
@@ -55,13 +53,11 @@ readable_v4(void) {
 
             /* 4find client's Unix domain socket, send headers */
             for (i = 0; i <= maxi; i++) {
-                if (client[i].connfd >= 0 &&
-                        client[i].family == AF_INET &&
-                        client[i].lport == sport) {
-
+                if (client[i].connfd >= 0 && client[i].family == AF_INET
+                    && client[i].lport == sport) {
                     bzero(&dest, sizeof(dest));
                     dest.sin_family = AF_INET;
-#ifdef  HAVE_SOCKADDR_SA_LEN
+#ifdef HAVE_SOCKADDR_SA_LEN
                     dest.sin_len = sizeof(dest);
 #endif
                     memcpy(&dest.sin_addr, &hip->ip_dst,
@@ -74,7 +70,7 @@ readable_v4(void) {
                     memcpy(&icmpd_err.icmpd_dest, &dest, sizeof(dest));
 
                     /* 4convert type & code to reasonable errno value */
-                    icmpd_err.icmpd_errno = EHOSTUNREACH;   /* default */
+                    icmpd_err.icmpd_errno = EHOSTUNREACH; /* default */
                     if (icmp->icmp_type == ICMP_UNREACH) {
                         if (icmp->icmp_code == ICMP_UNREACH_PORT) {
                             icmpd_err.icmpd_errno = ECONNREFUSED;
@@ -87,6 +83,6 @@ readable_v4(void) {
             }
         }
     }
-    return(--nready);
+    return (--nready);
 }
 /* end readable_v42 */

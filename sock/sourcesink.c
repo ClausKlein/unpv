@@ -7,18 +7,18 @@
  * It is provided "as is" without express or implied warranty.
  */
 
-#include    "sock.h"
-#include    <ctype.h>
+#include <ctype.h>
 
-void    pattern(char *ptr, int len);
+#include "sock.h"
 
-void
-sink(int sockfd) {
-    int     i, n;
-    char    oob;
+void pattern(char *ptr, int len);
+
+void sink(int sockfd) {
+    int i, n;
+    char oob;
 
     if (client) {
-        pattern(wbuf, writelen);    /* fill send buffer with a pattern */
+        pattern(wbuf, writelen); /* fill send buffer with a pattern */
 
         if (pauseinit) {
             sleep(pauseinit);
@@ -28,8 +28,8 @@ sink(int sockfd) {
             if (urgwrite == i) {
                 oob = urgwrite;
                 if ((n = send(sockfd, &oob, 1, MSG_OOB)) != 1)
-                    err_sys("send of MSG_OOB returned %d, expected %d",
-                            n, writelen);
+                    err_sys("send of MSG_OOB returned %d, expected %d", n,
+                            writelen);
                 if (verbose) {
                     fprintf(stderr, "wrote %d byte of urgent data\n", n);
                 }
@@ -48,17 +48,16 @@ sink(int sockfd) {
         }
 
     } else {
-
         if (pauseinit) {
             sleep(pauseinit);
         }
 
-        for (; ;) {
+        for (;;) {
             if ((n = read(sockfd, rbuf, readlen)) < 0) {
                 err_sys("read error");
 
             } else if (n == 0) {
-                break;      /* connection closed by peer */
+                break; /* connection closed by peer */
 
             } else if (n != readlen) {
                 err_quit("read returned %d, expected %d", n, readlen);
@@ -82,18 +81,17 @@ sink(int sockfd) {
     }
 
     if (close(sockfd) < 0) {
-        err_sys("close error");    /* since SO_LINGER may be set */
+        err_sys("close error"); /* since SO_LINGER may be set */
     }
 }
 
-void
-pattern(char *ptr, int len) {
-    char    c;
+void pattern(char *ptr, int len) {
+    char c;
 
     c = 0;
-    while (len-- > 0)  {
+    while (len-- > 0) {
         while (isprint((c & 0x7F)) == 0) {
-            c++;    /* skip over nonprinting characters */
+            c++; /* skip over nonprinting characters */
         }
         *ptr++ = (c++ & 0x7F);
     }

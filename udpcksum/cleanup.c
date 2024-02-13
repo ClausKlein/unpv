@@ -1,9 +1,8 @@
-#include    "udpcksum.h"
+#include "udpcksum.h"
 
 /* include cleanup */
-void
-cleanup(int signo) {
-    struct pcap_stat    stat;
+void cleanup(int signo) {
+    struct pcap_stat stat;
 
     putc('\n', stdout);
 

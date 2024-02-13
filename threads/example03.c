@@ -1,49 +1,60 @@
-#include    "unpthread.h"
+#include "unpthread.h"
 
-#define Pthread_mutex_lock(mptr) \
-    {   int  n; \
-        if ( (n = pthread_mutex_lock(mptr)) != 0) \
-        { errno = n; err_sys("pthread_mutex_lock error"); } \
+#define Pthread_mutex_lock(mptr)                   \
+    {                                              \
+        int n;                                     \
+        if ((n = pthread_mutex_lock(mptr)) != 0) { \
+            errno = n;                             \
+            err_sys("pthread_mutex_lock error");   \
+        }                                          \
     }
-#define Pthread_mutex_unlock(mptr) \
-    {   int  n; \
-        if ( (n = pthread_mutex_unlock(mptr)) != 0) \
-        { errno = n; err_sys("pthread_mutex_unlock error"); } \
+#define Pthread_mutex_unlock(mptr)                   \
+    {                                                \
+        int n;                                       \
+        if ((n = pthread_mutex_unlock(mptr)) != 0) { \
+            errno = n;                               \
+            err_sys("pthread_mutex_unlock error");   \
+        }                                            \
     }
-#define Pthread_cond_wait(cptr,mptr) \
-    {   int  n; \
-        if ( (n = pthread_cond_wait(cptr,mptr)) != 0) \
-        { errno = n; err_sys("pthread_cond_wait error"); } \
+#define Pthread_cond_wait(cptr, mptr)                   \
+    {                                                   \
+        int n;                                          \
+        if ((n = pthread_cond_wait(cptr, mptr)) != 0) { \
+            errno = n;                                  \
+            err_sys("pthread_cond_wait error");         \
+        }                                               \
     }
-#define Pthread_cond_signal(cptr) \
-    {   int  n; \
-        if ( (n = pthread_cond_signal(cptr)) != 0) \
-        { errno = n; err_sys("pthread_cond_signal error"); } \
+#define Pthread_cond_signal(cptr)                   \
+    {                                               \
+        int n;                                      \
+        if ((n = pthread_cond_signal(cptr)) != 0) { \
+            errno = n;                              \
+            err_sys("pthread_cond_signal error");   \
+        }                                           \
     }
 
-#define NLOOP        50
-#define MY_BUFFSIZE  10
+#define NLOOP 50
+#define MY_BUFFSIZE 10
 
 struct buf_t {
-    int       b_buf[MY_BUFFSIZE];    /* the buffer which contains integer items */
-    int       b_nitems;           /* #items currently in buffer */
-    int       b_nextget;
-    int       b_nextput;
-    pthread_mutex_t   b_mutex;
-    pthread_cond_t    b_cond_consumer;    /* consumer waiting to get */
-    pthread_cond_t    b_cond_producer;    /* producer waiting to put */
+    int b_buf[MY_BUFFSIZE]; /* the buffer which contains integer items */
+    int b_nitems;           /* #items currently in buffer */
+    int b_nextget;
+    int b_nextput;
+    pthread_mutex_t b_mutex;
+    pthread_cond_t b_cond_consumer; /* consumer waiting to get */
+    pthread_cond_t b_cond_producer; /* producer waiting to put */
 } buf_t;
 
-void    *produce_loop(void *);
-void    *consume_loop(void *);
+void *produce_loop(void *);
+void *consume_loop(void *);
 
-int
-main(int argc, char **argv) {
-    int         n;
-    pthread_t   tidA, tidB;
+int main(int argc, char **argv) {
+    int n;
+    pthread_t tidA, tidB;
 
     printf("main, addr(stack) = %p, addr(global) = %p, addr(func) = %p\n",
-           (void *) &n, (void *) &buf_t, (void *) &produce_loop);
+           (void *)&n, (void *)&buf_t, (void *)&produce_loop);
     if ((n = pthread_create(&tidA, NULL, &produce_loop, NULL)) != 0) {
         errno = n, err_sys("pthread_create error for A");
     }
@@ -62,8 +73,7 @@ main(int argc, char **argv) {
     exit(0);
 }
 
-void
-produce(struct buf_t *bptr, int val) {
+void produce(struct buf_t *bptr, int val) {
     Pthread_mutex_lock(&bptr->b_mutex);
     /* Wait if buffer is full */
     while (bptr->b_nitems >= MY_BUFFSIZE) {
@@ -83,9 +93,8 @@ produce(struct buf_t *bptr, int val) {
     Pthread_mutex_unlock(&bptr->b_mutex);
 }
 
-int
-consume(struct buf_t *bptr) {
-    int     val;
+int consume(struct buf_t *bptr) {
+    int val;
 
     Pthread_mutex_lock(&bptr->b_mutex);
     /* Wait if buffer is empty */
@@ -105,31 +114,29 @@ consume(struct buf_t *bptr) {
     Pthread_cond_signal(&bptr->b_cond_producer);
     Pthread_mutex_unlock(&bptr->b_mutex);
 
-    return(val);
+    return (val);
 }
 
-void *
-produce_loop(void *vptr) {
-    int     i;
+void *produce_loop(void *vptr) {
+    int i;
 
     printf("produce_loop thread, addr(stack) = %ls\n", &i);
     for (i = 0; i < NLOOP; i++) {
         produce(&buf_t, i);
     }
 
-    return(NULL);
+    return (NULL);
 }
 
-void *
-consume_loop(void *vptr) {
-    int     i, val;
+void *consume_loop(void *vptr) {
+    int i, val;
 
     printf("consume_loop thread, addr(stack) = %ls\n", &i);
     for (i = 0; i < NLOOP; i++) {
         val = consume(&buf_t);
         val++;
-        (void) val;
+        (void)val;
     }
 
-    return(NULL);
+    return (NULL);
 }

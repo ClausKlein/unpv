@@ -1,11 +1,10 @@
-#include    "unp.h"
+#include "unp.h"
 
-#define BUFF    100000
-char    buff[BUFF];
+#define BUFF 100000
+char buff[BUFF];
 
-int
-main(int argc, char **argv) {
-    int     sockfd, nbytes;
+int main(int argc, char **argv) {
+    int sockfd, nbytes;
     ssize_t n;
 
     if (argc != 3) {

@@ -1,12 +1,12 @@
 /* include sig_alrm */
-#include    "udpcksum.h"
-#include    <setjmp.h>
+#include "udpcksum.h"
 
-static sigjmp_buf   jmpbuf;
-static int          canjump;
+#include <setjmp.h>
 
-void
-sig_alrm(int signo) {
+static sigjmp_buf jmpbuf;
+static int canjump;
+
+void sig_alrm(int signo) {
     if (canjump == 0) {
         return;
     }
@@ -15,9 +15,8 @@ sig_alrm(int signo) {
 /* end sig_alrm */
 
 /* include test_udp */
-void
-test_udp(void) {
-    volatile int    nsent = 0, timeout = 3;
+void test_udp(void) {
+    volatile int nsent = 0, timeout = 3;
     struct udpiphdr *ui;
 
     Signal(SIGALRM, sig_alrm);
@@ -27,9 +26,9 @@ test_udp(void) {
             err_quit("no response");
         }
         printf("timeout\n");
-        timeout *= 2;       /* exponential backoff: 3, 6, 12 */
+        timeout *= 2; /* exponential backoff: 3, 6, 12 */
     }
-    canjump = 1;    /* siglongjmp is now OK */
+    canjump = 1; /* siglongjmp is now OK */
 
     send_dns_query();
     nsent++;

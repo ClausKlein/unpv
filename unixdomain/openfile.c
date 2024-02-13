@@ -1,8 +1,7 @@
-#include    "unp.h"
+#include "unp.h"
 
-int
-main(int argc, char **argv) {
-    int     fd;
+int main(int argc, char **argv) {
+    int fd;
 
     if (argc != 4) {
         err_quit("openfile <sockfd#> <filename> <mode>");

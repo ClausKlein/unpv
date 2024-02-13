@@ -36,7 +36,7 @@
 
 extern struct ifreq ifr;
 
-extern char name[32];	/* name of interface */
+extern char name[32]; /* name of interface */
 extern int allmedia;
 struct afswtch;
 
@@ -50,7 +50,7 @@ extern void setvlandev(const char *, int, int, const struct afswtch *rafp);
 extern void unsetvlandev(const char *, int, int, const struct afswtch *rafp);
 extern void vlan_status(int s, struct rt_addrinfo *);
 
-extern void setbonddev(const char *, int, int, const struct afswtch * rafp);
-extern void unsetbonddev(const char *, int, int, const struct afswtch * rafp);
-extern void setbondmode(const char *, int, int, const struct afswtch * rafp);
+extern void setbonddev(const char *, int, int, const struct afswtch *rafp);
+extern void unsetbonddev(const char *, int, int, const struct afswtch *rafp);
+extern void setbondmode(const char *, int, int, const struct afswtch *rafp);
 extern void bond_status(int s, struct rt_addrinfo *);

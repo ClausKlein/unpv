@@ -1,16 +1,15 @@
 /* include serv08 */
-#include    "unpthread.h"
-#include    "pthread08.h"
+#include "pthread08.h"
+#include "unpthread.h"
 
-static int          nthreads;
-pthread_mutex_t     clifd_mutex = PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t      clifd_cond = PTHREAD_COND_INITIALIZER;
+static int nthreads;
+pthread_mutex_t clifd_mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t clifd_cond = PTHREAD_COND_INITIALIZER;
 
-int
-main(int argc, char **argv) {
-    int         i, listenfd = -1, connfd;
-    void        sig_int(int), thread_make(int);
-    socklen_t   addrlen, clilen;
+int main(int argc, char **argv) {
+    int i, listenfd = -1, connfd;
+    void sig_int(int), thread_make(int);
+    socklen_t addrlen, clilen;
     struct sockaddr *cliaddr;
 
     if (argc == 3) {
@@ -28,12 +27,12 @@ main(int argc, char **argv) {
 
     /* 4create all the threads */
     for (i = 0; i < nthreads; i++) {
-        thread_make(i);    /* only main thread returns */
+        thread_make(i); /* only main thread returns */
     }
 
     Signal(SIGINT, sig_int);
 
-    for (; ;) {
+    for (;;) {
         clilen = addrlen;
         connfd = Accept(listenfd, cliaddr, &clilen);
 
@@ -51,10 +50,9 @@ main(int argc, char **argv) {
 }
 /* end serv08 */
 
-void
-sig_int(int signo) {
-    int     i;
-    void    pr_cpu_time(void);
+void sig_int(int signo) {
+    int i;
+    void pr_cpu_time(void);
 
     pr_cpu_time();
 

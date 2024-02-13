@@ -1,36 +1,35 @@
 /* include readable_v61 */
-#include    "icmpd.h"
-#include    <netinet/in_systm.h>
-#include    <netinet/ip.h>
-#include    <netinet/ip_icmp.h>
-#include    <netinet/udp.h>
+#include <netinet/in_systm.h>
+#include <netinet/ip.h>
+#include <netinet/ip_icmp.h>
+#include <netinet/udp.h>
 
-#ifdef  IPV6
-#include    <netinet/ip6.h>
-#include    <netinet/icmp6.h>
+#include "icmpd.h"
+
+#ifdef IPV6
+#    include <netinet/icmp6.h>
+#    include <netinet/ip6.h>
 #endif
 
-int
-readable_v6(void) {
-#ifdef  IPV6
-    int                 i, hlen2, icmp6len, sport;
-    char                buf[MAXLINE];
-    char                srcstr[INET6_ADDRSTRLEN], dststr[INET6_ADDRSTRLEN];
-    ssize_t             n;
-    socklen_t           len;
-    struct ip6_hdr      *hip6;
-    struct icmp6_hdr    *icmp6;
-    struct udphdr       *udp;
+int readable_v6(void) {
+#ifdef IPV6
+    int i, hlen2, icmp6len, sport;
+    char buf[MAXLINE];
+    char srcstr[INET6_ADDRSTRLEN], dststr[INET6_ADDRSTRLEN];
+    ssize_t n;
+    socklen_t len;
+    struct ip6_hdr *hip6;
+    struct icmp6_hdr *icmp6;
+    struct udphdr *udp;
     struct sockaddr_in6 from, dest;
-    struct icmpd_err    icmpd_err;
+    struct icmpd_err icmpd_err;
 
     len = sizeof(from);
-    n = Recvfrom(fd6, buf, MAXLINE, 0, (SA *) &from, &len);
+    n = Recvfrom(fd6, buf, MAXLINE, 0, (SA *)&from, &len);
 
-    printf("%ld bytes ICMPv6 from %s:",
-           n, Sock_ntop_host((SA *) &from, len));
+    printf("%ld bytes ICMPv6 from %s:", n, Sock_ntop_host((SA *)&from, len));
 
-    icmp6 = (struct icmp6_hdr *) buf;       /* start of ICMPv6 header */
+    icmp6 = (struct icmp6_hdr *)buf; /* start of ICMPv6 header */
     if ((icmp6len = n) < 8) {
         err_quit("icmp6len (%d) < 8", icmp6len);
     }
@@ -39,9 +38,9 @@ readable_v6(void) {
     /* end readable_v61 */
 
     /* include readable_v62 */
-    if (icmp6->icmp6_type == ICMP6_DST_UNREACH ||
-            icmp6->icmp6_type == ICMP6_PACKET_TOO_BIG ||
-            icmp6->icmp6_type == ICMP6_TIME_EXCEEDED) {
+    if (icmp6->icmp6_type == ICMP6_DST_UNREACH
+        || icmp6->icmp6_type == ICMP6_PACKET_TOO_BIG
+        || icmp6->icmp6_type == ICMP6_TIME_EXCEEDED) {
         if (icmp6len < 8 + 8) {
             err_quit("icmp6len (%d) < 8 + 8", icmp6len);
         }
@@ -58,15 +57,13 @@ readable_v6(void) {
 
             /* 4find client's Unix domain socket, send headers */
             for (i = 0; i <= maxi; i++) {
-                if (client[i].connfd >= 0 &&
-                        client[i].family == AF_INET6 &&
-                        client[i].lport == sport) {
-
+                if (client[i].connfd >= 0 && client[i].family == AF_INET6
+                    && client[i].lport == sport) {
                     bzero(&dest, sizeof(dest));
                     dest.sin6_family = AF_INET6;
-#ifdef  HAVE_SOCKADDR_SA_LEN
+#    ifdef HAVE_SOCKADDR_SA_LEN
                     dest.sin6_len = sizeof(dest);
-#endif
+#    endif
                     memcpy(&dest.sin6_addr, &hip6->ip6_dst,
                            sizeof(struct in6_addr));
                     dest.sin6_port = udp->uh_dport;
@@ -77,9 +74,9 @@ readable_v6(void) {
                     memcpy(&icmpd_err.icmpd_dest, &dest, sizeof(dest));
 
                     /* 4convert type & code to reasonable errno value */
-                    icmpd_err.icmpd_errno = EHOSTUNREACH;   /* default */
-                    if (icmp6->icmp6_type == ICMP6_DST_UNREACH &&
-                            icmp6->icmp6_code == ICMP6_DST_UNREACH_NOPORT) {
+                    icmpd_err.icmpd_errno = EHOSTUNREACH; /* default */
+                    if (icmp6->icmp6_type == ICMP6_DST_UNREACH
+                        && icmp6->icmp6_code == ICMP6_DST_UNREACH_NOPORT) {
                         icmpd_err.icmpd_errno = ECONNREFUSED;
                     }
                     if (icmp6->icmp6_type == ICMP6_PACKET_TOO_BIG) {
@@ -90,7 +87,7 @@ readable_v6(void) {
             }
         }
     }
-    return(--nready);
+    return (--nready);
 #endif
 }
 /* end readable_v62 */

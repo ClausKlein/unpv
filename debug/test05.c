@@ -1,19 +1,17 @@
-#include    "unpxti.h"
+#include "unpxti.h"
 
-int     listenfd, connfd;
+int listenfd, connfd;
 
-void
-sig_poll(int signo) {
-    int     n, flags;
-    char    buff[MAXLINE];
+void sig_poll(int signo) {
+    int n, flags;
+    char buff[MAXLINE];
 
     printf("SIGPOLL, event = %d\n", t_look(connfd));
     n = T_rcv(connfd, buff, sizeof(buff), &flags);
     printf("received %d bytes, flags = %d\n", n, flags);
 }
 
-int
-main(int argc, char **argv) {
+int main(int argc, char **argv) {
     if (argc == 2) {
         listenfd = Tcp_listen(NULL, argv[1], NULL);
     } else if (argc == 3) {
@@ -27,7 +25,7 @@ main(int argc, char **argv) {
     Signal(SIGPOLL, sig_poll);
     Ioctl(connfd, I_SETSIG, S_RDNORM);
 
-    for (; ;) {
+    for (;;) {
         pause();
     }
 }

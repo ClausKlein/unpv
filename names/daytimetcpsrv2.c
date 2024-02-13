@@ -1,12 +1,12 @@
-#include    "unp.h"
-#include    <time.h>
+#include <time.h>
 
-int
-main(int argc, char **argv) {
-    int             listenfd = -1, connfd;
-    socklen_t       len, addrlen;
-    char            buff[MAXLINE];
-    time_t          ticks;
+#include "unp.h"
+
+int main(int argc, char **argv) {
+    int listenfd = -1, connfd;
+    socklen_t len, addrlen;
+    char buff[MAXLINE];
+    time_t ticks;
     struct sockaddr_storage cliaddr;
 
     if (argc == 2) {
@@ -17,7 +17,7 @@ main(int argc, char **argv) {
         err_quit("usage: daytimetcpsrv2 [ <host> ] <service or port>");
     }
 
-    for (; ;) {
+    for (;;) {
         len = sizeof(cliaddr);
         connfd = Accept(listenfd, (SA *)&cliaddr, &len);
         printf("connection from %s\n", Sock_ntop((SA *)&cliaddr, len));

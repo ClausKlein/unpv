@@ -1,25 +1,24 @@
-#include    "unp.h"
+#include "unp.h"
 
 static void doit(int, const char *);
 
-int
-main(void) {
-    int     tcpsock, udpsock;
+int main(void) {
+    int tcpsock, udpsock;
 
     if ((tcpsock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         err_sys("TCP socket error");
     }
 
 #ifdef HAVE_ASCII2ADDR
-    struct sockaddr_in  servaddr;
+    struct sockaddr_in servaddr;
     bzero(&servaddr, sizeof(servaddr));
-    servaddr.sin_family      = AF_INET;
-    servaddr.sin_port        = htons(9);
+    servaddr.sin_family = AF_INET;
+    servaddr.sin_port = htons(9);
     if (ascii2addr(AF_INET, "127.0.0.1", &servaddr.sin_addr) != 4) {
         err_quit("ascii2addr error");
     }
 
-    if (connect(tcpsock, (SA *) &servaddr, sizeof(servaddr)) < 0) {
+    if (connect(tcpsock, (SA *)&servaddr, sizeof(servaddr)) < 0) {
         err_sys("connect error");
     }
 #endif
@@ -34,10 +33,9 @@ main(void) {
     exit(0);
 }
 
-static void
-doit(int fd, const char *name) {
-    int         val;
-    socklen_t   optlen;
+static void doit(int fd, const char *name) {
+    int val;
+    socklen_t optlen;
 
     optlen = sizeof(val);
     if (getsockopt(fd, SOL_SOCKET, SO_SNDBUF, &val, &optlen) < 0) {

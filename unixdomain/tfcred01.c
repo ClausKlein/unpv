@@ -1,13 +1,14 @@
-#include    "unp.h"
-#include    <sys/param.h>
-#include    <sys/ucred.h>
+#include <sys/param.h>
+#include <sys/ucred.h>
+
+#include "unp.h"
 
 ssize_t recv_cred(int, void *, size_t, struct fcred *);
 
 main() {
-    int             fd[2], on, n;
-    char            buf[100];
-    struct fcred    cred;
+    int fd[2], on, n;
+    char buf[100];
+    struct fcred cred;
 
     if (socketpair(AF_LOCAL, SOCK_STREAM, 0, fd) < 0) {
         err_sys("socketpair error");
@@ -25,7 +26,7 @@ main() {
         err_quit("recv_cred, unexpected EOF");
     }
 
-    buf[n] = 0;         /* null terminate */
+    buf[n] = 0; /* null terminate */
     printf("data: %s", buf);
 
     if (cred.fc_ngroups == 0) {
@@ -48,12 +49,11 @@ main() {
 
 #define CONTROL_LEN (sizeof(struct cmsghdr) + sizeof(struct fcred))
 
-ssize_t
-recv_cred(int fd, void *ptr, size_t nbytes, struct fcred *fcredptr) {
-    struct msghdr   msg;
-    struct iovec    iov[1];
-    char            control[CONTROL_LEN + 20];
-    int             n;
+ssize_t recv_cred(int fd, void *ptr, size_t nbytes, struct fcred *fcredptr) {
+    struct msghdr msg;
+    struct iovec iov[1];
+    char control[CONTROL_LEN + 20];
+    int n;
 
     msg.msg_name = NULL;
     msg.msg_namelen = 0;
@@ -66,12 +66,12 @@ recv_cred(int fd, void *ptr, size_t nbytes, struct fcred *fcredptr) {
     msg.msg_flags = 0;
 
     if ((n = recvmsg(fd, &msg, 0)) < 0) {
-        return(n);
+        return (n);
     }
 
-    fcredptr->fc_ngroups = 0;   /* indicates no credentials returned */
+    fcredptr->fc_ngroups = 0; /* indicates no credentials returned */
     if (fcredptr && msg.msg_controllen > 0) {
-        struct cmsghdr  *cmptr = (struct cmsghdr *) control;
+        struct cmsghdr *cmptr = (struct cmsghdr *)control;
 
         if (cmptr->cmsg_len != sizeof(struct cmsghdr) + sizeof(struct fcred)) {
             err_quit("control length = %d", cmptr->cmsg_len);
@@ -85,5 +85,5 @@ recv_cred(int fd, void *ptr, size_t nbytes, struct fcred *fcredptr) {
         memcpy(fcredptr, CMSG_DATA(cmptr), sizeof(struct fcred));
     }
 
-    return(n);
+    return (n);
 }

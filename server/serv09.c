@@ -1,11 +1,10 @@
 /* include serv09 */
-#include    "unpthread.h"
-#include    "pthread09.h"
+#include "pthread09.h"
+#include "unpthread.h"
 
-int
-main(int argc, char **argv) {
-    int     i;
-    void    sig_int(int), thread_make(int);
+int main(int argc, char **argv) {
+    int i;
+    void sig_int(int), thread_make(int);
 
     if (argc == 3) {
         listenfd = Tcp_listen(NULL, argv[1], &addrlen);
@@ -18,21 +17,20 @@ main(int argc, char **argv) {
     tptr = Calloc(nthreads, sizeof(Thread));
 
     for (i = 0; i < nthreads; i++) {
-        thread_make(i);    /* only main thread returns */
+        thread_make(i); /* only main thread returns */
     }
 
     Signal(SIGINT, sig_int);
 
-    for (; ;) {
-        pause();    /* everything done by threads */
+    for (;;) {
+        pause(); /* everything done by threads */
     }
 }
 /* end serv09 */
 
-void
-sig_int(int signo) {
-    int     i;
-    void    pr_cpu_time(void);
+void sig_int(int signo) {
+    int i;
+    void pr_cpu_time(void);
 
     pr_cpu_time();
 

@@ -1,23 +1,20 @@
 #include <arpa/inet.h>
-
 #include <sys/socket.h>
 #include <sys/types.h>
 
 #if defined BSD || defined __APPLE__
-#include <net/if_dl.h>
-#include <net/if_types.h> // IFT_ETHER
+#    include <net/if_dl.h>
+#    include <net/if_types.h>  // IFT_ETHER
 #endif
 
-#include <ifaddrs.h> // getifaddrs
-#include <netdb.h>   // getnameinfo
-
 #include <assert.h>
+#include <ifaddrs.h>  // getifaddrs
+#include <netdb.h>    // getnameinfo
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char *argv[]) {
 #if defined BSD || defined __APPLE__
     struct ifaddrs *ifaddr, *ifa;
     int family, len, s;
@@ -37,27 +34,26 @@ int main(int argc, char* argv[])
         }
 
         family = ifa->ifa_addr->sa_family;
-        len    = ifa->ifa_addr->sa_len;
+        len = ifa->ifa_addr->sa_len;
 
         /* Display interface name and family (including symbolic
            form of the latter for the common families) */
 
         printf("%s\taddress family: %d%s\n", ifa->ifa_name, family,
-            // FIXME (family == AF_PACKET) ? " (AF_PACKET)" :
-            (family == AF_LINK) ? " (AF_LINK)"
-                                : (family == AF_INET)
-                    ? " (AF_INET)"
-                    : (family == AF_INET6) ? " (AF_INET6)" : "");
+               // FIXME (family == AF_PACKET) ? " (AF_PACKET)" :
+               (family == AF_LINK)    ? " (AF_LINK)"
+               : (family == AF_INET)  ? " (AF_INET)"
+               : (family == AF_INET6) ? " (AF_INET6)"
+                                      : "");
 
         /* For an AF_INET* interface address, display the address */
 
         if (family == AF_INET || family == AF_INET6) {
-
             // XXX assert(len == ((family == AF_INET) ? sizeof(struct
             //          sockaddr_in) : sizeof(struct sockaddr_in6)));
 
-            s = getnameinfo(
-                ifa->ifa_addr, len, host, NI_MAXHOST, NULL, 0, NI_NUMERICHOST);
+            s = getnameinfo(ifa->ifa_addr, len, host, NI_MAXHOST, NULL, 0,
+                            NI_NUMERICHOST);
             if (s != 0) {
                 printf("getnameinfo() failed: %s\n", gai_strerror(s));
                 exit(EXIT_FAILURE);
@@ -66,7 +62,7 @@ int main(int argc, char* argv[])
         }
 
         if (family == AF_LINK) {
-            struct sockaddr_dl* sdlptr = (struct sockaddr_dl*)ifa->ifa_addr;
+            struct sockaddr_dl *sdlptr = (struct sockaddr_dl *)ifa->ifa_addr;
             if (sdlptr->sdl_type == IFT_ETHER && sdlptr->sdl_alen) {
                 printf("\tether %s\n", link_ntoa((sdlptr)));
             }

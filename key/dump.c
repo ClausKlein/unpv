@@ -1,8 +1,7 @@
 #include "unpkey.h"
 
 /* include sadb_dump */
-void
-sadb_dump(int type) {
+void sadb_dump(int type) {
     int s;
     char buf[4096];
     struct sadb_msg msg;
@@ -38,22 +37,21 @@ sadb_dump(int type) {
     close(s);
 }
 
-int
-main(int argc, char **argv) {
+int main(int argc, char **argv) {
     int satype = SADB_SATYPE_UNSPEC;
     int c;
 
-    opterr = 0;     /* don't want getopt() writing to stderr */
+    opterr = 0; /* don't want getopt() writing to stderr */
     while ((c = getopt(argc, argv, "t:")) != -1) {
         switch (c) {
-        case 't':
-            if ((satype = getsatypebyname(optarg)) == -1) {
-                err_quit("invalid -t option %s", optarg);
-            }
-            break;
+            case 't':
+                if ((satype = getsatypebyname(optarg)) == -1) {
+                    err_quit("invalid -t option %s", optarg);
+                }
+                break;
 
-        default:
-            err_quit("unrecognized option: %c", c);
+            default:
+                err_quit("unrecognized option: %c", c);
         }
     }
 

@@ -1,12 +1,11 @@
-#include    "unp.h"
+#include "unp.h"
 
 ssize_t read_cred(int, void *, size_t, struct cmsgcred *);
 
-void
-str_echo(int sockfd) {
-    ssize_t         n;
-    int         i;
-    char            buf[MAXLINE];
+void str_echo(int sockfd) {
+    ssize_t n;
+    int i;
+    char buf[MAXLINE];
     struct cmsgcred cred;
 
 again:

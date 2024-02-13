@@ -1,10 +1,9 @@
-#include    "unp.h"
+#include "unp.h"
 
-int
-main(int argc, char **argv) {
-    int             sockfd, n;
-    char            recvline[MAXLINE + 1];
-    socklen_t       len;
+int main(int argc, char **argv) {
+    int sockfd, n;
+    char recvline[MAXLINE + 1];
+    socklen_t len;
     struct sockaddr *sa;
 
     if (argc != 3) {
@@ -20,7 +19,7 @@ main(int argc, char **argv) {
     sleep(5);
 
     while ((n = Read(sockfd, recvline, MAXLINE)) > 0) {
-        recvline[n] = 0;    /* null terminate */
+        recvline[n] = 0; /* null terminate */
         printf("%d bytes: %s", n, recvline);
     }
     exit(0);

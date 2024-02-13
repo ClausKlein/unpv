@@ -1,12 +1,11 @@
 /* Test version of client that sends one line without a newline,
    to break tcpservselect01.c */
 
-#include    "unp.h"
+#include "unp.h"
 
-int
-main(int argc, char **argv) {
-    int                 sockfd;
-    struct sockaddr_in  servaddr;
+int main(int argc, char **argv) {
+    int sockfd;
+    struct sockaddr_in servaddr;
 
     if (argc != 2) {
         err_quit("usage: tcpcli <IPaddress>");
@@ -19,9 +18,9 @@ main(int argc, char **argv) {
     servaddr.sin_port = htons(SERV_PORT);
     Inet_pton(AF_INET, argv[1], &servaddr.sin_addr);
 
-    Connect(sockfd, (SA *) &servaddr, sizeof(servaddr));
+    Connect(sockfd, (SA *)&servaddr, sizeof(servaddr));
 
-    Written(sockfd, "foo", 3);   /* no newline */
+    Written(sockfd, "foo", 3); /* no newline */
     sleep(30);
 
     exit(0);

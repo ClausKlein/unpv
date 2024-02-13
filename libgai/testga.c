@@ -1,4 +1,4 @@
-#include    "unp.h"
+#include "unp.h"
 
 /*
  * Test program for getaddrinfo() and getnameinfo().
@@ -7,25 +7,24 @@
 /* function prototypes for internal functions */
 static void do_errtest(void);
 static void do_funccall(const char *, const char *, int, int, int, int, int);
-static int  do_onetest(char *, char *, struct addrinfo *, int);
+static int do_onetest(char *, char *, struct addrinfo *, int);
 static const char *str_fam(int);
 static const char *str_sock(int);
 static void usage(const char *);
 
 /* globals */
-int     vflag;
+int vflag;
 
-int
-main(int argc, char **argv) {
-    int             doerrtest = 0;
-    int             loopcount = 1;
-    int             c, i;
-    char            *host = NULL;
-    char            hostbuf[NI_MAXHOST];
-    char            *serv = NULL;
-    char            servbuf[NI_MAXSERV];
+int main(int argc, char **argv) {
+    int doerrtest = 0;
+    int loopcount = 1;
+    int c, i;
+    char *host = NULL;
+    char hostbuf[NI_MAXHOST];
+    char *serv = NULL;
+    char servbuf[NI_MAXSERV];
     struct protoent *proto;
-    struct addrinfo hints;      /* set by command-line options */
+    struct addrinfo hints; /* set by command-line options */
 
     if (argc < 2) {
         usage("");
@@ -33,101 +32,101 @@ main(int argc, char **argv) {
 
     memset(&hints, 0, sizeof(struct addrinfo));
 
-    opterr = 0;     /* don't want getopt() writing to stderr */
+    opterr = 0; /* don't want getopt() writing to stderr */
     while ((c = getopt(argc, argv, "cef:h:l:pr:s:t:v")) != -1) {
         switch (c) {
-        case 'c':
-            hints.ai_flags |= AI_CANONNAME;
-            break;
-
-        case 'e':
-            doerrtest = 1;
-            break;
-
-        case 'f':           /* address family */
-#ifdef  IPv4
-            if (strcmp(optarg, "inet") == 0) {
-                hints.ai_family = AF_INET;
+            case 'c':
+                hints.ai_flags |= AI_CANONNAME;
                 break;
-            }
+
+            case 'e':
+                doerrtest = 1;
+                break;
+
+            case 'f': /* address family */
+#ifdef IPv4
+                if (strcmp(optarg, "inet") == 0) {
+                    hints.ai_family = AF_INET;
+                    break;
+                }
 #endif
-#ifdef  IPv6
-            if (strcmp(optarg, "inet6") == 0) {
-                hints.ai_family = AF_INET6;
-                break;
-            }
+#ifdef IPv6
+                if (strcmp(optarg, "inet6") == 0) {
+                    hints.ai_family = AF_INET6;
+                    break;
+                }
 #endif
-#ifdef  UNIXdomain
-            if (strcmp(optarg, "unix") == 0) {
-                hints.ai_family = AF_LOCAL;
-                break;
-            }
+#ifdef UNIXdomain
+                if (strcmp(optarg, "unix") == 0) {
+                    hints.ai_family = AF_LOCAL;
+                    break;
+                }
 #endif
-            usage("invalid -f option");
+                usage("invalid -f option");
 
-        case 'h':           /* host */
-            strncpy(hostbuf, optarg, NI_MAXHOST - 1);
-            host = hostbuf;
-            break;
-
-        case 'l':           /* loop count */
-            loopcount = atoi(optarg);
-            break;
-
-        case 'p':
-            hints.ai_flags |= AI_PASSIVE;
-            break;
-
-        case 'r':           /* protocol */
-            if ((proto = getprotobyname(optarg)) == NULL) {
-                hints.ai_protocol = atoi(optarg);
-            } else {
-                hints.ai_protocol = proto->p_proto;
-            }
-            break;
-
-        case 's':
-            strncpy(servbuf, optarg, NI_MAXSERV - 1);
-            serv = servbuf;
-            break;
-
-        case 't':           /* socket type */
-            if (strcmp(optarg, "stream") == 0) {
-                hints.ai_socktype = SOCK_STREAM;
+            case 'h': /* host */
+                strncpy(hostbuf, optarg, NI_MAXHOST - 1);
+                host = hostbuf;
                 break;
-            }
 
-            if (strcmp(optarg, "dgram") == 0) {
-                hints.ai_socktype = SOCK_DGRAM;
+            case 'l': /* loop count */
+                loopcount = atoi(optarg);
                 break;
-            }
 
-            if (strcmp(optarg, "raw") == 0) {
-                hints.ai_socktype = SOCK_RAW;
+            case 'p':
+                hints.ai_flags |= AI_PASSIVE;
                 break;
-            }
 
-#ifdef  SOCK_RDM
-            if (strcmp(optarg, "rdm") == 0) {
-                hints.ai_socktype = SOCK_RDM;
+            case 'r': /* protocol */
+                if ((proto = getprotobyname(optarg)) == NULL) {
+                    hints.ai_protocol = atoi(optarg);
+                } else {
+                    hints.ai_protocol = proto->p_proto;
+                }
                 break;
-            }
+
+            case 's':
+                strncpy(servbuf, optarg, NI_MAXSERV - 1);
+                serv = servbuf;
+                break;
+
+            case 't': /* socket type */
+                if (strcmp(optarg, "stream") == 0) {
+                    hints.ai_socktype = SOCK_STREAM;
+                    break;
+                }
+
+                if (strcmp(optarg, "dgram") == 0) {
+                    hints.ai_socktype = SOCK_DGRAM;
+                    break;
+                }
+
+                if (strcmp(optarg, "raw") == 0) {
+                    hints.ai_socktype = SOCK_RAW;
+                    break;
+                }
+
+#ifdef SOCK_RDM
+                if (strcmp(optarg, "rdm") == 0) {
+                    hints.ai_socktype = SOCK_RDM;
+                    break;
+                }
 #endif
 
-#ifdef  SOCK_SEQPACKET
-            if (strcmp(optarg, "seqpacket") == 0) {
-                hints.ai_socktype = SOCK_SEQPACKET;
-                break;
-            }
+#ifdef SOCK_SEQPACKET
+                if (strcmp(optarg, "seqpacket") == 0) {
+                    hints.ai_socktype = SOCK_SEQPACKET;
+                    break;
+                }
 #endif
-            usage("invalid -t option");
+                usage("invalid -t option");
 
-        case 'v':
-            vflag = 1;
-            break;
+            case 'v':
+                vflag = 1;
+                break;
 
-        case '?':
-            usage("unrecognized option");
+            case '?':
+                usage("unrecognized option");
         }
     }
     if (optind < argc) {
@@ -158,8 +157,7 @@ main(int argc, char **argv) {
  * Test all the errors that are easy to test for.
  */
 
-static void
-do_errtest(void) {
+static void do_errtest(void) {
     /* passive open with no hostname and no address family */
     do_funccall(NULL, "ftp", AI_PASSIVE, 0, 0, 0, 0);
 
@@ -180,7 +178,7 @@ do_errtest(void) {
     /* to test for EAI_NODATA: would have to know of a host with
        no A record in the DNS */
 
-#ifdef  notdef  /* following depends on resolver, sigh */
+#ifdef notdef /* following depends on resolver, sigh */
     /* believe it or not, there is a registered domain "bar.com",
        so the following should generate NO_DATA from the DNS */
     do_funccall("foo.bar.foo.bar.foo.bar.com", NULL, 0, 0, 0, 0, EAI_NODATA);
@@ -207,10 +205,9 @@ do_errtest(void) {
     /* EAI_SYSTEM not generated by my implementation */
 }
 
-static void
-do_funccall(const char *host, const char *serv,
-            int flags, int family, int socktype, int protocol, int exprc) {
-    int             rc;
+static void do_funccall(const char *host, const char *serv, int flags,
+                        int family, int socktype, int protocol, int exprc) {
+    int rc;
     struct addrinfo hints, *res;
 
     memset(&hints, 0, sizeof(struct addrinfo));
@@ -221,8 +218,8 @@ do_funccall(const char *host, const char *serv,
 
     rc = getaddrinfo(host, serv, &hints, &res);
     if (rc != exprc) {
-        printf("expected return = %d (%s),\nactual return = %d (%s)\n",
-               exprc, gai_strerror(exprc), rc, gai_strerror(rc));
+        printf("expected return = %d (%s),\nactual return = %d (%s)\n", exprc,
+               gai_strerror(exprc), rc, gai_strerror(rc));
         if (host != NULL) {
             printf("  host = %s\n", host);
         }
@@ -235,13 +232,13 @@ do_funccall(const char *host, const char *serv,
     }
 }
 
-static int
-do_onetest(char *host, char *serv, struct addrinfo *hints, int iteration) {
-    int             rc, fd, verbose;
+static int do_onetest(char *host, char *serv, struct addrinfo *hints,
+                      int iteration) {
+    int rc, fd, verbose;
     struct addrinfo *res, *rescopy;
-    char            rhost[NI_MAXHOST], rserv[NI_MAXSERV];
+    char rhost[NI_MAXHOST], rserv[NI_MAXSERV];
 
-    verbose = vflag && (iteration == 1);    /* only first time */
+    verbose = vflag && (iteration == 1); /* only first time */
 
     if (host != NULL && verbose) {
         printf("host = %s\n", host);
@@ -253,12 +250,12 @@ do_onetest(char *host, char *serv, struct addrinfo *hints, int iteration) {
     rc = getaddrinfo(host, serv, hints, &res);
     if (rc != 0) {
         printf("getaddrinfo return code = %d (%s)\n", rc, gai_strerror(rc));
-        return(1);
+        return (1);
     }
 
     rescopy = res;
     do {
-        if (iteration == 1) {   /* always print results first time */
+        if (iteration == 1) { /* always print results first time */
             printf("\nsocket(%s, %s, %d)", str_fam(res->ai_family),
                    str_sock(res->ai_socktype), res->ai_protocol);
 
@@ -270,8 +267,7 @@ do_onetest(char *host, char *serv, struct addrinfo *hints, int iteration) {
             }
             printf("\n");
 
-            printf("\taddress: %s\n",
-                   Sock_ntop(res->ai_addr, res->ai_addrlen));
+            printf("\taddress: %s\n", Sock_ntop(res->ai_addr, res->ai_addrlen));
         }
 
         /* Call socket() to make sure return values are valid */
@@ -286,13 +282,12 @@ do_onetest(char *host, char *serv, struct addrinfo *hints, int iteration) {
          * Call getnameinfo() to check the reverse mapping.
          */
 
-        rc = getnameinfo(res->ai_addr, res->ai_addrlen,
-                         rhost, NI_MAXHOST, rserv, NI_MAXSERV,
+        rc = getnameinfo(res->ai_addr, res->ai_addrlen, rhost, NI_MAXHOST,
+                         rserv, NI_MAXSERV,
                          (res->ai_socktype == SOCK_DGRAM) ? NI_DGRAM : 0);
         if (rc == 0) {
             if (verbose)
-                printf("\tgetnameinfo: host = %s, serv = %s\n",
-                       rhost, rserv);
+                printf("\tgetnameinfo: host = %s, serv = %s\n", rhost, rserv);
         } else {
             printf("getnameinfo returned %d (%s)\n", rc, gai_strerror(rc));
         }
@@ -300,11 +295,10 @@ do_onetest(char *host, char *serv, struct addrinfo *hints, int iteration) {
     } while ((res = res->ai_next) != NULL);
 
     freeaddrinfo(rescopy);
-    return(0);
+    return (0);
 }
 
-static void
-usage(const char *msg) {
+static void usage(const char *msg) {
     printf(
         "usage: testaddrinfo [ options ]\n"
         "options: -h <host>    (can be hostname or address string)\n"
@@ -317,8 +311,8 @@ usage(const char *msg) {
         "         -t X  socket type, X = stream, dgram, raw, rdm, seqpacket\n"
         "         -v    verbose\n"
         "         -e    only do test of error returns (no options required)\n"
-        "  without -e, one or both of <host> and <service> must be specified.\n"
-    );
+        "  without -e, one or both of <host> and <service> must be "
+        "specified.\n");
 
     if (msg[0] != 0) {
         printf("%s\n", msg);
@@ -326,44 +320,42 @@ usage(const char *msg) {
     exit(1);
 }
 
-static const char *
-str_fam(int family) {
-#ifdef  IPv4
+static const char *str_fam(int family) {
+#ifdef IPv4
     if (family == AF_INET) {
-        return("AF_INET");
+        return ("AF_INET");
     }
 #endif
-#ifdef  IPv6
+#ifdef IPv6
     if (family == AF_INET6) {
-        return("AF_INET6");
+        return ("AF_INET6");
     }
 #endif
-#ifdef  UNIXdomain
+#ifdef UNIXdomain
     if (family == AF_LOCAL) {
-        return("AF_LOCAL");
+        return ("AF_LOCAL");
     }
 #endif
-    return("<unknown family>");
+    return ("<unknown family>");
 }
 
-static const char *
-str_sock(int socktype) {
+static const char *str_sock(int socktype) {
     switch (socktype) {
-    case SOCK_STREAM:
-        return "SOCK_STREAM";
-    case SOCK_DGRAM:
-        return "SOCK_DGRAM";
-    case SOCK_RAW:
-        return "SOCK_RAW";
+        case SOCK_STREAM:
+            return "SOCK_STREAM";
+        case SOCK_DGRAM:
+            return "SOCK_DGRAM";
+        case SOCK_RAW:
+            return "SOCK_RAW";
 #ifdef SOCK_RDM
-    case SOCK_RDM:
-        return "SOCK_RDM";
+        case SOCK_RDM:
+            return "SOCK_RDM";
 #endif
 #ifdef SOCK_SEQPACKET
-    case SOCK_SEQPACKET:
-        return "SOCK_SEQPACKET";
+        case SOCK_SEQPACKET:
+            return "SOCK_SEQPACKET";
 #endif
-    default:
-        return "<unknown socktype>";
+        default:
+            return "<unknown socktype>";
     }
 }

@@ -1,10 +1,9 @@
-#include    "unp.h"
+#include "unp.h"
 
-int
-main(int argc, char **argv) {
-    int     listenfd = -1, connfd, n;
-    char    buff[100];
-    fd_set  rset, xset;
+int main(int argc, char **argv) {
+    int listenfd = -1, connfd, n;
+    char buff[100];
+    fd_set rset, xset;
 
     if (argc == 2) {
         listenfd = Tcp_listen(NULL, argv[1], NULL);
@@ -18,7 +17,7 @@ main(int argc, char **argv) {
 
     FD_ZERO(&rset);
     FD_ZERO(&xset);
-    for (; ;) {
+    for (;;) {
         FD_SET(connfd, &rset);
         FD_SET(connfd, &xset);
 
@@ -26,7 +25,7 @@ main(int argc, char **argv) {
 
         if (FD_ISSET(connfd, &xset)) {
             n = Recv(connfd, buff, sizeof(buff) - 1, MSG_OOB);
-            buff[n] = 0;        /* null terminate */
+            buff[n] = 0; /* null terminate */
             printf("read %d OOB byte: %s\n", n, buff);
         }
 
@@ -35,7 +34,7 @@ main(int argc, char **argv) {
                 printf("received EOF\n");
                 exit(0);
             }
-            buff[n] = 0;    /* null terminate */
+            buff[n] = 0; /* null terminate */
             printf("read %d bytes: %s\n", n, buff);
         }
     }

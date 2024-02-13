@@ -1,23 +1,22 @@
-#include    "unpxti.h"
+#include "unpxti.h"
 
-#define PORT        9999
-#define ADDR        "127.0.0.1"
-#define MAXBACKLOG  100
+#define PORT 9999
+#define ADDR "127.0.0.1"
+#define MAXBACKLOG 100
 
 /* globals */
-struct sockaddr_in  serv;
-pid_t               pid;    /* of child */
+struct sockaddr_in serv;
+pid_t pid; /* of child */
 
-int         pipefd[2];
-#define pfd pipefd[1]   /* parent's end */
-#define cfd pipefd[0]   /* child's end */
+int pipefd[2];
+#define pfd pipefd[1] /* parent's end */
+#define cfd pipefd[0] /* child's end */
 
 /* function prototypes */
-void    do_parent(void);
-void    do_child(void);
+void do_parent(void);
+void do_child(void);
 
-int
-main(int argc, char **argv) {
+int main(int argc, char **argv) {
     if (argc != 1) {
         err_quit("usage: qlen");
     }
@@ -38,16 +37,12 @@ main(int argc, char **argv) {
     exit(0);
 }
 
-void
-parent_alrm(int signo) {
-    return;     /* just interrupt blocked connect() */
-}
+void parent_alrm(int signo) { return; /* just interrupt blocked connect() */ }
 
 /* include qlen */
-void
-do_parent(void) {
-    int             qlen, j, k, junk, fd[MAXBACKLOG + 1];
-    struct t_call   tcall;
+void do_parent(void) {
+    int qlen, j, k, junk, fd[MAXBACKLOG + 1];
+    struct t_call tcall;
 
     Close(cfd);
     Signal(SIGALRM, parent_alrm);
@@ -76,7 +71,7 @@ do_parent(void) {
                 for (k = 1; k < j; k++) {
                     T_close(fd[k]);
                 }
-                break;  /* next value of qlen */
+                break; /* next value of qlen */
             }
             alarm(0);
         }
@@ -84,18 +79,17 @@ do_parent(void) {
             printf("%d connections?\n", MAXBACKLOG);
         }
     }
-    qlen = -1;      /* tell child we're all done */
+    qlen = -1; /* tell child we're all done */
     Write(pfd, &qlen, sizeof(int));
 }
 
-void
-do_child(void) {
-    int             listenfd, qlen, junk;
-    struct t_bind   tbind, tbindret;
+void do_child(void) {
+    int listenfd, qlen, junk;
+    struct t_bind tbind, tbindret;
 
     Close(pipefd[1]);
 
-    Read(cfd, &qlen, sizeof(int));  /* wait for parent */
+    Read(cfd, &qlen, sizeof(int)); /* wait for parent */
     while (qlen >= 0) {
         listenfd = T_open(XTI_TCP, O_RDWR, NULL);
 
@@ -113,8 +107,8 @@ do_child(void) {
 
         Write(cfd, &junk, sizeof(int)); /* tell parent */
 
-        Read(cfd, &qlen, sizeof(int));  /* just wait for parent */
-        T_close(listenfd);  /* closes all queued connections too */
+        Read(cfd, &qlen, sizeof(int)); /* just wait for parent */
+        T_close(listenfd);             /* closes all queued connections too */
     }
 }
 /* end qlen */

@@ -1,7 +1,6 @@
-#include    "unp.h"
+#include "unp.h"
 
-int
-main(int argc, char **argv) {
+int main(int argc, char **argv) {
     int sock_fd, msg_flags;
     char readbuf[BUFFSIZE];
     struct sockaddr_in servaddr, cliaddr;
@@ -19,38 +18,32 @@ main(int argc, char **argv) {
     sock_fd = Socket(AF_INET, SOCK_SEQPACKET, IPPROTO_SCTP);
     bzero(&initm, sizeof(initm));
     initm.sinit_num_ostreams = SERV_MORE_STRMS_SCTP;
-    Setsockopt(sock_fd, IPPROTO_SCTP, SCTP_INITMSG,
-               &initm, sizeof(initm));
+    Setsockopt(sock_fd, IPPROTO_SCTP, SCTP_INITMSG, &initm, sizeof(initm));
     /* end modified_sctpserv02 */
     bzero(&servaddr, sizeof(servaddr));
     servaddr.sin_family = AF_INET;
     servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
     servaddr.sin_port = htons(SERV_PORT);
 
-    Bind(sock_fd, (SA *) &servaddr, sizeof(servaddr));
+    Bind(sock_fd, (SA *)&servaddr, sizeof(servaddr));
 
     bzero(&events, sizeof(events));
     events.sctp_data_io_event = 1;
-    Setsockopt(sock_fd, IPPROTO_SCTP, SCTP_EVENTS,
-               &events, sizeof(events));
+    Setsockopt(sock_fd, IPPROTO_SCTP, SCTP_EVENTS, &events, sizeof(events));
 
     Listen(sock_fd, LISTENQ);
-    for (; ;) {
+    for (;;) {
         len = sizeof(struct sockaddr_in);
-        rd_sz = Sctp_recvmsg(sock_fd, readbuf, sizeof(readbuf),
-                             (SA *)&cliaddr, &len,
-                             &sri, &msg_flags);
+        rd_sz = Sctp_recvmsg(sock_fd, readbuf, sizeof(readbuf), (SA *)&cliaddr,
+                             &len, &sri, &msg_flags);
         if (stream_increment) {
             sri.sinfo_stream++;
-            if (sri.sinfo_stream >= sctp_get_no_strms(sock_fd, (SA *)&cliaddr, len)) {
+            if (sri.sinfo_stream
+                >= sctp_get_no_strms(sock_fd, (SA *)&cliaddr, len)) {
                 sri.sinfo_stream = 0;
             }
         }
-        Sctp_sendmsg(sock_fd, readbuf, rd_sz,
-                     (SA *)&cliaddr, len,
-                     sri.sinfo_ppid,
-                     sri.sinfo_flags,
-                     sri.sinfo_stream,
-                     0, 0);
+        Sctp_sendmsg(sock_fd, readbuf, rd_sz, (SA *)&cliaddr, len,
+                     sri.sinfo_ppid, sri.sinfo_flags, sri.sinfo_stream, 0, 0);
     }
 }

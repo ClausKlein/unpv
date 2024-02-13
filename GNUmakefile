@@ -1,3 +1,5 @@
+export CC=gcc
+
 -include ./Make.defines
 
 UNAME=$(shell uname)
@@ -18,26 +20,32 @@ SUBDIRS+= ./mcast ./mysdr ./threads
 endif
 
 
-.PHONY: $(SUBDIRS) setup all clean distclean
-setup:: Make.defines config.h
+.PHONY: $(SUBDIRS) setup init all clean distclean
+all: config.cache $(SUBDIRS)
 
-all: setup $(SUBDIRS)
-
-Make.defines: config.h
-config.h: configure config.h.in
+setup: config.cache
+config.cache:
 	./configure --config-cache
+	${MAKE} -C lib -w$(MAKEFLAGS)
 
-clean:: $(SUBDIRS)
-	rm -f $(CLEANFILES)
+Make.defines: Make.defines.in
+config.h: config.h.in
 
-distclean::
-	rm -f $(CLEANFILES) config.cache config.log config.status config.h Makefile #NO! Make.defines
+clean: $(SUBDIRS)
+
+distclean:
+	${MAKE} -C . -w$(MAKEFLAGS) clean
+	rm -f $(CLEANFILES) config.cache config.log config.status config.h Makefile Make.defines
 	find . -type d -name '*.dSYM' | xargs rm -rf
 	find . \( -name 'tags' -o -name '*.d' -o -name '*.o' -o -name '*~' \) -delete
 
-$(SUBDIRS)::
+$(SUBDIRS): init
 	${MAKE} -C $@ -w$(MAKEFLAGS) $(MAKECMDGOALS)
 
-# No need to change
-$(MAKECMDGOALS):: $(SUBDIRS)
+init:
+	${MAKE} -C lib -w$(MAKEFLAGS)
 
+# No need to change
+$(MAKECMDGOALS): $(SUBDIRS)
+
+.NOTPARALLEL: setup init

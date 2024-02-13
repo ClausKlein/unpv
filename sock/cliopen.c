@@ -7,15 +7,14 @@
  * It is provided "as is" without express or implied warranty.
  */
 
-#include    "sock.h"
+#include "sock.h"
 
-int
-cliopen(char *host, char *port) {
-    int                 fd, i, on;
-    const char          *protocol;
-    struct in_addr      inaddr;
-    struct servent      *sp;
-    struct hostent      *hp;
+int cliopen(char *host, char *port) {
+    int fd, i, on;
+    const char *protocol;
+    struct in_addr inaddr;
+    struct servent *sp;
+    struct hostent *hp;
 
     protocol = udp ? "udp" : "tcp";
 
@@ -40,7 +39,7 @@ cliopen(char *host, char *port) {
      */
 
     if (inet_aton(host, &inaddr) == 1) {
-        servaddr.sin_addr = inaddr;    /* it's dotted-decimal */
+        servaddr.sin_addr = inaddr; /* it's dotted-decimal */
     } else if ((hp = gethostbyname(host)) != NULL) {
         memcpy(&servaddr.sin_addr, hp->h_addr, hp->h_length);
     } else {
@@ -58,7 +57,7 @@ cliopen(char *host, char *port) {
         }
     }
 
-#ifdef  SO_REUSEPORT
+#ifdef SO_REUSEPORT
     if (reuseport) {
         on = 1;
         if (setsockopt(fd, SOL_SOCKET, SO_REUSEPORT, &on, sizeof(on)) < 0) {
@@ -79,17 +78,17 @@ cliopen(char *host, char *port) {
 
     if (bindport != 0 || localip[0] != 0 || udp) {
         bzero(&cliaddr, sizeof(cliaddr));
-        cliaddr.sin_family      = AF_INET;
-        cliaddr.sin_port        = htons(bindport);          /* can be 0 */
+        cliaddr.sin_family = AF_INET;
+        cliaddr.sin_port = htons(bindport); /* can be 0 */
         if (localip[0] != 0) {
             if (inet_aton(localip, &cliaddr.sin_addr) == 0) {
                 err_quit("invalid IP address: %s", localip);
             }
         } else {
-            cliaddr.sin_addr.s_addr = htonl(INADDR_ANY);    /* wildcard */
+            cliaddr.sin_addr.s_addr = htonl(INADDR_ANY); /* wildcard */
         }
 
-        if (bind(fd, (struct sockaddr *) &cliaddr, sizeof(cliaddr)) < 0) {
+        if (bind(fd, (struct sockaddr *)&cliaddr, sizeof(cliaddr)) < 0) {
             err_sys("bind() error");
         }
     }
@@ -99,19 +98,19 @@ cliopen(char *host, char *port) {
      */
 
     buffers(fd);
-    sockopts(fd, 0);    /* may also want to set SO_DEBUG */
+    sockopts(fd, 0); /* may also want to set SO_DEBUG */
 
     /*
      * Connect to the server.  Required for TCP, optional for UDP.
      */
 
     if (udp == 0 || connectudp) {
-        for (; ;) {
-            if (connect(fd, (struct sockaddr *) &servaddr, sizeof(servaddr))
-                    == 0) {
-                break;    /* all OK */
+        for (;;) {
+            if (connect(fd, (struct sockaddr *)&servaddr, sizeof(servaddr))
+                == 0) {
+                break; /* all OK */
             }
-            if (errno == EINTR) {   /* can happen with SIGIO */
+            if (errno == EINTR) { /* can happen with SIGIO */
                 continue;
             }
             if (errno == EISCONN) { /* can happen with SIGIO */
@@ -126,19 +125,19 @@ cliopen(char *host, char *port) {
            TCP ephemeral port was assigned by connect() or bind();
            UDP ephemeral port was assigned by bind(). */
         socklen_t len = sizeof(cliaddr);
-        if (getsockname(fd, (struct sockaddr *) &cliaddr, &len) < 0) {
+        if (getsockname(fd, (struct sockaddr *)&cliaddr, &len) < 0) {
             err_sys("getsockname() error");
         }
 
         /* Can't do one fprintf() since inet_ntoa() stores
            the result in a static location. */
-        fprintf(stderr, "connected on %s.%d ",
-                INET_NTOA(cliaddr.sin_addr), ntohs(cliaddr.sin_port));
-        fprintf(stderr, "to %s.%d\n",
-                INET_NTOA(servaddr.sin_addr), ntohs(servaddr.sin_port));
+        fprintf(stderr, "connected on %s.%d ", INET_NTOA(cliaddr.sin_addr),
+                ntohs(cliaddr.sin_port));
+        fprintf(stderr, "to %s.%d\n", INET_NTOA(servaddr.sin_addr),
+                ntohs(servaddr.sin_port));
     }
 
-    sockopts(fd, 1);    /* some options get set after connect() */
+    sockopts(fd, 1); /* some options get set after connect() */
 
-    return(fd);
+    return (fd);
 }

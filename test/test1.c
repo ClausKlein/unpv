@@ -16,15 +16,13 @@
 
 /* allocate globals */
 struct sockaddr_in servaddr, cliaddr;
-char               buff[BUFFSIZE];
-int                verbose;
+char buff[BUFFSIZE];
+int verbose;
 
 /*
  * Check whether various header flags are defined.
  */
-void
-header_flags(void) {
-
+void header_flags(void) {
     /* these are all "if not defined" */
 #ifndef MSG_DONTROUTE
     printf("+ MSG_DONTROUTE not defined\n");
@@ -48,9 +46,8 @@ header_flags(void) {
  * Use a different length for each output function, so if it does work,
  * we can see it with tcpdump and separate it from the other outputs.
  */
-void
-sendto_01(void) {
-    int       sockfd, n;
+void sendto_01(void) {
+    int sockfd, n;
     socklen_t len;
 
     sockfd = TcpSockByAddr("195.34.89.241", 7); /* echo server */
@@ -73,8 +70,8 @@ sendto_01(void) {
     Sendto(sockfd, "world", 5, 0, NULL, 0);
 
     len = sizeof(servaddr) * 2; /* that's a lie */
-    if ((n = Recvfrom(sockfd, buff, sizeof(buff), 0, (SA *)&servaddr, &len)) <
-        5) {
+    if ((n = Recvfrom(sockfd, buff, sizeof(buff), 0, (SA *)&servaddr, &len))
+        < 5) {
         err_quit("! Recvfrom expected 5");
     }
     if (len != 0) {
@@ -116,8 +113,7 @@ sendto_01(void) {
  * the return address in the response.  If the server is multihomed,
  * the return address can differ from our original destination address.
  */
-void
-udp_01(void) {
+void udp_01(void) {
     int sockfd, n;
     /*
      * Now an unconnected UDP socket.
@@ -133,7 +129,7 @@ udp_01(void) {
             "+ sendto on unconnected UDP without dest addr, unexpected errno");
     }
 
-    /* should not work */
+    /* should not work FIXME: gcc -Wstringop-overread! */
     if ((n = write(sockfd, "hello", 7)) >= 0) {
         err_msg("+ write on unconnected UDP OK, n = %d", n);
     } else if (errno != EDESTADDRREQ) {
@@ -172,8 +168,7 @@ udp_01(void) {
     Close(sockfd);
 }
 
-static void
-usage(const char *msg) {
+static void usage(const char *msg) {
     err_msg("options: -v    verbose\n");
 
     if (msg[0] != 0) {
@@ -182,19 +177,18 @@ usage(const char *msg) {
     exit(1);
 }
 
-int
-main(int argc, char **argv) {
+int main(int argc, char **argv) {
     int c;
 
     opterr = 0; /* don't want getopt() writing to stderr */
     while ((c = getopt(argc, argv, "v")) != -1) {
         switch (c) {
-        case 'v':
-            verbose = 1;
-            break;
+            case 'v':
+                verbose = 1;
+                break;
 
-        case '?':
-            usage("unrecognized option");
+            case '?':
+                usage("unrecognized option");
         }
     }
 

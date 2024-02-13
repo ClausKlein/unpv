@@ -7,15 +7,14 @@
  * It is provided "as is" without express or implied warranty.
  */
 
-#include    "sock.h"
+#include "sock.h"
 
-void
-source_tcp(int sockfd) {
-    int         i, n, option;
-    socklen_t   optlen;
-    char        oob;
+void source_tcp(int sockfd) {
+    int i, n, option;
+    socklen_t optlen;
+    char oob;
 
-    pattern(wbuf, writelen);    /* fill send buffer with a pattern */
+    pattern(wbuf, writelen); /* fill send buffer with a pattern */
 
     if (pauseinit) {
         sleep_us(pauseinit * 1000);
@@ -25,8 +24,8 @@ source_tcp(int sockfd) {
         if (urgwrite == i) {
             oob = urgwrite;
             if ((n = send(sockfd, &oob, 1, MSG_OOB)) != 1)
-                err_sys("send of MSG_OOB returned %d, expected %d",
-                        n, writelen);
+                err_sys("send of MSG_OOB returned %d, expected %d", n,
+                        writelen);
             if (verbose) {
                 fprintf(stderr, "wrote %d byte of urgent data\n", n);
             }
@@ -37,8 +36,8 @@ source_tcp(int sockfd) {
                 err_ret("write returned %d, expected %d", n, writelen);
                 /* also call getsockopt() to clear so_error */
                 optlen = sizeof(option);
-                if (getsockopt(sockfd, SOL_SOCKET, SO_ERROR,
-                               &option, &optlen) < 0) {
+                if (getsockopt(sockfd, SOL_SOCKET, SO_ERROR, &option, &optlen)
+                    < 0) {
                     err_sys("SO_ERROR getsockopt error");
                 }
             } else {
@@ -62,6 +61,6 @@ source_tcp(int sockfd) {
     }
 
     if (close(sockfd) < 0) {
-        err_sys("close error");    /* since SO_LINGER may be set */
+        err_sys("close error"); /* since SO_LINGER may be set */
     }
 }

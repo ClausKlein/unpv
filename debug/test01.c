@@ -1,8 +1,7 @@
-#include    "unpxti.h"
+#include "unpxti.h"
 
-int
-main(int argc, char **argv) {
-    int     tfd;
+int main(int argc, char **argv) {
+    int tfd;
 
     if (argc != 3) {
         err_quit("usage: test01 <hostname/IPaddress> <service/port#>");

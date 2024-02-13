@@ -1,18 +1,16 @@
-#include    "unpthread.h"
+#include "unpthread.h"
 
-void *
-myfunc(void *ptr) {
+void *myfunc(void *ptr) {
     pause();
     return NULL;
 }
 
-int
-main(int argc, char **argv) {
-    pthread_t   tid;
-    int         n;
+int main(int argc, char **argv) {
+    pthread_t tid;
+    int n;
 
     /* Let's see what the return value is and what errno is after a error. */
-    for (; ;) {
+    for (;;) {
         errno = 0;
         if ((n = pthread_create(&tid, NULL, myfunc, NULL)) != 0) {
             printf("pthread_create returned %d, errno = %d\n", n, errno);

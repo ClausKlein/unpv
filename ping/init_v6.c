@@ -1,12 +1,11 @@
 #include "ping.h"
 
-void
-init_v6(void) {
+void init_v6(void) {
 #ifdef IPV6
 
-#if defined(IPV6_RECVHOPLIMIT) || defined(IPV6_HOPLIMIT)
+#    if defined(IPV6_RECVHOPLIMIT) || defined(IPV6_HOPLIMIT)
     int on = 1;
-#endif
+#    endif
 
     if (verbose == 0) {
         /* install a filter that only passes ICMP6_ECHO_REPLY unless verbose */
@@ -18,12 +17,12 @@ init_v6(void) {
     }
 
     /* ignore error returned below; we just won't receive the hop limit */
-#ifdef IPV6_RECVHOPLIMIT
+#    ifdef IPV6_RECVHOPLIMIT
     /* RFC 3542 */
     setsockopt(sockfd, IPPROTO_IPV6, IPV6_RECVHOPLIMIT, &on, sizeof(on));
-#elif defined(IPV6_HOPLIMIT)
+#    elif defined(IPV6_HOPLIMIT)
     /* RFC 2292 */
     setsockopt(sockfd, IPPROTO_IPV6, IPV6_HOPLIMIT, &on, sizeof(on));
-#endif
+#    endif
 #endif
 }

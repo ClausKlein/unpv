@@ -1,24 +1,24 @@
-#include    "unp.h"
-#include    <syslog.h>
+#include <syslog.h>
 
-#define MAXFD   64
+#include "unp.h"
 
-extern int  daemon_proc;    /* defined in error.c */
+#define MAXFD 64
 
-int
-daemon_init(const char *pname, int facility) {
-    int     i;
-    pid_t   pid;
+extern int daemon_proc; /* defined in error.c */
+
+int daemon_init(const char *pname, int facility) {
+    int i;
+    pid_t pid;
 
     if ((pid = Fork()) < 0) {
         return (-1);
     } else if (pid) {
-        _exit(0);    /* parent terminates */
+        _exit(0); /* parent terminates */
     }
 
     /* child 1 continues... */
 
-    if (setsid() < 0) {         /* become session leader */
+    if (setsid() < 0) { /* become session leader */
         return (-1);
     }
 
@@ -26,14 +26,14 @@ daemon_init(const char *pname, int facility) {
     if ((pid = Fork()) < 0) {
         return (-1);
     } else if (pid) {
-        _exit(0);    /* child 1 terminates */
+        _exit(0); /* child 1 terminates */
     }
 
     /* child 2 continues... */
 
-    daemon_proc = 1;            /* for err_XXX() functions */
+    daemon_proc = 1; /* for err_XXX() functions */
 
-    chdir("/");             /* change working directory */
+    chdir("/"); /* change working directory */
 
     /* close off file descriptors */
     for (i = 0; i < MAXFD; i++) {
@@ -47,5 +47,5 @@ daemon_init(const char *pname, int facility) {
 
     openlog(pname, LOG_PID, facility);
 
-    return (0);             /* success */
+    return (0); /* success */
 }

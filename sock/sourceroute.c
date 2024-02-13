@@ -7,9 +7,10 @@
  * It is provided "as is" without express or implied warranty.
  */
 
-#include    "sock.h"
-#include    <netinet/in_systm.h>
-#include    <netinet/ip.h>
+#include <netinet/in_systm.h>
+#include <netinet/ip.h>
+
+#include "sock.h"
 
 /*
  * There is a fundamental limit of 9 IP addresses in a source route.
@@ -24,9 +25,9 @@
  * of the sendto() (Figure 9.28 of Volume 2).
  */
 
-u_char  sroute_opt[44];     /* some implementations require this to be
-                               on a 4-byte boundary */
-u_char  *optr;              /* pointer into options being formed */
+u_char sroute_opt[44]; /* some implementations require this to be
+                          on a 4-byte boundary */
+u_char *optr;          /* pointer into options being formed */
 
 /*
  * Process either the -g (loose) or -G (strict) command-line option,
@@ -37,38 +38,37 @@ u_char  *optr;              /* pointer into options being formed */
  * either -g or -G.
  */
 
-void
-sroute_doopt(int strict, char *argptr) {
-    struct in_addr  inaddr;
-    struct hostent  *hp;
+void sroute_doopt(int strict, char *argptr) {
+    struct in_addr inaddr;
+    struct hostent *hp;
 
     if (sroute_cnt >= 9) {
         err_quit("too many source routes with: %s", argptr);
     }
 
-    if (sroute_cnt == 0) {  /* first one */
+    if (sroute_cnt == 0) { /* first one */
         bzero(sroute_opt, sizeof(sroute_opt));
         optr = sroute_opt;
         *optr++ = strict ? IPOPT_SSRR : IPOPT_LSRR;
-        optr++;         /* we fill in the total length later */
-        *optr++ = 4;    /* ptr to first source-route address */
+        optr++;      /* we fill in the total length later */
+        *optr++ = 4; /* ptr to first source-route address */
     }
 
     if (inet_aton(argptr, &inaddr) == 1) {
-        memcpy(optr, &inaddr, sizeof(inaddr));  /* dotted decimal */
+        memcpy(optr, &inaddr, sizeof(inaddr)); /* dotted decimal */
         if (verbose) {
             fprintf(stderr, "source route to %s\n", inet_ntoa(inaddr));
         }
     } else if ((hp = gethostbyname(argptr)) != NULL) {
-        memcpy(optr, hp->h_addr, sizeof(u_long));/* hostname */
+        memcpy(optr, hp->h_addr, sizeof(u_long)); /* hostname */
         if (verbose)
             fprintf(stderr, "source route to %s\n",
-                    inet_ntoa(*((struct in_addr *) hp->h_addr)));
+                    inet_ntoa(*((struct in_addr *)hp->h_addr)));
     } else {
         err_quit("unknown host: %s\n", argptr);
     }
 
-    optr += sizeof(u_long);     /* for next IP addr in list */
+    optr += sizeof(u_long); /* for next IP addr in list */
     sroute_cnt++;
 }
 
@@ -78,10 +78,9 @@ sroute_doopt(int strict, char *argptr) {
  * The final destination goes at the end of the list of IP addresses.
  */
 
-void
-sroute_set(int sockfd) {
-    sroute_cnt++;                        /* account for destination */
-    sroute_opt[1] = 3 + (sroute_cnt * 4);/* total length, incl. destination */
+void sroute_set(int sockfd) {
+    sroute_cnt++;                         /* account for destination */
+    sroute_opt[1] = 3 + (sroute_cnt * 4); /* total length, incl. destination */
 
     /* destination must be stored as final entry */
     memcpy(optr, &servaddr.sin_addr, sizeof(u_long));
@@ -104,10 +103,11 @@ sroute_set(int sockfd) {
         optr++;
     }
 
-    if (setsockopt(sockfd, IPPROTO_IP, IP_OPTIONS,
-                   sroute_opt, optr - sroute_opt) < 0) {
+    if (setsockopt(sockfd, IPPROTO_IP, IP_OPTIONS, sroute_opt,
+                   optr - sroute_opt)
+        < 0) {
         err_sys("setsockopt error for IP_OPTIONS");
     }
 
-    sroute_cnt = 0;     /* don't call this function again */
+    sroute_cnt = 0; /* don't call this function again */
 }

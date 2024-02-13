@@ -1,18 +1,18 @@
-#include    <signal.h>
-#include    "ourhdr.h"
+#include <signal.h>
 
-static volatile sig_atomic_t    sigflag;
+#include "ourhdr.h"
+
+static volatile sig_atomic_t sigflag;
 /* set nonzero by signal handler */
-static sigset_t         newmask, oldmask, zeromask;
+static sigset_t newmask, oldmask, zeromask;
 
-static void
-sig_usr(int signo) { /* one signal handler for SIGUSR1 and SIGUSR2 */
+static void sig_usr(
+    int signo) { /* one signal handler for SIGUSR1 and SIGUSR2 */
     sigflag = 1;
     return;
 }
 
-void
-TELL_WAIT(void) {
+void TELL_WAIT(void) {
     if (signal(SIGUSR1, sig_usr) == SIG_ERR) {
         err_sys("signal(SIGINT) error");
     }
@@ -31,15 +31,11 @@ TELL_WAIT(void) {
     }
 }
 
-void
-TELL_PARENT(pid_t pid) {
-    kill(pid, SIGUSR2);     /* tell parent we're done */
-}
+void TELL_PARENT(pid_t pid) { kill(pid, SIGUSR2); /* tell parent we're done */ }
 
-void
-WAIT_PARENT(void) {
+void WAIT_PARENT(void) {
     while (sigflag == 0) {
-        sigsuspend(&zeromask);    /* and wait for parent */
+        sigsuspend(&zeromask); /* and wait for parent */
     }
 
     sigflag = 0;
@@ -49,15 +45,11 @@ WAIT_PARENT(void) {
     }
 }
 
-void
-TELL_CHILD(pid_t pid) {
-    kill(pid, SIGUSR1);         /* tell child we're done */
-}
+void TELL_CHILD(pid_t pid) { kill(pid, SIGUSR1); /* tell child we're done */ }
 
-void
-WAIT_CHILD(void) {
+void WAIT_CHILD(void) {
     while (sigflag == 0) {
-        sigsuspend(&zeromask);    /* and wait for child */
+        sigsuspend(&zeromask); /* and wait for child */
     }
 
     sigflag = 0;

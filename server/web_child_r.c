@@ -1,19 +1,18 @@
-#include    "unp.h"
-#include    "readline_r.h"
+#include "readline_r.h"
+#include "unp.h"
 
-#define MAXN    16384       /* max #bytes that a client can request */
+#define MAXN 16384 /* max #bytes that a client can request */
 
-void
-web_child(int sockfd) {
-    int         ntowrite;
-    ssize_t     nread;
-    char        line[MAXLINE], result[MAXN];
-    Rline       rline;
+void web_child(int sockfd) {
+    int ntowrite;
+    ssize_t nread;
+    char line[MAXLINE], result[MAXN];
+    Rline rline;
 
     readline_rinit(sockfd, line, MAXLINE, &rline);
-    for (; ;) {
+    for (;;) {
         if ((nread = Readline_r(&rline)) == 0) {
-            return;    /* connection closed by other end */
+            return; /* connection closed by other end */
         }
 
         /* line from client specifies #bytes to write back */

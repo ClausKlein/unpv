@@ -7,12 +7,11 @@
  * It is provided "as is" without express or implied warranty.
  */
 
-#include    "sock.h"
+#include "sock.h"
 
-void
-buffers(int sockfd) {
-    int         n;
-    socklen_t   optlen;
+void buffers(int sockfd) {
+    int n;
+    socklen_t optlen;
 
     /* Allocate the read and write buffers. */
 
@@ -33,7 +32,8 @@ buffers(int sockfd) {
 
     if (rcvbuflen) {
         if (setsockopt(sockfd, SOL_SOCKET, SO_RCVBUF, &rcvbuflen,
-                       sizeof(rcvbuflen)) < 0) {
+                       sizeof(rcvbuflen))
+            < 0) {
             err_sys("SO_RCVBUF setsockopt error");
         }
 
@@ -51,7 +51,8 @@ buffers(int sockfd) {
 
     if (sndbuflen) {
         if (setsockopt(sockfd, SOL_SOCKET, SO_SNDBUF, &sndbuflen,
-                       sizeof(sndbuflen)) < 0) {
+                       sizeof(sndbuflen))
+            < 0) {
             err_sys("SO_SNDBUF setsockopt error");
         }
 

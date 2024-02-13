@@ -1,11 +1,10 @@
 /* include readline */
-#include    "unp.h"
+#include "unp.h"
 
-ssize_t
-readline(int fd, void *vptr, size_t maxlen) {
+ssize_t readline(int fd, void *vptr, size_t maxlen) {
     size_t n;
     ssize_t rc;
-    char    c, *ptr;
+    char c, *ptr;
 
     ptr = vptr;
     for (n = 1; n < maxlen; n++) {
@@ -16,26 +15,25 @@ readline(int fd, void *vptr, size_t maxlen) {
             }
         } else if (rc == 0) {
             if (n == 1) {
-                return(0);    /* EOF, no data read */
+                return (0); /* EOF, no data read */
             } else {
-                break;    /* EOF, some data was read */
+                break; /* EOF, some data was read */
             }
         } else {
-            return(-1);    /* error */
+            return (-1); /* error */
         }
     }
 
     *ptr = 0;
-    return(n);
+    return (n);
 }
 /* end readline */
 
-ssize_t
-Readline(int fd, void *ptr, size_t maxlen) {
-    ssize_t     n;
+ssize_t Readline(int fd, void *ptr, size_t maxlen) {
+    ssize_t n;
 
     if ((n = readline(fd, ptr, maxlen)) == -1) {
         err_sys("readline error");
     }
-    return(n);
+    return (n);
 }

@@ -7,21 +7,21 @@
  * It is provided "as is" without express or implied warranty.
  */
 
-#include    "sock.h"
-#include    <sys/uio.h>     /* for writev() */
+#include <sys/uio.h> /* for writev() */
+
+#include "sock.h"
 
 #ifndef UIO_MAXIOV
-#define UIO_MAXIOV  16  /* we assume this; may not be true? */
+#    define UIO_MAXIOV 16 /* we assume this; may not be true? */
 #endif
 
-ssize_t
-dowrite(int fd, const void *vptr, size_t nbytes) {
-    struct iovec    iov[UIO_MAXIOV];
-    const char      *ptr;
-    int             chunksize, i, n, nleft, nwritten, ntotal;
+ssize_t dowrite(int fd, const void *vptr, size_t nbytes) {
+    struct iovec iov[UIO_MAXIOV];
+    const char *ptr;
+    int chunksize, i, n, nleft, nwritten, ntotal;
 
     if (chunkwrite == 0 && usewritev == 0) {
-        return(write(fd, vptr, nbytes));    /* common case */
+        return (write(fd, vptr, nbytes)); /* common case */
     }
 
     /*
@@ -55,16 +55,16 @@ dowrite(int fd, const void *vptr, size_t nbytes) {
     }
 
     if (usewritev) {
-        return(writev(fd, iov, i + 1));
+        return (writev(fd, iov, i + 1));
     } else {
         ntotal = 0;
         for (n = 0; n <= i; n++) {
             nwritten = write(fd, iov[n].iov_base, iov[n].iov_len);
             if ((size_t)nwritten != iov[n].iov_len) {
-                return(-1);
+                return (-1);
             }
             ntotal += nwritten;
         }
-        return(ntotal);
+        return (ntotal);
     }
 }

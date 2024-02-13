@@ -17,23 +17,24 @@
  */
 
 #if defined(LIBC_SCCS) && !defined(lint)
-static char rcsid[] = "$Id: inet_ntop.c,v 1.1.1.1 2002/11/14 03:33:35 fenner Exp $";
+static char rcsid[]
+    = "$Id: inet_ntop.c,v 1.1.1.1 2002/11/14 03:33:35 fenner Exp $";
 #endif /* LIBC_SCCS and not lint */
 
-#include <sys/param.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
 #include <arpa/inet.h>
-#include <string.h>
 #include <errno.h>
+#include <netinet/in.h>
 #include <stdio.h>
+#include <string.h>
+#include <sys/param.h>
+#include <sys/socket.h>
+#include <sys/types.h>
 
-#define IN6ADDRSZ   16
-#define INT16SZ      2
+#define IN6ADDRSZ 16
+#define INT16SZ 2
 
 #ifndef AF_INET6
-#define AF_INET6    AF_MAX+1    /* just to let this compile */
+#    define AF_INET6 AF_MAX + 1 /* just to let this compile */
 #endif
 
 /*
@@ -52,17 +53,15 @@ static const char *inet_ntop6(const u_char *src, char *dst, size_t size);
  * author:
  *  Paul Vixie, 1996.
  */
-const char *
-inet_ntop(int af, const void *src, char *dst, socklen_t size)
-{
+const char *inet_ntop(int af, const void *src, char *dst, socklen_t size) {
     switch (af) {
-    case AF_INET:
-        return (inet_ntop4(src, dst, size));
-    case AF_INET6:
-        return (inet_ntop6(src, dst, size));
-    default:
-        errno = EAFNOSUPPORT;
-        return (NULL);
+        case AF_INET:
+            return (inet_ntop4(src, dst, size));
+        case AF_INET6:
+            return (inet_ntop6(src, dst, size));
+        default:
+            errno = EAFNOSUPPORT;
+            return (NULL);
     }
     /* NOTREACHED */
 }
@@ -78,9 +77,7 @@ inet_ntop(int af, const void *src, char *dst, socklen_t size)
  * author:
  *  Paul Vixie, 1996.
  */
-static const char *
-inet_ntop4(const u_char *src, char *dst, size_t size)
-{
+static const char *inet_ntop4(const u_char *src, char *dst, size_t size) {
     static const char fmt[] = "%u.%u.%u.%u";
     char tmp[sizeof "255.255.255.255"];
 
@@ -99,9 +96,7 @@ inet_ntop4(const u_char *src, char *dst, size_t size)
  * author:
  *  Paul Vixie, 1996.
  */
-static const char *
-inet_ntop6(const u_char *src, char *dst, size_t size)
-{
+static const char *inet_ntop6(const u_char *src, char *dst, size_t size) {
     /*
      * Note that int32_t and int16_t need only be "at least" large enough
      * to contain a value of the specified size.  On some systems, like
@@ -160,8 +155,7 @@ inet_ntop6(const u_char *src, char *dst, size_t size)
     tp = tmp;
     for (i = 0; i < (IN6ADDRSZ / INT16SZ); i++) {
         /* Are we inside the best run of 0x00's? */
-        if (best.base != -1 && i >= best.base &&
-                i < (best.base + best.len)) {
+        if (best.base != -1 && i >= best.base && i < (best.base + best.len)) {
             if (i == best.base) {
                 *tp++ = ':';
             }
@@ -172,8 +166,8 @@ inet_ntop6(const u_char *src, char *dst, size_t size)
             *tp++ = ':';
         }
         /* Is this address an encapsulated IPv4? */
-        if (i == 6 && best.base == 0 &&
-                (best.len == 6 || (best.len == 5 && words[5] == 0xffff))) {
+        if (i == 6 && best.base == 0
+            && (best.len == 6 || (best.len == 5 && words[5] == 0xffff))) {
             if (!inet_ntop4(src + 12, tp, sizeof tmp - (tp - tmp))) {
                 return (NULL);
             }

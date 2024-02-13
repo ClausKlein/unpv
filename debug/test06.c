@@ -1,9 +1,8 @@
-#include    "unpxti.h"
+#include "unpxti.h"
 
-int
-main(int argc, char **argv) {
-    int             fd;
-    struct t_call   *tcall;
+int main(int argc, char **argv) {
+    int fd;
+    struct t_call *tcall;
 
     fd = T_open(XTI_TCP, O_RDWR, NULL);
 

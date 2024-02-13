@@ -1,8 +1,7 @@
 #include "unpkey.h"
 
 /* include sadb_register */
-void
-sadb_register(int type) {
+void sadb_register(int type) {
     int s;
     char buf[4096]; /* XXX */
     struct sadb_msg msg;
@@ -31,8 +30,8 @@ sadb_register(int type) {
 
         msglen = Read(s, &buf, sizeof(buf));
         msgp = (struct sadb_msg *)&buf;
-        if ((pid_t)(msgp->sadb_msg_pid) == mypid &&
-                msgp->sadb_msg_type == SADB_REGISTER) {
+        if ((pid_t)(msgp->sadb_msg_pid) == mypid
+            && msgp->sadb_msg_type == SADB_REGISTER) {
             print_sadb_msg(msgp, msglen);
             break;
         }
@@ -41,22 +40,21 @@ sadb_register(int type) {
 }
 /* end sadb_register */
 
-int
-main(int argc, char **argv) {
+int main(int argc, char **argv) {
     int satype = SADB_SATYPE_UNSPEC;
     int c;
 
-    opterr = 0;     /* don't want getopt() writing to stderr */
+    opterr = 0; /* don't want getopt() writing to stderr */
     while ((c = getopt(argc, argv, "t:")) != -1) {
         switch (c) {
-        case 't':
-            if ((satype = getsatypebyname(optarg)) == -1) {
-                err_quit("invalid -t option %s", optarg);
-            }
-            break;
+            case 't':
+                if ((satype = getsatypebyname(optarg)) == -1) {
+                    err_quit("invalid -t option %s", optarg);
+                }
+                break;
 
-        default:
-            err_quit("unrecognized option: %c", c);
+            default:
+                err_quit("unrecognized option: %c", c);
         }
     }
 

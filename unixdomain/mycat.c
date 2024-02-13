@@ -1,11 +1,10 @@
-#include    "unp.h"
+#include "unp.h"
 
-int     my_open(const char *, int);
+int my_open(const char *, int);
 
-int
-main(int argc, char **argv) {
-    int     fd, n;
-    char    buff[BUFFSIZE];
+int main(int argc, char **argv) {
+    int fd, n;
+    char buff[BUFFSIZE];
 
     if (argc != 2) {
         err_quit("usage: mycat <pathname>");

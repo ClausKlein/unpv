@@ -7,14 +7,13 @@
  * It is provided "as is" without express or implied warranty.
  */
 
-#include    "sock.h"
+#include "sock.h"
 
 /* Convert newline to return/newline. */
 
-int
-crlf_add(char *dst, int dstsize, const char *src, int lenin) {
-    int     lenout;
-    char    c;
+int crlf_add(char *dst, int dstsize, const char *src, int lenin) {
+    int lenout;
+    char c;
 
     if ((lenout = lenin) > dstsize) {
         err_quit("crlf_add: destination not big enough");
@@ -30,13 +29,12 @@ crlf_add(char *dst, int dstsize, const char *src, int lenin) {
         *dst++ = c;
     }
 
-    return(lenout);
+    return (lenout);
 }
 
-int
-crlf_strip(char *dst, int dstsize, const char *src, int lenin) {
-    int     lenout;
-    char    c;
+int crlf_strip(char *dst, int dstsize, const char *src, int lenin) {
+    int lenout;
+    char c;
 
     for (lenout = 0; lenin > 0; lenin--) {
         if ((c = *src++) != '\r') {
@@ -47,5 +45,5 @@ crlf_strip(char *dst, int dstsize, const char *src, int lenin) {
         }
     }
 
-    return(lenout);
+    return (lenout);
 }

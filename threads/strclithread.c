@@ -1,16 +1,15 @@
-#include    "unpthread.h"
+#include "unpthread.h"
 
-void    *copyto(void *);
+void *copyto(void *);
 
-static int  sockfd;     /* global for both threads to access */
+static int sockfd; /* global for both threads to access */
 static FILE *fp;
 
-void
-str_cli(FILE *fp_arg, int sockfd_arg) {
-    char        recvline[MAXLINE];
-    pthread_t   tid;
+void str_cli(FILE *fp_arg, int sockfd_arg) {
+    char recvline[MAXLINE];
+    pthread_t tid;
 
-    sockfd = sockfd_arg;    /* copy arguments to externals */
+    sockfd = sockfd_arg; /* copy arguments to externals */
     fp = fp_arg;
 
     Pthread_create(&tid, NULL, copyto, NULL);
@@ -20,16 +19,15 @@ str_cli(FILE *fp_arg, int sockfd_arg) {
     }
 }
 
-void *
-copyto(void *arg) {
-    char    sendline[MAXLINE];
+void *copyto(void *arg) {
+    char sendline[MAXLINE];
 
     while (Fgets(sendline, MAXLINE, fp) != NULL) {
         Written(sockfd, sendline, strlen(sendline));
     }
 
-    Shutdown(sockfd, SHUT_WR);  /* EOF on stdin, send FIN */
+    Shutdown(sockfd, SHUT_WR); /* EOF on stdin, send FIN */
 
-    return(NULL);
+    return (NULL);
     /* 4return (i.e., thread terminates) when EOF on stdin */
 }

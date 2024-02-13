@@ -1,10 +1,9 @@
-#include    "unpxti.h"
+#include "unpxti.h"
 
-int
-main(int argc, char **argv) {
-    int             listenfd, connfd, n, flags;
-    char            buff[MAXLINE];
-    struct pollfd   fds[1];
+int main(int argc, char **argv) {
+    int listenfd, connfd, n, flags;
+    char buff[MAXLINE];
+    struct pollfd fds[1];
 
     if (argc == 2) {
         listenfd = Tcp_listen(NULL, argv[1], NULL);
@@ -18,7 +17,7 @@ main(int argc, char **argv) {
 
     fds[0].fd = connfd;
     fds[0].events = POLLIN | POLLRDNORM | POLLRDBAND | POLLPRI;
-    for (; ;) {
+    for (;;) {
         n = poll(fds, 1, INFTIM);
         printf("poll returned %d, revents = 0x%x\n", n, fds[0].revents);
 

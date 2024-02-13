@@ -1,16 +1,14 @@
-#include    "unp.h"
+#include "unp.h"
 
 static void sig_alrm(int);
 
-void
-dg_cli(FILE *fp, int sockfd, const SA *pservaddr, socklen_t servlen) {
+void dg_cli(FILE *fp, int sockfd, const SA *pservaddr, socklen_t servlen) {
     int n;
-    char    sendline[MAXLINE], recvline[MAXLINE + 1];
+    char sendline[MAXLINE], recvline[MAXLINE + 1];
 
     Signal(SIGALRM, sig_alrm);
 
     while (Fgets(sendline, MAXLINE, fp) != NULL) {
-
         Sendto(sockfd, sendline, strlen(sendline), 0, pservaddr, servlen);
 
         alarm(5);
@@ -22,13 +20,10 @@ dg_cli(FILE *fp, int sockfd, const SA *pservaddr, socklen_t servlen) {
             }
         } else {
             alarm(0);
-            recvline[n] = 0;    /* null terminate */
+            recvline[n] = 0; /* null terminate */
             Fputs(recvline, stdout);
         }
     }
 }
 
-static void
-sig_alrm(int signo) {
-    return;         /* just interrupt the recvfrom() */
-}
+static void sig_alrm(int signo) { return; /* just interrupt the recvfrom() */ }

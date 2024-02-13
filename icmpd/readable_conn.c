@@ -1,19 +1,18 @@
 /* include readable_conn1 */
-#include    "icmpd.h"
+#include "icmpd.h"
 
-int
-readable_conn(int i) {
-    int             unixfd, recvfd;
-    char            c;
-    ssize_t         n;
-    socklen_t       len;
+int readable_conn(int i) {
+    int unixfd, recvfd;
+    char c;
+    ssize_t n;
+    socklen_t len;
     struct sockaddr_storage ss;
 
     unixfd = client[i].connfd;
     recvfd = -1;
     if ((n = Read_fd(unixfd, &c, 1, &recvfd)) == 0) {
         err_msg("client %d terminated, recvfd = %d", i, recvfd);
-        goto clientdone;    /* client probably terminated */
+        goto clientdone; /* client probably terminated */
     }
 
     /* 4data from client; should be descriptor */
@@ -25,7 +24,7 @@ readable_conn(int i) {
 
     /* include readable_conn2 */
     len = sizeof(ss);
-    if (getsockname(recvfd, (SA *) &ss, &len) < 0) {
+    if (getsockname(recvfd, (SA *)&ss, &len) < 0) {
         err_ret("getsockname error");
         goto clienterr;
     }
@@ -38,12 +37,12 @@ readable_conn(int i) {
             goto clienterr;
         }
     }
-    Write(unixfd, "1", 1);  /* tell client all OK */
-    Close(recvfd);          /* all done with client's UDP socket */
-    return(--nready);
+    Write(unixfd, "1", 1); /* tell client all OK */
+    Close(recvfd);         /* all done with client's UDP socket */
+    return (--nready);
 
 clienterr:
-    Write(unixfd, "0", 1);  /* tell client error occurred */
+    Write(unixfd, "0", 1); /* tell client error occurred */
 clientdone:
     Close(unixfd);
     if (recvfd >= 0) {
@@ -51,6 +50,6 @@ clientdone:
     }
     FD_CLR(unixfd, &allset);
     client[i].connfd = -1;
-    return(--nready);
+    return (--nready);
 }
 /* end readable_conn2 */

@@ -1,8 +1,7 @@
-#include    "unpifi.h"
+#include "unpifi.h"
 
-int
-main(int argc, char **argv) {
-    char    name[16];
+int main(int argc, char **argv) {
+    char name[16];
 
     if (argc != 2) {
         err_quit("usage: prifname <interface-index>");

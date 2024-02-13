@@ -1,12 +1,11 @@
-#include    "unpthread.h"
+#include "unpthread.h"
 
-static void *doit(void *);      /* each thread executes this function */
+static void *doit(void *); /* each thread executes this function */
 
-int
-main(int argc, char **argv) {
-    int             listenfd = -1, connfd;
-    pthread_t       tid;
-    socklen_t       addrlen = 0, len;
+int main(int argc, char **argv) {
+    int listenfd = -1, connfd;
+    pthread_t tid;
+    socklen_t addrlen = 0, len;
     struct sockaddr *cliaddr;
 
     if (argc == 2) {
@@ -19,17 +18,16 @@ main(int argc, char **argv) {
 
     cliaddr = Malloc(addrlen);
 
-    for (; ;) {
+    for (;;) {
         len = addrlen;
         connfd = Accept(listenfd, cliaddr, &len);
-        Pthread_create(&tid, NULL, &doit, (void *) connfd);
+        Pthread_create(&tid, NULL, &doit, (void *)connfd);
     }
 }
 
-static void *
-doit(void *arg) {
+static void *doit(void *arg) {
     Pthread_detach(pthread_self());
-    str_echo((int) arg);    /* same function as before */
-    Close((int) arg);       /* done with connected socket */
-    return(NULL);
+    str_echo((int)arg); /* same function as before */
+    Close((int)arg);    /* done with connected socket */
+    return (NULL);
 }

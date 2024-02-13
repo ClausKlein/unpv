@@ -1,15 +1,14 @@
 /* include serv02 */
-#include    "unp.h"
+#include "unp.h"
 
-static int      nchildren;
-static pid_t    *pids;
+static int nchildren;
+static pid_t *pids;
 
-int
-main(int argc, char **argv) {
-    int         listenfd = -1, i;
-    socklen_t   addrlen;
-    void        sig_int(int);
-    pid_t       child_make(int, int, int);
+int main(int argc, char **argv) {
+    int listenfd = -1, i;
+    socklen_t addrlen;
+    void sig_int(int);
+    pid_t child_make(int, int, int);
 
     if (argc == 3) {
         listenfd = Tcp_listen(NULL, argv[1], &addrlen);
@@ -22,31 +21,30 @@ main(int argc, char **argv) {
     pids = Calloc(nchildren, sizeof(pid_t));
 
     for (i = 0; i < nchildren; i++) {
-        pids[i] = child_make(i, listenfd, addrlen);    /* parent returns */
+        pids[i] = child_make(i, listenfd, addrlen); /* parent returns */
     }
 
     Signal(SIGINT, sig_int);
 
-    for (; ;) {
-        pause();    /* everything done by children */
+    for (;;) {
+        pause(); /* everything done by children */
     }
     //
-    //NOTE: Pause is made obsolete by sigsuspend(2)
+    // NOTE: Pause is made obsolete by sigsuspend(2)
     //
 }
 /* end serv02 */
 
 /* include sigint */
-void
-sig_int(int signo) {
-    int     i;
-    void    pr_cpu_time(void);
+void sig_int(int signo) {
+    int i;
+    void pr_cpu_time(void);
 
     /* 4terminate all children */
     for (i = 0; i < nchildren; i++) {
         kill(pids[i], SIGTERM);
     }
-    while (wait(NULL) > 0)      /* wait for all children */
+    while (wait(NULL) > 0) /* wait for all children */
         ;
     if (errno != ECHILD) {
         err_sys("wait error");

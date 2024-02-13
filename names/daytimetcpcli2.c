@@ -1,13 +1,12 @@
-#include    "unp.h"
+#include "unp.h"
 
-int
-main(int argc, char **argv) {
-    int                 sockfd = -1, n;
-    char                recvline[MAXLINE + 1];
-    struct sockaddr_in  servaddr;
-    struct in_addr      **pptr = NULL, *addrs[2];
-    struct hostent      *hp;
-    struct servent      *sp;
+int main(int argc, char **argv) {
+    int sockfd = -1, n;
+    char recvline[MAXLINE + 1];
+    struct sockaddr_in servaddr;
+    struct in_addr **pptr = NULL, *addrs[2];
+    struct hostent *hp;
+    struct servent *sp;
 
     if (argc != 3) {
         err_quit("usage: daytimetcpcli2 <hostname> <service>");
@@ -21,7 +20,7 @@ main(int argc, char **argv) {
         addrs[1] = NULL;
         pptr = &addrs[0];
     } else if ((hp = gethostbyname(argv[1])) != NULL) {
-        pptr = (struct in_addr **) hp->h_addr_list;
+        pptr = (struct in_addr **)hp->h_addr_list;
     } else {
         err_quit("hostname error for %s: %s", argv[1], hstrerror(h_errno));
     }
@@ -38,11 +37,10 @@ main(int argc, char **argv) {
         sockfd = Socket(AF_INET, SOCK_STREAM, 0);
 
         memmove(&servaddr.sin_addr, *pptr, sizeof(struct in_addr));
-        printf("trying %s\n",
-               Sock_ntop((SA *) &servaddr, sizeof(servaddr)));
+        printf("trying %s\n", Sock_ntop((SA *)&servaddr, sizeof(servaddr)));
 
-        if (connect(sockfd, (SA *) &servaddr, sizeof(servaddr)) == 0) {
-            break;    /* success */
+        if (connect(sockfd, (SA *)&servaddr, sizeof(servaddr)) == 0) {
+            break; /* success */
         }
         err_ret("connect error");
         close(sockfd);
@@ -52,7 +50,7 @@ main(int argc, char **argv) {
     }
 
     while ((n = Read(sockfd, recvline, MAXLINE)) > 0) {
-        recvline[n] = 0;    /* null terminate */
+        recvline[n] = 0; /* null terminate */
         Fputs(recvline, stdout);
     }
     exit(0);

@@ -10,14 +10,13 @@
  * no output.
  */
 
-#include    "unp.h"
+#include "unp.h"
 
-int
-main(int argc, char **argv) {
-    int     n;
-    char    buf[1024] = {"xxxxxx"};
+int main(int argc, char **argv) {
+    int n;
+    char buf[1024] = {"xxxxxx"};
 
-    n = snprintf(buf, 4, "%d", 9999);
+    n = snprintf(buf, 4, "%d", 9999);  // FIXME: gcc -Wformat-truncation=
     if (n > 3) {
         printf("error: snprintf overflowed buffer, n = %d, %s\n", n, buf);
     }

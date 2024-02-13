@@ -1,10 +1,10 @@
 #include <arpa/inet.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
 #include <netdb.h>
-#include <stdlib.h>
+#include <netinet/in.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <sys/socket.h>
+#include <sys/types.h>
 
 int main(void) {
 #ifdef __BSD__

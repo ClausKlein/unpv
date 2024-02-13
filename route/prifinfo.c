@@ -1,11 +1,10 @@
-#include    "unpifi.h"
+#include "unpifi.h"
 
-int
-main(int argc, char **argv) {
+int main(int argc, char **argv) {
     struct ifi_info *ifi, *ifihead;
     struct sockaddr *sa;
-    u_char          *ptr;
-    int             i, family = 0, doaliases;
+    u_char *ptr;
+    int i, family = 0, doaliases;
 
     if (argc != 3) {
         err_quit("usage: prifinfo <inet4|inet6> <doaliases>");
@@ -13,7 +12,7 @@ main(int argc, char **argv) {
     if (strcmp(argv[1], "inet4") == 0) {
         family = AF_INET;
     }
-#ifdef  AF_INET6
+#ifdef AF_INET6
     else if (strcmp(argv[1], "inet6") == 0) {
         family = AF_INET6;
     }
@@ -23,8 +22,8 @@ main(int argc, char **argv) {
     }
     doaliases = atoi(argv[2]);
 
-    for (ifihead = ifi = Get_ifi_info(family, doaliases);
-            ifi != NULL; ifi = ifi->ifi_next) {
+    for (ifihead = ifi = Get_ifi_info(family, doaliases); ifi != NULL;
+         ifi = ifi->ifi_next) {
         printf("%s: <", ifi->ifi_name);
         if (ifi->ifi_flags & IFF_UP) {
             printf("UP ");

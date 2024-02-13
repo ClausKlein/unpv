@@ -1,10 +1,9 @@
-#include    "unp.h"
+#include "unp.h"
 
-int
-main(int argc, char **argv) {
-    int     count = 0;
+int main(int argc, char **argv) {
+    int count = 0;
     ssize_t n;
-    char    recvline[MAXLINE];
+    char recvline[MAXLINE];
 
     while ((n = readline(STDIN_FILENO, recvline, MAXLINE)) > 0) {
         count++;
