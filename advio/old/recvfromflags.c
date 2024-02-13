@@ -54,7 +54,7 @@ ssize_t recvfrom_flags(int fd, void *ptr, size_t nbytes, int *flagsp, SA *sa,
 #    endif
         *flagsp |= MSG_CTRUNC; /* dest IP addr not returned */
 #else
-    *flagsp |= MSG_CTRUNC;    /* dest IP addr not returned */
+    *flagsp |= MSG_CTRUNC; /* dest IP addr not returned */
 #endif /* HAVE_MSGHDR_MSG_CONTROL */
 
     return (n);

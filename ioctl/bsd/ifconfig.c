@@ -305,7 +305,7 @@ const struct afswtch {
     caddr_t af_ridreq;
     caddr_t af_addreq;
 } afs[] = {
-#define C(x) ((caddr_t)&x)
+#define C(x) ((caddr_t) & x)
     {"inet", AF_INET, in_status, in_getaddr, NULL, SIOCDIFADDR, SIOCAIFADDR,
      C(ridreq), C(addreq)},
 #ifdef INET6

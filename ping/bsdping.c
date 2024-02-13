@@ -36,13 +36,11 @@
  * SUCH DAMAGE.
  */
 
-#ifndef lint
+#if 0
 static char copyright[]
     = "@(#) Copyright (c) 1989, 1993\n\
 	The Regents of the University of California.  All rights reserved.\n";
-#endif /* not lint */
 
-#ifndef lint
 static char sccsid[] = "@(#)ping.c	8.1 (Berkeley) 6/5/93";
 #endif /* not lint */
 
@@ -88,8 +86,8 @@ static char sccsid[] = "@(#)ping.c	8.1 (Berkeley) 6/5/93";
 #define MAXPACKET (65536 - 60 - 8) /* max packet size */
 #define NROUTES 9                  /* number of record route slots */
 
-#define A(bit) rcvd_tbl[(bit) >> 3] /* identify byte in array */
-#define B(bit) (1 << ((bit)&0x07))  /* identify bit in byte */
+#define A(bit) rcvd_tbl[(bit) >> 3]  /* identify byte in array */
+#define B(bit) (1 << ((bit) & 0x07)) /* identify bit in byte */
 #define SET(bit) (A(bit) |= B(bit))
 #define CLR(bit) (A(bit) &= (~B(bit)))
 #define TST(bit) (A(bit) & B(bit))
@@ -151,11 +149,8 @@ void summary __P((void));
 void tvsub __P((struct timeval *, struct timeval *));
 void usage __P((void));
 
-int main(argc, argv)
-int argc;
-char *argv[];
-{
-    extern int errno, optind;
+int main(int argc, char *argv[]) {
+    extern int optind;
     extern char *optarg;
     struct hostent *hp;
     struct itimerval itimer;
@@ -164,7 +159,7 @@ char *argv[];
     struct timeval timeout;
     fd_set fdset;
     register int cc, i;
-    int ch, fromlen, hold, packlen, preload;
+    int ch, hold, packlen, preload;
     u_char *datap, *packet;
     char *e, *target, hnamebuf[MAXHOSTNAMELEN];
 #ifdef IP_OPTIONS
@@ -347,10 +342,9 @@ char *argv[];
                 continue;
             }
         }
-        fromlen = sizeof(from);
+        socklen_t fromlen = sizeof(from);
         if ((cc = recvfrom(s, (char *)packet, packlen, 0,
-                           (struct sockaddr *)&from, &fromlen))
-            < 0) {
+                           (struct sockaddr *)&from, &fromlen)) < 0) {
             if (errno == EINTR) {
                 continue;
             }
@@ -370,8 +364,7 @@ char *argv[];
  * onalrm --
  *  This routine transmits another ping.
  */
-void onalrm(signo) int signo;
-{
+void onalrm(int signo) {
     struct itimerval itimer;
 
     if (!npackets || ntransmitted < npackets) {
@@ -409,7 +402,7 @@ void onalrm(signo) int signo;
  * of the data portion are used to hold a UNIX "timeval" struct in VAX
  * byte-order, to compute the round-trip time.
  */
-void pinger() {
+void pinger(void) {
     register struct icmp *icp;
     register int cc;
     int i;
@@ -452,10 +445,7 @@ void pinger() {
  * which arrive ('tis only fair).  This permits multiple copies of this
  * program to be run without having intermingled output (or statistics!).
  */
-void pr_pack(buf, cc, from) char *buf;
-int cc;
-struct sockaddr_in *from;
-{
+void pr_pack(char *buf, int cc, struct sockaddr_in *from) {
     register struct icmp *icp;
     register u_long l;
     register int i, j;
@@ -648,10 +638,7 @@ struct sockaddr_in *from;
  * in_cksum --
  *  Checksum routine for Internet Protocol family headers (C Version)
  */
-u_short in_cksum(addr, len)
-u_short *addr;
-int len;
-{
+u_short in_cksum(u_short *addr, int len) {
     register int nleft = len;
     register u_short *w = addr;
     register int sum = 0;
@@ -685,8 +672,7 @@ int len;
  *  Subtract 2 timeval structs:  out = out - in.  Out is assumed to
  * be >= in.
  */
-void tvsub(out, in) register struct timeval *out, *in;
-{
+void tvsub(struct timeval *out, struct timeval *in) {
     if ((out->tv_usec -= in->tv_usec) < 0) {
         --out->tv_sec;
         out->tv_usec += 1000000;
@@ -698,15 +684,13 @@ void tvsub(out, in) register struct timeval *out, *in;
  * oninfo --
  *  SIGINFO handler.
  */
-void oninfo(notused) int notused;
-{ summary(); }
+void oninfo(int notused) { summary(); }
 
 /*
  * onint --
  *  SIGINT handler.
  */
-void onint(notused) int notused;
-{
+void onint(int notused) {
     summary();
 
     (void)signal(SIGINT, SIG_DFL);
@@ -720,7 +704,7 @@ void onint(notused) int notused;
  * summary --
  *  Print out statistics.
  */
-void summary() {
+void summary(void) {
     register int i;
 
     (void)printf("\n--- %s ping statistics ---\n", hostname);
@@ -729,13 +713,15 @@ void summary() {
     if (nrepeats) {
         (void)printf("+%ld duplicates, ", nrepeats);
     }
-    if (ntransmitted)
+    if (ntransmitted) {
         if (nreceived > ntransmitted) {
             (void)printf("-- somebody's printing up packets!");
-        } else
+        } else {
             (void)printf(
                 "%d%% packet loss",
                 (int)(((ntransmitted - nreceived) * 100) / ntransmitted));
+        }
+    }
     (void)putchar('\n');
     if (nreceived && timing) {
         /* Only display average to microseconds */
@@ -765,8 +751,7 @@ static char *ttab[] = {
  * pr_icmph --
  *  Print a descriptive string about an ICMP header.
  */
-void pr_icmph(icp) struct icmp *icp;
-{
+void pr_icmph(struct icmp *icp) {
     switch (icp->icmp_type) {
         case ICMP_ECHOREPLY:
             (void)printf("Echo Reply\n");
@@ -904,8 +889,7 @@ void pr_icmph(icp) struct icmp *icp;
  * pr_iph --
  *  Print an IP header with options.
  */
-void pr_iph(ip) struct ip *ip;
-{
+void pr_iph(struct ip *ip) {
     int hlen;
     u_char *cp;
 
@@ -933,9 +917,7 @@ void pr_iph(ip) struct ip *ip;
  *  Return an ascii host address as a dotted quad and optionally with
  * a hostname.
  */
-char *pr_addr(l)
-u_long l;
-{
+char *pr_addr(u_long l) {
     struct hostent *hp;
     static char buf[80];
 
@@ -952,8 +934,7 @@ u_long l;
  * pr_retip --
  *  Dump some info on a returned (via ICMP) IP packet.
  */
-void pr_retip(ip) struct ip *ip;
-{
+void pr_retip(struct ip *ip) {
     int hlen;
     u_char *cp;
 
@@ -969,8 +950,7 @@ void pr_retip(ip) struct ip *ip;
                      (*cp * 256 + *(cp + 1)), (*(cp + 2) * 256 + *(cp + 3)));
 }
 
-void fill(bp, patp) char *bp, *patp;
-{
+void fill(char *bp, char *patp) {
     register int ii, jj, kk;
     int pat[16];
     char *cp;
@@ -999,7 +979,7 @@ void fill(bp, patp) char *bp, *patp;
     }
 }
 
-void usage() {
+void usage(void) {
     (void)fprintf(
         stderr,
         "usage: ping [-dfnqRrv] [-c count] [-i wait] [-l preload] [-p pattern]\n\
