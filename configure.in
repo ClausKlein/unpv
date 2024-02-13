@@ -12,9 +12,10 @@ dnl #include "../config.h" and the Makefile in each source directory
 dnl then does a include of ../Make.defines.
 dnl
 AC_REVISION($Revision: 1.13 $)
-AC_INIT(lib/unp.h)
+AC_INIT
+AC_CONFIG_SRCDIR([lib/unp.h])
 AC_CANONICAL_HOST
-AC_CONFIG_HEADER(config.h)
+AC_CONFIG_HEADERS([config.h])
 
 dnl The following cpu_vendor_os string goes into config.h.
 dnl
@@ -140,7 +141,15 @@ dnl
 dnl The list of headers in the AC_CHECK_HEADERS macro is the same as in
 dnl our "unp.h" header, followed by our "unpxti.h" header.
 dnl
-AC_HEADER_STDC
+m4_warn([obsolete],
+[The preprocessor macro 'STDC_HEADERS' is obsolete.
+  Except in unusual embedded environments, you can safely include all
+  C89 headers unconditionally.])dnl
+# Autoupdate added the next two lines to ensure that your configure
+# script's behavior did not change.  They are probably safe to remove.
+AC_CHECK_INCLUDES_DEFAULT
+AC_PROG_EGREP
+
 dnl
 dnl The includes (the 4th argument to AC_CHECK_HEADERS) here are
 dnl the default set ($ac_includes_default) plus <sys/param.h>
@@ -190,7 +199,20 @@ dnl
 dnl We use our own AC_UNP_CHECK_TYPE macro, instead of AC_CHECK_TYPE,
 dnl to #include more headers.  Our macro is defined in "aclocal.m4".
 dnl
-AC_HEADER_TIME
+m4_warn([obsolete],
+[Update your code to rely only on HAVE_SYS_TIME_H,
+then remove this warning and the obsolete code below it.
+All current systems provide time.h; it need not be checked for.
+Not all systems provide sys/time.h, but those that do, all allow
+you to include it and time.h simultaneously.])dnl
+AC_CHECK_HEADERS_ONCE([sys/time.h])
+# Obsolete code to be removed.
+if test $ac_cv_header_sys_time_h = yes; then
+  AC_DEFINE([TIME_WITH_SYS_TIME],[1],[Define to 1 if you can safely include both <sys/time.h>
+	     and <time.h>.  This macro is obsolete.])
+fi
+# End of obsolete code.
+
 AC_UNP_CHECK_TYPE(uint8_t, unsigned char, 8-bit unsigned type)
 AC_UNP_CHECK_TYPE(int16_t, short, 16 bit signed type)
 AC_UNP_CHECK_TYPE(uint16_t, unsigned short, 16 bit unsigned type)
@@ -389,7 +411,7 @@ dnl Let's see if the system really supports IPv4.
 dnl
 AC_MSG_CHECKING(for IPv4 support)
 AC_CACHE_VAL(ac_cv_ipv4,
-	AC_TRY_RUN([
+	AC_RUN_IFELSE([AC_LANG_SOURCE([[
 #	include <sys/types.h>
 #	include <sys/socket.h>
 #	include <netinet/in.h>
@@ -402,10 +424,7 @@ AC_CACHE_VAL(ac_cv_ipv4,
 		struct sockaddr_in foo;
 		fd = socket(AF_INET, SOCK_STREAM, 0);
 		exit(fd >= 0 ? 0 : 1);
-	}],
-	ac_cv_ipv4=yes,
-	ac_cv_ipv4=no,
-	ac_cv_ipv4=no))
+	}]])],[ac_cv_ipv4=yes],[ac_cv_ipv4=no],[ac_cv_ipv4=no]))
 AC_MSG_RESULT($ac_cv_ipv4)
 if test $ac_cv_ipv4 = yes ; then
 	AC_DEFINE(IPV4, 1, Define to 1 if the system supports IPv4)
@@ -416,7 +435,7 @@ dnl Let's see if the system really supports IPv6.
 dnl
 AC_MSG_CHECKING(for IPv6 support)
 AC_CACHE_VAL(ac_cv_ipv6,
-	AC_TRY_RUN([
+	AC_RUN_IFELSE([AC_LANG_SOURCE([[
 #	include <sys/types.h>
 #	include <sys/socket.h>
 #	include <netinet/in.h>
@@ -429,10 +448,7 @@ AC_CACHE_VAL(ac_cv_ipv6,
 		struct sockaddr_in6 foo;
 		fd = socket(AF_INET6, SOCK_STREAM, 0);
 		exit(fd >= 0 ? 0 : 1);
-	}],
-	ac_cv_ipv6=yes,
-	ac_cv_ipv6=no,
-	ac_cv_ipv6=no))
+	}]])],[ac_cv_ipv6=yes],[ac_cv_ipv6=no],[ac_cv_ipv6=no]))
 AC_MSG_RESULT($ac_cv_ipv6)
 if test $ac_cv_ipv6 = yes ; then
 	AC_DEFINE(IPV6, 1, Define to 1 if the system supports IPv6)
@@ -443,7 +459,7 @@ dnl Let's see if the system really supports Unix domain sockets.
 dnl
 AC_MSG_CHECKING(for Unix domain sockets)
 AC_CACHE_VAL(ac_cv_unixdomain,
-	AC_TRY_RUN([
+	AC_RUN_IFELSE([AC_LANG_SOURCE([[
 #	include <sys/types.h>
 #	include <sys/socket.h>
 #	include <sys/un.h>
@@ -456,10 +472,7 @@ AC_CACHE_VAL(ac_cv_unixdomain,
 		struct sockaddr_un foo;
 		fd = socket(AF_UNIX, SOCK_STREAM, 0);
 		exit(fd >= 0 ? 0 : 1);
-	}],
-	ac_cv_unixdomain=yes,
-	ac_cv_unixdomain=no,
-	ac_cv_unixdomain=no))
+	}]])],[ac_cv_unixdomain=yes],[ac_cv_unixdomain=no],[ac_cv_unixdomain=no]))
 AC_MSG_RESULT($ac_cv_unixdomain)
 if test $ac_cv_unixdomain = yes ; then
 	AC_DEFINE(UNIXDOMAIN, 1, Define to 1 if the system supports UNIX domain sockets)
@@ -470,7 +483,7 @@ dnl Let's see if the system really supports multicasting.
 dnl
 AC_MSG_CHECKING(for multicast support)
 AC_CACHE_VAL(ac_cv_multicast,
-	AC_TRY_RUN([
+	AC_RUN_IFELSE([AC_LANG_SOURCE([[
 #	include <sys/types.h>
 #	include <sys/socket.h>
 #	include <netinet/in.h>
@@ -486,10 +499,7 @@ AC_CACHE_VAL(ac_cv_multicast,
 			       (void*)&flag, sizeof(flag)) < 0)
 			exit(1);
 		exit(0);
-	}],
-	ac_cv_multicast=yes,
-	ac_cv_multicast=no,
-	ac_cv_multicast=no))
+	}]])],[ac_cv_multicast=yes],[ac_cv_multicast=no],[ac_cv_multicast=no]))
 AC_MSG_RESULT($ac_cv_multicast)
 if test $ac_cv_multicast = yes ; then
 	AC_DEFINE(MCAST, 1, Define to 1 if the system supports IP Multicast)
@@ -679,7 +689,7 @@ fi
 dnl If the compiler is gcc, enable all warnings.  Main purpose is to
 dnl catch any function call where the function has not been prototyped.
 dnl
-if test "$ac_cv_prog_gcc" = yes; then
+if test "$ac_cv_c_compiler_gnu" = yes; then
    CFLAGS="$CFLAGS -Wall -Wextra -Wpedantic -Wno-unused-parameter -std=c11"
    dnl
    dnl These warnings are useful during development, but not to deploy.
@@ -692,7 +702,7 @@ dnl the definitions that we're looking for in some system headers.
 case "$host_os" in
 *aix*)		CPPFLAGS="$CPPFLAGS -D_ALL_SOURCE" ;;
 *osf*)		CPPFLAGS="$CPPFLAGS -D_SOCKADDR_LEN" ;;
-*solaris*)	if test "$ac_cv_prog_gcc" = yes; then
+*solaris*)	if test "$ac_cv_c_compiler_gnu" = yes; then
 		   CPPFLAGS="$CPPFLAGS -D__EXTENSIONS__"
 		else
 		   CPPFLAGS="$CPPFLAGS -D__STDC__"
@@ -702,7 +712,8 @@ esac
 dnl ##################################################################
 dnl We also create a "Makefile" but it is not used for much.
 dnl
-AC_OUTPUT(Makefile Make.defines)
+AC_CONFIG_FILES([Makefile Make.defines])
+AC_OUTPUT
 
 dnl
 dnl If a directory exists whose name equals the host
